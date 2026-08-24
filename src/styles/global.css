@@ -352,12 +352,50 @@
 }
 
 #site-header .header-inner {
-  transition: padding 0.25s ease;
+  min-height: 4.25rem;
+  transition: min-height 0.25s ease;
+}
+
+@media (min-width: 1024px) {
+  #site-header .header-inner {
+    min-height: 5rem;
+  }
 }
 
 #site-header[data-compact] .header-inner {
-  padding-top: 0.7rem;
-  padding-bottom: 0.7rem;
+  min-height: 3.5rem;
+}
+
+.nav-flyout {
+  position: absolute;
+  z-index: 50;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav-flyout.is-open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav-flyout-full {
+  top: calc(100% - 2px);
+  right: 0;
+  left: 0;
+}
+
+.nav-flyout-sub {
+  top: calc(100% - 2px);
+  left: 0;
+  min-width: 13rem;
+}
+
+@media (max-width: 1023px) {
+  .nav-flyout {
+    display: none;
+  }
 }
 
 #quote {
@@ -374,24 +412,25 @@
   }
 }
 
-#site-header[data-overlay]:not([data-compact]):not([data-menu-open]) {
+#site-header[data-overlay]:not([data-compact]):not([data-menu-open]):not([data-flyout-open]) {
   color: var(--color-paper);
   background: linear-gradient(to bottom, rgb(17 20 24 / 0.45), rgb(17 20 24 / 0));
   border-bottom-color: transparent;
 }
 
 /* Шапка: графитовая кнопка, не оранжевая — оранжевый только у CTA секций */
-#site-header[data-overlay]:not([data-compact]):not([data-menu-open]) .btn-header-quote {
+#site-header[data-overlay]:not([data-compact]):not([data-menu-open]):not([data-flyout-open]) .btn-header-quote {
   background-color: var(--color-paper);
   color: var(--color-ink);
 }
 
-#site-header[data-overlay]:not([data-compact]):not([data-menu-open]) .btn-header-quote:hover {
+#site-header[data-overlay]:not([data-compact]):not([data-menu-open]):not([data-flyout-open]) .btn-header-quote:hover {
   background-color: color-mix(in srgb, var(--color-paper) 88%, black);
 }
 
 #site-header[data-compact],
 #site-header[data-menu-open],
+#site-header[data-flyout-open],
 #site-header:not([data-overlay]) {
   color: var(--color-ink);
   background: var(--color-paper);

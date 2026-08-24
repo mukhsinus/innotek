@@ -42,7 +42,7 @@
     transform 300ms var(--ease-home);
 }
 
-.is-home #site-header[data-overlay]:not([data-compact]):not([data-menu-open]) {
+.is-home #site-header[data-overlay]:not([data-compact]):not([data-menu-open]):not([data-flyout-open]) {
   background: linear-gradient(to bottom, rgb(14 15 17 / 0.45), rgb(14 15 17 / 0));
 }
 

@@ -33,7 +33,7 @@ function initHeaderHide() {
     const y = window.scrollY;
     const down = y > lastY + 4;
     const up = y < lastY - 4;
-    const menuOpen = header.hasAttribute("data-menu-open");
+    const menuOpen = header.hasAttribute("data-menu-open") || header.hasAttribute("data-flyout-open");
 
     if (menuOpen || y < 32) {
       header.removeAttribute("data-hidden");
@@ -212,10 +212,97 @@ function initParallax() {
   });
 }
 
+function initNavFlyouts() {
+  const header = document.getElementById("site-header");
+  if (!header) return;
+  if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+  const CLOSE_MS = 550;
+  const panels = new Map<string, HTMLElement>();
+  const triggers = [...header.querySelectorAll<HTMLElement>("[data-flyout-trigger]")];
+
+  header.querySelectorAll<HTMLElement>("[data-flyout-panel]").forEach((panel) => {
+    const id = panel.dataset.flyoutPanel;
+    if (id) panels.set(id, panel);
+  });
+
+  if (!panels.size) return;
+
+  let timer = 0;
+  let openId: string | null = null;
+
+  const setOpen = (id: string | null) => {
+    openId = id;
+    header.toggleAttribute("data-flyout-open", Boolean(id));
+    if (id) header.removeAttribute("data-hidden");
+
+    panels.forEach((panel, key) => {
+      panel.classList.toggle("is-open", key === id);
+    });
+
+    triggers.forEach((trigger) => {
+      const on = trigger.dataset.flyoutTrigger === id;
+      trigger.setAttribute("aria-expanded", String(on));
+    });
+  };
+
+  const enter = (id: string) => {
+    window.clearTimeout(timer);
+    setOpen(id);
+  };
+
+  const leave = () => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => setOpen(null), CLOSE_MS);
+  };
+
+  const relatedInside = (related: EventTarget | null, id: string) => {
+    const node = related instanceof Node ? related : null;
+    if (!node) return false;
+    const panel = panels.get(id);
+    const trigger = triggers.find((el) => el.dataset.flyoutTrigger === id);
+    return Boolean((trigger && trigger.contains(node)) || (panel && panel.contains(node)));
+  };
+
+  triggers.forEach((trigger) => {
+    const id = trigger.dataset.flyoutTrigger;
+    if (!id || !panels.has(id)) return;
+
+    trigger.addEventListener("pointerenter", () => enter(id));
+    trigger.addEventListener("pointerleave", (e) => {
+      if (relatedInside(e.relatedTarget, id)) return;
+      leave();
+    });
+    trigger.addEventListener("focus", () => enter(id));
+    trigger.addEventListener("blur", (e) => {
+      if (relatedInside(e.relatedTarget, id)) return;
+      leave();
+    });
+  });
+
+  panels.forEach((panel, id) => {
+    panel.addEventListener("pointerenter", () => enter(id));
+    panel.addEventListener("pointerleave", (e) => {
+      if (relatedInside(e.relatedTarget, id)) return;
+      leave();
+    });
+    panel.addEventListener("focusin", () => enter(id));
+    panel.addEventListener("focusout", (e) => {
+      if (relatedInside(e.relatedTarget, id)) return;
+      leave();
+    });
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && openId) setOpen(null);
+  });
+}
+
 initHeader();
 initHeaderHide();
 initProgress();
 initMobileNav();
+initNavFlyouts();
 initReveal();
 initCounters();
 initParallax();
