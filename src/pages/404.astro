@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import type { Lang } from "../i18n/ui";
+import { currentLangFromPath, hrefFor, useT } from "../i18n/utils";
+
+const lang = (Astro.currentLocale ?? currentLangFromPath(Astro.url.pathname)) as Lang;
+const t = useT(lang);
+---
+
+<BaseLayout title={`${t("notFound.title")} | Innotek`} description={t("notFound.lead")}>
+  <section class="site-wrap py-24 lg:py-32">
+    <p class="text-xs font-bold tracking-[0.18em] text-accent-ink uppercase">404</p>
+    <h1 class="mt-4 max-w-2xl text-4xl font-extrabold tracking-tight sm:text-5xl">{t("notFound.title")}</h1>
+    <p class="mt-4 max-w-xl text-muted">{t("notFound.lead")}</p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a class="btn-primary" href={hrefFor(lang, "/")}>{t("notFound.home")}</a>
+      <a class="btn-ghost border-ink" href={hrefFor(lang, "/catalog/")}>{t("cta.catalog")}</a>
+    </div>
+  </section>
+</BaseLayout>

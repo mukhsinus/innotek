@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { useT } from "../../i18n/utils";
+
+const t = useT("uz");
+---
+
+<BaseLayout
+  title="Innotek — stelajlar va metall mebel, Toshkent"
+  description="Ombor va savdo stelajlari, metall mebel va konveyer liniyalari ishlab chiqaruvchisi. Toshkent, O‘zbekiston."
+  overlayHeader
+>
+  <section class="relative flex min-h-[100svh] items-center bg-ink text-paper">
+    <div class="site-wrap py-28">
+      <p class="text-xs font-bold tracking-[0.18em] text-accent uppercase">{t("home.shellEyebrow")}</p>
+      <h1 class="mt-4 max-w-4xl text-4xl leading-[1.05] font-extrabold tracking-tight sm:text-6xl lg:text-7xl">
+        {t("home.shellTitle")}
+      </h1>
+      <p class="mt-6 max-w-xl text-lg text-muted-on-ink">{t("home.shellLead")}</p>
+    </div>
+  </section>
+  <section class="bg-fog" data-reveal>
+    <div class="site-wrap py-24 lg:py-32">
+      <p class="max-w-xl text-lg text-muted">{t("home.shellLead")}</p>
+    </div>
+  </section>
+</BaseLayout>

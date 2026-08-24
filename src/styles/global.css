@@ -1,0 +1,196 @@
+@import "@fontsource-variable/manrope/wght.css";
+@import "tailwindcss";
+
+/* -------------------------------------------------------------------------- */
+/* Дизайн-токены Innotek — индустриальный премиум, светлая тема               */
+/* Акцент #FF6B2C: логотипа в репозитории нет; цвет из брифа.                 */
+/* Для текста/кнопок — accent-ink: белый на #FF6B2C не проходит WCAG AA.     */
+/* -------------------------------------------------------------------------- */
+
+@theme {
+  --color-ink: #111418;
+  --color-ink-soft: #1c2128;
+  --color-paper: #ffffff;
+  --color-fog: #f4f5f6;
+  --color-line: #e4e6e8;
+  --color-muted: #5a616a;
+  --color-muted-on-ink: #c5c9ce;
+  --color-accent: #ff6b2c;
+  --color-accent-ink: #b33a12;
+
+  --font-sans: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --max-width-site: 80rem;
+
+  --shadow-header: 0 1px 0 rgb(17 20 24 / 0.06), 0 8px 24px rgb(17 20 24 / 0.06);
+}
+
+@utility site-wrap {
+  width: min(100% - 2rem, var(--max-width-site));
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .site-wrap {
+    width: min(100% - 3rem, var(--max-width-site));
+  }
+}
+
+/* 12-колоночная сетка: 4 → 8 → 12 */
+@utility site-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .site-grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@layer components {
+  .skip-link {
+    @apply bg-accent-ink text-paper;
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    padding: 0.6rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 2px;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    font-feature-settings: "ss01" on, "kern" on;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-paper);
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold tracking-wide transition-colors duration-200;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm bg-ink px-5 py-2.5 text-sm font-semibold tracking-wide text-paper transition-colors duration-200;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-ink-soft);
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm bg-accent-ink px-5 py-2.5 text-sm font-semibold tracking-wide text-paper transition-colors duration-200;
+  }
+
+  .btn-accent:hover {
+    background-color: color-mix(in srgb, var(--color-accent-ink) 88%, black);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm border border-current bg-transparent px-5 py-2.5 text-sm font-semibold tracking-wide transition-colors duration-200;
+  }
+
+  .btn-ghost:hover {
+    @apply bg-paper/10;
+  }
+
+  /* Появление секций: CSS + IntersectionObserver (см. chrome.ts) */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
+/* Sticky-шапка: прозрачная на тёмном hero, плотная после скролла */
+#site-header {
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    padding 0.25s ease,
+    color 0.25s ease;
+}
+
+#site-header .header-inner {
+  transition: padding 0.25s ease;
+}
+
+#site-header[data-compact] .header-inner {
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+}
+
+.header-spacer {
+  height: 4.5rem;
+}
+
+@media (min-width: 1024px) {
+  .header-spacer {
+    height: 5.25rem;
+  }
+}
+
+#site-header[data-overlay]:not([data-compact]):not([data-menu-open]) {
+  color: var(--color-paper);
+  background: linear-gradient(to bottom, rgb(17 20 24 / 0.55), rgb(17 20 24 / 0));
+}
+
+#site-header[data-compact],
+#site-header[data-menu-open],
+#site-header:not([data-overlay]) {
+  color: var(--color-ink);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-header);
+}
