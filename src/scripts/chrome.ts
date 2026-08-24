@@ -64,6 +64,45 @@ function initReveal() {
   nodes.forEach((el) => io.observe(el));
 }
 
+function initCounters() {
+  const nodes = document.querySelectorAll<HTMLElement>("[data-count]");
+  if (!nodes.length) return;
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const run = (el: HTMLElement) => {
+    const target = Number(el.dataset.count);
+    if (!Number.isFinite(target)) return;
+    if (reduced) {
+      el.textContent = String(target);
+      return;
+    }
+    const start = performance.now();
+    const duration = 900;
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration);
+      const eased = 1 - (1 - p) ** 3;
+      el.textContent = String(Math.round(target * eased));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        run(entry.target as HTMLElement);
+        io.unobserve(entry.target);
+      }
+    },
+    { threshold: 0.4 },
+  );
+
+  nodes.forEach((el) => io.observe(el));
+}
+
 initHeader();
 initMobileNav();
 initReveal();
+initCounters();

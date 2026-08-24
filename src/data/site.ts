@@ -28,15 +28,13 @@ export const SITE = {
     "https://www.google.com/maps/place/Innotek+Invest/@41.3300559,69.2501784,19z",
   mapsLat: 41.3300559,
   mapsLng: 69.2501784,
-  hours: {
-    ru: "9:00–18:00 (Пн–Пт). Сб, Вс и праздничные дни — закрыто",
-    uz: "9:00–18:00 (Du–Ju). Shanba, yakshanba va bayramlar — yopiq",
-  },
+  /** Статическая карта (не iframe) — OSM; клик ведёт на Google Maps из content/. */
+  mapsImage:
+    "https://staticmap.openstreetmap.de/staticmap.php?center=41.3300559,69.2501784&zoom=16&size=1200x640&maptype=mapnik&markers=41.3300559,69.2501784,red-pushpin",
   socials: {
     facebook: "https://m.facebook.com/innotekinvest.uz/",
     instagram: "https://www.instagram.com/innotek_invest/",
     telegram: "https://t.me/Innotek_invest",
-    youtube: "https://www.youtube.com/@innotek_invest",
   },
 } as const;
 

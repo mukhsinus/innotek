@@ -127,8 +127,22 @@
     @apply inline-flex items-center justify-center gap-2 rounded-sm border border-current bg-transparent px-5 py-2.5 text-sm font-semibold tracking-wide transition-colors duration-200;
   }
 
-  .btn-ghost:hover {
-    @apply bg-paper/10;
+  .btn-header-quote {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold tracking-wide transition-colors duration-200;
+    /* Светлая шапка / после скролла: белый на графите ≈ 18:1 (AAA) */
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .btn-on-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold tracking-wide transition-colors duration-200;
+    /* Графит на accent ≈ 6.0:1 (AA). Белый на accent AA не проходит. */
+    background-color: var(--color-accent);
+    color: var(--color-ink);
+  }
+
+  .btn-on-dark:hover {
+    background-color: color-mix(in srgb, var(--color-accent) 88%, black);
   }
 
   /* Появление секций: CSS + IntersectionObserver (см. chrome.ts) */
@@ -185,6 +199,19 @@
 #site-header[data-overlay]:not([data-compact]):not([data-menu-open]) {
   color: var(--color-paper);
   background: linear-gradient(to bottom, rgb(17 20 24 / 0.55), rgb(17 20 24 / 0));
+}
+
+/*
+ * CTA «Получить расчёт» на тёмном hero: заливка accent + текст ink.
+ * Белый на #FF6B2C ≈ 2.8:1 (не AA). Графит на #FF6B2C ≈ 6.0:1 (AA).
+ */
+#site-header[data-overlay]:not([data-compact]):not([data-menu-open]) .btn-header-quote {
+  background-color: var(--color-accent);
+  color: var(--color-ink);
+}
+
+#site-header[data-overlay]:not([data-compact]):not([data-menu-open]) .btn-header-quote:hover {
+  background-color: color-mix(in srgb, var(--color-accent) 88%, black);
 }
 
 #site-header[data-compact],
