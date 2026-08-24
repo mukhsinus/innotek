@@ -1,0 +1,110 @@
+---
+import QuoteBand from "./QuoteBand.astro";
+import SectionMeta from "./SectionMeta.astro";
+import type { CatalogProduct } from "../data/catalog";
+import type { Lang } from "../i18n/ui";
+import { hrefFor, useT } from "../i18n/utils";
+
+interface Props {
+  lang: Lang;
+  product: CatalogProduct;
+}
+
+const { lang, product } = Astro.props;
+const t = useT(lang);
+const pad = (n: number) => String(n).padStart(2, "0");
+const hasGallery = product.images.length > 0;
+const hasDetails = product.specs.length > 0 || product.features.length > 0;
+const TOTAL = 2 + (hasGallery ? 1 : 0) + (hasDetails ? 1 : 0);
+let n = 1;
+const introN = n++;
+const galleryN = hasGallery ? n++ : 0;
+const detailsN = hasDetails ? n++ : 0;
+const ctaN = n++;
+const parentHref = hrefFor(lang, product.parentPath);
+---
+
+<article>
+  <header class="page-head bg-paper" data-reveal>
+    <div class="site-wrap">
+      <a class="t-overline mb-8 inline-block transition-colors hover:text-ink" href={parentHref}>
+        ← {t(product.parentLabelKey)}
+      </a>
+      <SectionMeta kicker={t("page.kickerProduct")} index={introN} total={TOTAL} />
+      <h1 class="t-display">{product.h1}</h1>
+      <p class="t-lead">{product.lead}</p>
+    </div>
+  </header>
+
+  {
+    hasGallery && (
+      <section class="section-y bg-paper" data-reveal>
+        <div class="site-wrap">
+          <SectionMeta kicker={t("page.gallery")} index={galleryN} total={TOTAL} />
+          <div class="site-grid">
+            {product.images.map((src, i) => (
+              <div
+                class:list={[
+                  "relative overflow-hidden bg-ink",
+                  i === 0
+                    ? "col-span-4 aspect-[16/10] lg:col-span-12 lg:aspect-[16/8]"
+                    : "col-span-2 aspect-[4/3] lg:col-span-3",
+                ]}
+              >
+                <img
+                  src={src}
+                  alt=""
+                  class="photo-grade absolute inset-0 h-full w-full object-cover"
+                  width={i === 0 ? 1400 : 600}
+                  height={i === 0 ? 800 : 450}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    hasDetails && (
+      <section class="section-y bg-paper" data-reveal>
+        <div class="site-wrap grid gap-16 lg:grid-cols-12 lg:gap-8">
+          {product.specs.length > 0 && (
+            <div class={product.features.length ? "lg:col-span-5" : "lg:col-span-8"}>
+              <SectionMeta kicker={t("page.specs")} index={detailsN} total={TOTAL} />
+              <div class="spec-list">
+                {product.specs.map((row) => (
+                  <div class="spec-row">
+                    <p class="spec-key">{row.key}</p>
+                    <p>{row.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {product.features.length > 0 && (
+            <div class={product.specs.length ? "lg:col-span-6 lg:col-start-7" : "lg:col-span-8"}>
+              {product.specs.length === 0 && (
+                <SectionMeta kicker={t("page.aboutProduct")} index={detailsN} total={TOTAL} />
+              )}
+              {product.specs.length > 0 && <p class="t-overline mb-6">{t("page.aboutProduct")}</p>}
+              <div>
+                {product.features.map((item, i) => (
+                  <div class="feature-item">
+                    <span class="t-overline">{pad(i + 1)}</span>
+                    <p>{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  <QuoteBand lang={lang} index={ctaN} total={TOTAL} />
+</article>

@@ -36,6 +36,10 @@ export const SITE = {
     instagram: "https://www.instagram.com/innotek_invest/",
     telegram: "https://t.me/Innotek_invest",
   },
+  hours: {
+    weekdays: "9:00–18:00",
+    days: "Пн–Пт",
+  },
 } as const;
 
 /**

@@ -1,0 +1,19 @@
+---
+import ProductPage from "../../../../components/ProductPage.astro";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { CATALOG_PRODUCTS, productBySlugs } from "../../../../data/catalog";
+import { localizeProduct } from "../../../../data/localize";
+
+export function getStaticPaths() {
+  return CATALOG_PRODUCTS.map((product) => ({
+    params: { cat: product.categorySlug, slug: product.slug },
+  }));
+}
+
+const lang = "ru" as const;
+const product = localizeProduct(productBySlugs(Astro.params.cat!, Astro.params.slug!)!, lang);
+---
+
+<BaseLayout title={product.title} description={product.description}>
+  <ProductPage lang={lang} product={product} />
+</BaseLayout>

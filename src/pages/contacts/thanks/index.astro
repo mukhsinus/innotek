@@ -1,0 +1,22 @@
+---
+import SectionMeta from "../../../components/SectionMeta.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { hrefFor, useT } from "../../../i18n/utils";
+
+const lang = "ru" as const;
+const t = useT(lang);
+---
+
+<BaseLayout title={`${t("form.thanksTitle")} | Innotek`} description={t("form.thanksLead")}>
+  <header class="page-head bg-paper">
+    <div class="site-wrap">
+      <SectionMeta kicker={t("contacts.quote")} index={1} total={1} />
+      <h1 class="t-display">{t("form.thanksTitle")}</h1>
+      <p class="t-lead">{t("form.thanksLead")}</p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a class="btn-primary" href={hrefFor(lang, "/")}>{t("notFound.home")}</a>
+        <a class="btn-ghost border-ink" href={hrefFor(lang, "/catalog/")}>{t("cta.catalog")}</a>
+      </div>
+    </div>
+  </header>
+</BaseLayout>

@@ -1,0 +1,38 @@
+---
+import { hrefFor, useT } from "../i18n/utils";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useT(lang);
+const thanks = hrefFor(lang, "/contacts/thanks/");
+---
+
+<form class="quote-form" name="quote" method="POST" data-netlify="true" netlify-honeypot="bot-field" action={thanks}>
+  <input type="hidden" name="form-name" value="quote" />
+  <p class="sr-only">
+    <label>
+      {t("form.bot")}
+      <input name="bot-field" tabindex="-1" autocomplete="off" />
+    </label>
+  </p>
+  <label>
+    <span class="t-overline">{t("form.name")}</span>
+    <input type="text" name="name" required autocomplete="name" />
+  </label>
+  <label>
+    <span class="t-overline">{t("form.phone")}</span>
+    <input type="tel" name="phone" required autocomplete="tel" inputmode="tel" />
+  </label>
+  <label>
+    <span class="t-overline">{t("form.comment")}</span>
+    <textarea name="comment" rows="4"></textarea>
+  </label>
+  <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+    <button class="btn-primary" type="submit">{t("form.send")}</button>
+    <p class="t-caption">{t("form.note")}</p>
+  </div>
+</form>

@@ -1,0 +1,20 @@
+---
+import ProductPage from "../../../../../components/ProductPage.astro";
+import BaseLayout from "../../../../../layouts/BaseLayout.astro";
+import { CATALOG_PRODUCTS, productBySlugs } from "../../../../../data/catalog";
+import { localizeProduct } from "../../../../../data/localize";
+import { UZ_PATHS } from "../../../../../data/site";
+
+export function getStaticPaths() {
+  return CATALOG_PRODUCTS.filter((product) => UZ_PATHS.has(product.path)).map((product) => ({
+    params: { cat: product.categorySlug, slug: product.slug },
+  }));
+}
+
+const lang = "uz" as const;
+const product = localizeProduct(productBySlugs(Astro.params.cat!, Astro.params.slug!)!, lang);
+---
+
+<BaseLayout title={product.title} description={product.description}>
+  <ProductPage lang={lang} product={product} />
+</BaseLayout>

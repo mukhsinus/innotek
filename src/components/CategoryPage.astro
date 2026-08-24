@@ -1,0 +1,127 @@
+---
+import QuoteBand from "./QuoteBand.astro";
+import SectionMeta from "./SectionMeta.astro";
+import type { CatalogCategory } from "../data/catalog";
+import type { Lang } from "../i18n/ui";
+import { hrefFor, useT } from "../i18n/utils";
+
+interface Props {
+  lang: Lang;
+  category: CatalogCategory;
+}
+
+const { lang, category } = Astro.props;
+const t = useT(lang);
+const pad = (n: number) => String(n).padStart(2, "0");
+const hasGrid = category.products.length > 0;
+const hasSeo = Boolean(category.seo);
+const TOTAL = 2 + (hasGrid ? 1 : 0) + (hasSeo ? 1 : 0);
+let n = 1;
+const introN = n++;
+const gridN = hasGrid ? n++ : 0;
+const ctaN = n++;
+const seoN = hasSeo ? n++ : 0;
+---
+
+<article>
+  <header class="page-head bg-paper" data-reveal>
+    <div class="site-wrap">
+      <SectionMeta kicker={t("nav.catalog")} index={introN} total={TOTAL} />
+      <h1 class="t-display">{category.h1}</h1>
+      <p class="t-lead">{category.lead}</p>
+    </div>
+  </header>
+
+  {
+    hasGrid && (
+      <section class="section-y bg-paper" data-reveal>
+        <div class="site-wrap">
+          <SectionMeta kicker={t("page.lineup")} index={gridN} total={TOTAL} />
+          <div class="site-grid">
+            {category.products.map((item, i) => (
+              <a
+                href={hrefFor(lang, item.path)}
+                data-stagger
+                class:list={["group col-span-4 block", i === 0 ? "lg:col-span-8" : "lg:col-span-4"]}
+              >
+                <div
+                  class:list={[
+                    "relative overflow-hidden bg-ink",
+                    i === 0 ? "aspect-[16/10] lg:aspect-[16/9]" : "aspect-[4/5]",
+                  ]}
+                >
+                  <span class="bento-media" data-parallax>
+                    <img
+                      src={item.image}
+                      alt=""
+                      class="photo-grade"
+                      width="800"
+                      height="600"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      decoding="async"
+                    />
+                  </span>
+                  <span class="bento-num">{pad(i + 1)}</span>
+                </div>
+                <h2 class="mt-4 text-lg font-medium tracking-[-0.02em] lg:text-xl">
+                  {t(item.labelKey)}
+                  <span class="link-arrow" aria-hidden="true">
+                    {" "}
+                    →
+                  </span>
+                </h2>
+                {item.excerpt ? <p class="mt-1.5 text-sm text-muted">{item.excerpt}</p> : <p class="mt-1.5 text-sm text-muted">{t("page.todo")}</p>}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    !hasGrid && (
+      <section class="bg-paper pb-0" data-reveal>
+        <div class="site-wrap">
+          <div class="relative aspect-[16/9] overflow-hidden bg-ink lg:aspect-[16/7]">
+            <img
+              src={category.image}
+              alt=""
+              class="photo-grade absolute inset-0 h-full w-full object-cover"
+              width="1400"
+              height="700"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <QuoteBand lang={lang} index={ctaN} total={TOTAL} />
+
+  {
+    category.seo && (
+      <section class="section-y bg-paper" data-reveal>
+        <div class="site-wrap">
+          <SectionMeta kicker={t("page.seo")} index={seoN} total={TOTAL} />
+          <h2 class="t-display">{category.seo.heading}</h2>
+          <div class="seo-block mt-8">
+            {category.seo.paragraphs.map((p) => (
+              <p>{p}</p>
+            ))}
+          </div>
+          <div class="mt-16 max-w-3xl">
+            {category.seo.faqs.map((item) => (
+              <details class="faq-item">
+                <summary>{item.q}</summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</article>

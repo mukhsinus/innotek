@@ -1,0 +1,20 @@
+---
+import CategoryPage from "../../../../components/CategoryPage.astro";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { CATALOG_CATEGORIES, categoryBySlug } from "../../../../data/catalog";
+import { localizeCategory } from "../../../../data/localize";
+import { UZ_PATHS } from "../../../../data/site";
+
+export function getStaticPaths() {
+  return CATALOG_CATEGORIES.filter((category) => UZ_PATHS.has(category.path)).map((category) => ({
+    params: { cat: category.slug },
+  }));
+}
+
+const lang = "uz" as const;
+const category = localizeCategory(categoryBySlug(Astro.params.cat)!, lang);
+---
+
+<BaseLayout title={category.title} description={category.description}>
+  <CategoryPage lang={lang} category={category} />
+</BaseLayout>

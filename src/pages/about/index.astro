@@ -1,0 +1,66 @@
+---
+import QuoteBand from "../../components/QuoteBand.astro";
+import SectionMeta from "../../components/SectionMeta.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { ABOUT } from "../../data/company";
+import { useT } from "../../i18n/utils";
+
+const lang = "ru" as const;
+const t = useT(lang);
+const TOTAL = 3;
+---
+
+<BaseLayout title={ABOUT.title} description={ABOUT.description}>
+  <article>
+    <header class="page-head bg-paper" data-reveal>
+      <div class="site-wrap">
+        <SectionMeta kicker={t("page.kickerCompany")} index={1} total={TOTAL} />
+        <h1 class="t-display">{ABOUT.h1}</h1>
+        <p class="t-lead">{ABOUT.lead}</p>
+      </div>
+    </header>
+
+    <section class="bg-paper pb-0" data-reveal>
+      <div class="site-wrap">
+        <div class="relative aspect-[16/9] overflow-hidden bg-ink lg:aspect-[16/7]">
+          <img
+            src={ABOUT.image}
+            alt=""
+            class="photo-grade absolute inset-0 h-full w-full object-cover"
+            width="1400"
+            height="700"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="section-y bg-paper" data-reveal>
+      <div class="site-wrap grid gap-16 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <div class="max-w-xl space-y-6 text-lg leading-relaxed text-muted">
+            {ABOUT.paragraphs.map((p) => <p>{p}</p>)}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-y bg-paper" data-reveal>
+      <div class="site-wrap">
+        <SectionMeta kicker={t("page.clients")} index={2} total={TOTAL} />
+        <ul class="client-logos">
+          {
+            ABOUT.clients.map((item) => (
+              <li>
+                <img src={item.src} alt={item.alt} width="160" height="64" loading="lazy" decoding="async" />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <QuoteBand lang={lang} index={3} total={TOTAL} />
+  </article>
+</BaseLayout>

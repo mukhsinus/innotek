@@ -1,0 +1,19 @@
+---
+import ServicePage from "../../../components/ServicePage.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { SERVICES, serviceBySlug } from "../../../data/services";
+import { localizeService } from "../../../data/localize";
+
+export function getStaticPaths() {
+  return SERVICES.map((service) => ({
+    params: { slug: service.slug },
+  }));
+}
+
+const lang = "ru" as const;
+const service = localizeService(serviceBySlug(Astro.params.slug!)!, lang);
+---
+
+<BaseLayout title={service.title} description={service.description}>
+  <ServicePage lang={lang} service={service} />
+</BaseLayout>
