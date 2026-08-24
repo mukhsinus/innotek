@@ -16,6 +16,11 @@ export type HomeCase = {
   labelKey: UiKey;
 };
 
+export type HomeHeading = {
+  before: string;
+  accent: string;
+};
+
 export type HomeCopy = {
   title: string;
   description: string;
@@ -23,13 +28,16 @@ export type HomeCopy = {
   heroLead: string;
   heroImage: string;
   catalogLead: string;
+  catalogHeading: HomeHeading;
   categories: HomeCategory[];
-  productionTitle: string;
+  productionHeading: HomeHeading;
   productionLead: string;
+  casesHeading: HomeHeading;
   casesLead: string;
   cases: HomeCase[];
-  ctaTitle: string;
+  ctaHeading: HomeHeading;
   ctaLead: string;
+  marquee: string;
 };
 
 const IMG = {
@@ -51,6 +59,7 @@ export const HOME: Record<Lang, HomeCopy> = {
     heroLead: "Ташкент. Системы хранения для склада, магазина и производства.",
     heroImage: IMG.racks,
     catalogLead: "Склад, магазин, производство.",
+    catalogHeading: { before: "", accent: "Каталог" },
     categories: [
       { path: "/catalog/stellazhi/", labelKey: "nav.racks", image: IMG.racks, featured: true },
       { path: "/catalog/torgovye-stellazhi/", labelKey: "nav.retail", image: IMG.retail },
@@ -60,16 +69,18 @@ export const HOME: Record<Lang, HomeCopy> = {
       { path: "/catalog/oborudovanie/", labelKey: "nav.equipment", image: IMG.equipment },
       { path: "/catalog/roliki/", labelKey: "nav.rollers", image: IMG.rollers },
     ],
-    productionTitle: "Производство",
+    productionHeading: { before: "Наше ", accent: "производство" },
     productionLead: "Пять автоматических линий. Сталь толщиной 0,2–6 мм.",
+    casesHeading: { before: "", accent: "Кейсы" },
     casesLead: "Как производятся и устанавливаются стеллажные системы.",
     cases: [
       { image: IMG.racks, labelKey: "nav.racks" },
       { image: IMG.retail, labelKey: "nav.retail" },
       { image: IMG.conveyors, labelKey: "nav.conveyors" },
     ],
-    ctaTitle: "Рассчитать проект.",
+    ctaHeading: { before: "Рассчитать ", accent: "проект." },
     ctaLead: "Подберём конфигурацию и организуем поставку.",
+    marquee: "стеллажи · мезонины · конвейеры · монтаж · ",
   },
   uz: {
     title: "Toshkentda stelajlar sotib olish | Innotek",
@@ -79,6 +90,7 @@ export const HOME: Record<Lang, HomeCopy> = {
     heroLead: "Toshkent. Ombor, do‘kon va ishlab chiqarish uchun saqlash tizimlari.",
     heroImage: IMG.racks,
     catalogLead: "Ombor, do‘kon, ishlab chiqarish.",
+    catalogHeading: { before: "", accent: "Katalog" },
     categories: [
       { path: "/catalog/stellazhi/", labelKey: "nav.racks", image: IMG.racks, featured: true },
       { path: "/catalog/torgovye-stellazhi/", labelKey: "nav.retail", image: IMG.retail },
@@ -88,16 +100,18 @@ export const HOME: Record<Lang, HomeCopy> = {
       { path: "/catalog/oborudovanie/", labelKey: "nav.equipment", image: IMG.equipment },
       { path: "/catalog/roliki/", labelKey: "nav.rollers", image: IMG.rollers },
     ],
-    productionTitle: "Ishlab chiqarish",
+    productionHeading: { before: "Bizning ", accent: "ishlab chiqarish" },
     productionLead: "Besh avtomatik liniya. Po‘lat qalinligi 0,2–6 mm.",
+    casesHeading: { before: "", accent: "Keys" },
     casesLead: "Stelaj tizimlari qanday ishlab chiqariladi va o‘rnatiladi.",
     cases: [
       { image: IMG.racks, labelKey: "nav.racks" },
       { image: IMG.retail, labelKey: "nav.retail" },
       { image: IMG.conveyors, labelKey: "nav.conveyors" },
     ],
-    ctaTitle: "Loyihani hisoblang.",
+    ctaHeading: { before: "Loyihani ", accent: "hisoblang." },
     ctaLead: "Konfiguratsiyani tanlab, yetkazib berishni tashkil qilamiz.",
+    marquee: "stelajlar · mezoninlar · konveyerlar · montaj · ",
   },
 };
 

@@ -235,6 +235,10 @@
     color 0.25s ease;
 }
 
+.read-progress {
+  display: none;
+}
+
 #site-header .header-inner {
   transition: padding 0.25s ease;
 }

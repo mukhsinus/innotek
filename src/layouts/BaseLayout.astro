@@ -13,9 +13,10 @@ interface Props {
   title: string;
   description?: string;
   overlayHeader?: boolean;
+  home?: boolean;
 }
 
-const { title, description = "", overlayHeader = false } = Astro.props;
+const { title, description = "", overlayHeader = false, home = false } = Astro.props;
 const lang = (Astro.currentLocale ?? currentLangFromPath(Astro.url.pathname)) as Lang;
 const t = useT(lang);
 const htmlLang = lang === "uz" ? "uz" : "ru";
@@ -34,7 +35,7 @@ const htmlLang = lang === "uz" ? "uz" : "ru";
     {description && <meta name="description" content={description} />}
     <title>{title}</title>
   </head>
-  <body>
+  <body class:list={[home && "is-home"]}>
     <a class="skip-link" href="#main">{t("skip")}</a>
     <!-- Сентинел для сжатия sticky-шапки через IntersectionObserver -->
     <div id="header-sentinel" class="pointer-events-none h-px w-full" aria-hidden="true"></div>

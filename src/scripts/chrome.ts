@@ -1,5 +1,13 @@
 /** Поведение шапки, мобильного меню и появления секций. Без UI-библиотек. */
 
+function reducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function isHome() {
+  return document.body.classList.contains("is-home");
+}
+
 function initHeader() {
   const header = document.getElementById("site-header");
   const sentinel = document.getElementById("header-sentinel");
@@ -14,6 +22,62 @@ function initHeader() {
   io.observe(sentinel);
 }
 
+function initHeaderHide() {
+  const header = document.getElementById("site-header");
+  if (!header || !isHome() || reducedMotion()) return;
+
+  let lastY = window.scrollY;
+  let ticking = false;
+
+  const apply = () => {
+    const y = window.scrollY;
+    const down = y > lastY + 4;
+    const up = y < lastY - 4;
+    const menuOpen = header.hasAttribute("data-menu-open");
+
+    if (menuOpen || y < 32) {
+      header.removeAttribute("data-hidden");
+    } else if (down && y > 80) {
+      header.setAttribute("data-hidden", "");
+    } else if (up) {
+      header.removeAttribute("data-hidden");
+    }
+
+    lastY = y;
+    ticking = false;
+  };
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(apply);
+    },
+    { passive: true },
+  );
+
+  header.addEventListener("focusin", () => {
+    header.removeAttribute("data-hidden");
+  });
+}
+
+function initProgress() {
+  const bar = document.getElementById("read-progress-bar");
+  if (!bar || !isHome()) return;
+
+  const update = () => {
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    bar.style.transform = `scaleX(${p})`;
+  };
+
+  update();
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
+}
+
 function initMobileNav() {
   const header = document.getElementById("site-header");
   const btn = document.getElementById("menu-btn");
@@ -26,6 +90,7 @@ function initMobileNav() {
     panel.hidden = !open;
     panel.classList.toggle("hidden", !open);
     document.body.style.overflow = open ? "hidden" : "";
+    if (open) header.removeAttribute("data-hidden");
   };
 
   btn.addEventListener("click", () => {
@@ -45,8 +110,16 @@ function initReveal() {
   const nodes = document.querySelectorAll("[data-reveal]");
   if (!nodes.length) return;
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    nodes.forEach((el) => el.classList.add("is-in"));
+  const show = (el: Element) => {
+    el.classList.add("is-in");
+    el.querySelectorAll("[data-stagger]").forEach((child, i) => {
+      (child as HTMLElement).style.setProperty("--stagger", String(i));
+      child.classList.add("is-in");
+    });
+  };
+
+  if (reducedMotion()) {
+    nodes.forEach(show);
     return;
   }
 
@@ -54,11 +127,11 @@ function initReveal() {
     (entries) => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
-        entry.target.classList.add("is-in");
+        show(entry.target);
         io.unobserve(entry.target);
       }
     },
-    { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    { threshold: 0.15 },
   );
 
   nodes.forEach((el) => io.observe(el));
@@ -68,7 +141,13 @@ function initCounters() {
   const nodes = document.querySelectorAll<HTMLElement>("[data-count]");
   if (!nodes.length) return;
 
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduced = reducedMotion();
+
+  if (!reduced) {
+    nodes.forEach((el) => {
+      el.textContent = "0";
+    });
+  }
 
   const run = (el: HTMLElement) => {
     const target = Number(el.dataset.count);
@@ -78,7 +157,7 @@ function initCounters() {
       return;
     }
     const start = performance.now();
-    const duration = 900;
+    const duration = 1000;
     const tick = (now: number) => {
       const p = Math.min(1, (now - start) / duration);
       const eased = 1 - (1 - p) ** 3;
@@ -103,6 +182,8 @@ function initCounters() {
 }
 
 initHeader();
+initHeaderHide();
+initProgress();
 initMobileNav();
 initReveal();
 initCounters();

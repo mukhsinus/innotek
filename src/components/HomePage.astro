@@ -1,4 +1,5 @@
 ---
+import "../styles/home.css";
 import { HOME, HOME_STATS } from "../data/home";
 import { SITE } from "../data/site";
 import type { Lang } from "../i18n/ui";
@@ -15,6 +16,8 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
 const catalogHref = hrefFor(lang, "/catalog/");
 const videoHref = hrefFor(lang, "/video/");
 const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
+const heroLines = copy.h1.split("\n");
+const marquee = copy.marquee.repeat(4);
 ---
 
 <!-- 1. Hero -->
@@ -22,23 +25,32 @@ const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
   <img
     src={copy.heroImage}
     alt=""
-    class="absolute inset-0 h-full w-full object-cover"
+    class="hero-photo absolute inset-0 h-full w-full object-cover"
     width="1600"
     height="1000"
     fetchpriority="high"
     decoding="async"
   />
-  <div class="absolute inset-0 bg-ink/25"></div>
-  <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-transparent"></div>
+  <div class="absolute inset-0 z-[1] bg-ink/25"></div>
+  <div class="absolute inset-0 z-[1] bg-gradient-to-t from-ink via-ink/50 to-transparent"></div>
+  <div class="home-noise" aria-hidden="true"></div>
   <div class="site-wrap relative z-10 pt-36 pb-16 lg:pb-24">
     <div class="max-w-5xl">
-      <h1 class="t-display whitespace-pre-line">{copy.h1}</h1>
-      <p class="t-lead t-lead-on-dark">{copy.heroLead}</p>
-      <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+      <h1 class="t-display">
+        {
+          heroLines.map((line, i) => (
+            <span class="hero-line" style={`--i: ${i}`}>
+              <span class="hero-line-inner">{line}</span>
+            </span>
+          ))
+        }
+      </h1>
+      <p class="hero-lead t-lead t-lead-on-dark">{copy.heroLead}</p>
+      <div class="hero-actions mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
         <a class="btn-accent" href={quoteHref}>{t("cta.quote")}</a>
         <a class="text-link text-link-on-dark" href={catalogHref}>
           {t("cta.catalog")}
-          <span aria-hidden="true">→</span>
+          <span class="link-arrow" aria-hidden="true">→</span>
         </a>
       </div>
     </div>
@@ -46,15 +58,24 @@ const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
 </section>
 
 <!-- 2. Каталог -->
-<section id="catalog" class="section-y bg-paper">
+<section id="catalog" class="section-y bg-paper" data-reveal>
   <div class="site-wrap">
-    <h2 class="t-display">{t("nav.catalog")}</h2>
+    <p class="home-kicker">
+      <span class="home-kicker-line" aria-hidden="true"></span>
+      {t("home.kickerCatalog")}
+    </p>
+    <h2 class="t-display">
+      {copy.catalogHeading.before}
+      <span class="t-stroke">{copy.catalogHeading.accent}</span>
+    </h2>
     <p class="t-lead">{copy.catalogLead}</p>
     <div class="site-grid mt-12 lg:mt-16">
       {
-        copy.categories.map((cat) => (
+        copy.categories.map((cat, i) => (
           <a
             href={hrefFor(lang, cat.path)}
+            data-stagger
+            style={`--stagger: ${i}`}
             class:list={[
               "group relative isolate flex min-h-52 flex-col justify-end overflow-hidden bg-ink p-5 text-paper lg:min-h-64 lg:p-6",
               cat.featured
@@ -76,11 +97,12 @@ const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
             <div class="photo-veil absolute inset-0"></div>
             <h3
               class:list={[
-                "relative font-medium tracking-[-0.02em]",
+                "bento-label relative font-medium tracking-[-0.02em]",
                 cat.featured ? "text-2xl lg:text-4xl" : "text-lg lg:text-xl",
               ]}
             >
-              {t(cat.labelKey)}
+              <span>{t(cat.labelKey)}</span>
+              <span class="bento-arrow" aria-hidden="true">→</span>
             </h3>
           </a>
         ))
@@ -90,20 +112,27 @@ const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
 </section>
 
 <!-- 3. Производство -->
-<section id="production" class="section-y border-t border-line bg-paper">
+<section id="production" class="section-y border-t border-line bg-paper" data-reveal>
   <div class="site-wrap">
-    <h2 class="t-display">{copy.productionTitle}</h2>
+    <p class="home-kicker">
+      <span class="home-kicker-line" aria-hidden="true"></span>
+      {t("home.kickerProduction")}
+    </p>
+    <h2 class="t-display">
+      {copy.productionHeading.before}
+      <span class="t-stroke">{copy.productionHeading.accent}</span>
+    </h2>
     <p class="t-lead">{copy.productionLead}</p>
     <div class="mt-16 grid grid-cols-3 lg:mt-24">
-      <div class="pr-3 sm:pr-8">
-        <p class="stat-num">{HOME_STATS.years}</p>
+      <div class="pr-3 sm:pr-8" data-stagger style="--stagger: 0">
+        <p class="stat-num"><span data-count={HOME_STATS.years}>{HOME_STATS.years}</span></p>
         <p class="mt-3 text-xs tracking-wide text-muted sm:text-sm">{t("home.statYears")}</p>
       </div>
-      <div class="border-l border-line px-3 sm:px-8">
-        <p class="stat-num">{HOME_STATS.lines}</p>
+      <div class="border-l border-line px-3 sm:px-8" data-stagger style="--stagger: 1">
+        <p class="stat-num"><span data-count={HOME_STATS.lines}>{HOME_STATS.lines}</span></p>
         <p class="mt-3 text-xs tracking-wide text-muted sm:text-sm">{t("home.statLines")}</p>
       </div>
-      <div class="border-l border-line pl-3 sm:pl-8">
+      <div class="border-l border-line pl-3 sm:pl-8" data-stagger style="--stagger: 2">
         <p class="stat-num">{HOME_STATS.thickness}</p>
         <p class="mt-3 text-xs tracking-wide text-muted sm:text-sm">{t("home.statThickness")}</p>
       </div>
@@ -112,14 +141,21 @@ const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
 </section>
 
 <!-- 4. Кейсы -->
-<section id="cases" class="section-y border-t border-line bg-paper">
+<section id="cases" class="section-y border-t border-line bg-paper" data-reveal>
   <div class="site-wrap">
-    <h2 class="t-display">{t("home.cases")}</h2>
+    <p class="home-kicker">
+      <span class="home-kicker-line" aria-hidden="true"></span>
+      {t("home.kickerCases")}
+    </p>
+    <h2 class="t-display">
+      {copy.casesHeading.before}
+      <span class="t-stroke">{copy.casesHeading.accent}</span>
+    </h2>
     <p class="t-lead">{copy.casesLead}</p>
     <div class="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-6 lg:mt-16 lg:gap-8">
       {
-        copy.cases.map((item) => (
-          <a href={videoHref} class="group block">
+        copy.cases.map((item, i) => (
+          <a href={videoHref} class="group block" data-stagger style={`--stagger: ${i}`}>
             <div class="relative aspect-[4/5] overflow-hidden bg-ink">
               <img
                 src={item.image}
@@ -132,7 +168,10 @@ const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
               />
               <div class="absolute inset-0 bg-ink/20"></div>
             </div>
-            <p class="mt-4 text-sm font-medium tracking-wide">{t(item.labelKey)}</p>
+            <p class="mt-4 text-sm font-medium tracking-wide">
+              {t(item.labelKey)}
+              <span class="link-arrow" aria-hidden="true"> →</span>
+            </p>
           </a>
         ))
       }
@@ -142,11 +181,21 @@ const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
 </section>
 
 <!-- 5. CTA -->
-<section id="quote" class="section-y bg-ink text-paper">
-  <div class="site-wrap">
+<section id="quote" class="section-y relative isolate overflow-hidden bg-ink text-paper" data-reveal>
+  <div class="cta-marquee" aria-hidden="true">
+    <div class="cta-marquee-track">
+      <span>{marquee}</span>
+      <span>{marquee}</span>
+    </div>
+  </div>
+  <div class="home-noise" aria-hidden="true"></div>
+  <div class="cta-content site-wrap">
     <div class="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-3xl">
-        <h2 class="t-display">{copy.ctaTitle}</h2>
+        <h2 class="t-display">
+          {copy.ctaHeading.before}
+          <span class="t-stroke t-stroke-on-dark">{copy.ctaHeading.accent}</span>
+        </h2>
         <p class="t-lead t-lead-on-dark">{copy.ctaLead}</p>
       </div>
       <a class="btn-accent shrink-0" href={quoteHref}>{t("cta.quote")}</a>

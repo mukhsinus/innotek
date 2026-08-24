@@ -1,0 +1,349 @@
+/* -------------------------------------------------------------------------- */
+/* Главная: движение и тёплая палитра. Не подключать на других страницах.     */
+/* -------------------------------------------------------------------------- */
+
+.is-home {
+  --color-paper: #fafaf8;
+  --color-ink: #0e0f11;
+  --color-ink-soft: #17181c;
+  --ease-home: cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #fafaf8;
+}
+
+/* 8. Полоса прогресса — под шапкой, 2px, оранжевая */
+.is-home .read-progress {
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  overflow: hidden;
+  pointer-events: none;
+  background: transparent;
+}
+
+.is-home .read-progress-bar {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+/* 7. Шапка: прячется вниз, появляется вверх */
+.is-home #site-header {
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 300ms var(--ease-home);
+}
+
+.is-home #site-header[data-overlay]:not([data-compact]):not([data-menu-open]) {
+  background: linear-gradient(to bottom, rgb(14 15 17 / 0.45), rgb(14 15 17 / 0));
+}
+
+.is-home #site-header[data-hidden] {
+  transform: translateY(-100%);
+}
+
+.is-home #site-header[data-menu-open] {
+  transform: none;
+}
+
+/* 11. CTA-кнопки: живой градиент и цветная тень */
+.is-home .btn-accent,
+.is-home .btn-on-dark {
+  background-color: transparent;
+  background-image: linear-gradient(180deg, #ff7a3d 0%, #f05a1a 100%);
+  background-size: 100% 220%;
+  background-position: 50% 0%;
+  box-shadow: 0 8px 24px rgb(255 107 44 / 0.25);
+  transition:
+    background-position 200ms var(--ease-home),
+    filter 200ms var(--ease-home),
+    box-shadow 200ms var(--ease-home),
+    transform 200ms var(--ease-home);
+}
+
+.is-home .btn-accent:hover,
+.is-home .btn-on-dark:hover {
+  background-position: 50% 100%;
+  filter: brightness(0.94);
+  box-shadow: 0 6px 18px rgb(255 107 44 / 0.32);
+}
+
+.is-home .btn-accent:active,
+.is-home .btn-on-dark:active,
+.is-home .btn-primary:active,
+.is-home .btn-header-quote:active {
+  transform: scale(0.98);
+}
+
+/* 5. Стрелки в ссылках */
+.is-home .link-arrow {
+  display: inline-block;
+  transition: transform 0.45s var(--ease-home);
+}
+
+.is-home a:hover .link-arrow {
+  transform: translateX(4px);
+}
+
+/* 13. Контурное слово-акцент */
+.is-home .t-stroke {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-ink);
+}
+
+.is-home .t-stroke-on-dark {
+  -webkit-text-stroke-color: var(--color-paper);
+}
+
+/* 14. Оверлайны секций */
+.is-home .home-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  color: var(--color-accent);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.is-home .home-kicker-line {
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* 1. Hero: построчный выезд */
+.is-home .hero-line {
+  display: block;
+  overflow: hidden;
+}
+
+.is-home .hero-line-inner {
+  display: block;
+  animation: home-hero-line 0.7s var(--ease-home) both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+.is-home .hero-lead {
+  animation: home-hero-fade 0.6s var(--ease-home) both;
+  animation-delay: 240ms;
+}
+
+.is-home .hero-actions {
+  animation: home-hero-fade 0.6s var(--ease-home) both;
+  animation-delay: 320ms;
+}
+
+@keyframes home-hero-line {
+  from {
+    opacity: 0;
+    transform: translateY(110%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes home-hero-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 6. Кен-бёрнс hero */
+.is-home .hero-photo {
+  transform: scale(1);
+  transform-origin: center center;
+  animation: home-ken 20s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes home-ken {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+/* 2. Scroll-reveal */
+.is-home [data-reveal],
+.is-home [data-stagger] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s var(--ease-home),
+    transform 0.7s var(--ease-home);
+}
+
+.is-home [data-stagger] {
+  transition-delay: calc(var(--stagger, 0) * 70ms);
+}
+
+.is-home [data-reveal].is-in,
+.is-home [data-stagger].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* 4. Bento: подпись вверх + стрелка */
+.is-home .bento-label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  transform: translateY(0);
+  transition: transform 0.55s var(--ease-home);
+}
+
+.is-home .group:hover .bento-label {
+  transform: translateY(-8px);
+}
+
+.is-home .bento-arrow {
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity 0.5s var(--ease-home),
+    transform 0.5s var(--ease-home);
+}
+
+.is-home .group:hover .bento-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.is-home .photo-grade {
+  transition:
+    transform 0.65s var(--ease-home),
+    filter 0.65s var(--ease-home);
+}
+
+.is-home .photo-veil {
+  background: linear-gradient(to top, rgb(14 15 17 / 0.72) 0%, rgb(14 15 17 / 0.12) 42%, transparent 68%);
+}
+
+/* 12. Noise на тёмных секциях */
+.is-home .home-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* 9. Marquee в CTA */
+.is-home .cta-marquee {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.08;
+  display: flex;
+  align-items: center;
+}
+
+.is-home .cta-marquee-track {
+  display: flex;
+  white-space: nowrap;
+  font-size: clamp(4.5rem, 14vw, 11rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-paper);
+  animation: home-marquee 48s linear infinite;
+}
+
+.is-home .cta-marquee-track span {
+  padding-right: 0.35em;
+}
+
+@keyframes home-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.is-home .cta-content {
+  position: relative;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-home .hero-line-inner,
+  .is-home .hero-lead,
+  .is-home .hero-actions,
+  .is-home .hero-photo,
+  .is-home .cta-marquee-track {
+    animation: none !important;
+  }
+
+  .is-home .hero-line-inner,
+  .is-home .hero-lead,
+  .is-home .hero-actions,
+  .is-home [data-reveal],
+  .is-home [data-stagger] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .is-home .hero-photo {
+    transform: none;
+  }
+
+  .is-home #site-header,
+  .is-home #site-header[data-hidden] {
+    transform: none !important;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  }
+
+  .is-home .btn-accent,
+  .is-home .btn-on-dark,
+  .is-home .link-arrow,
+  .is-home .bento-label,
+  .is-home .bento-arrow,
+  .is-home .photo-grade {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .is-home .cta-marquee {
+    display: none;
+  }
+}
+
+@media (scripting: none) {
+  .is-home [data-reveal],
+  .is-home [data-stagger] {
+    opacity: 1;
+    transform: none;
+  }
+}
