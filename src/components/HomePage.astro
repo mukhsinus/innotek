@@ -13,66 +13,75 @@ const t = useT(lang);
 const copy = HOME[lang];
 const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
 const catalogHref = hrefFor(lang, "/catalog/");
+const videoHref = hrefFor(lang, "/video/");
 const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
 ---
 
-<!-- Hero -->
+<!-- 1. Hero -->
 <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink text-paper">
   <img
     src={copy.heroImage}
-    alt={copy.h1}
+    alt=""
     class="absolute inset-0 h-full w-full object-cover"
     width="1600"
     height="1000"
     fetchpriority="high"
     decoding="async"
   />
-  <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-ink/35"></div>
-  <div class="site-wrap relative z-10 pt-32 pb-16 lg:pb-24">
-    <div class="max-w-4xl">
-      <h1 class="text-4xl leading-[1.05] font-extrabold tracking-tight sm:text-6xl lg:text-7xl">
-        {copy.h1}
-      </h1>
-      <p class="mt-6 max-w-2xl text-lg text-muted-on-ink sm:text-xl">{copy.heroLead}</p>
-      <div class="mt-10 flex flex-wrap gap-3">
-        <a class="btn-on-dark" href={catalogHref}>{t("cta.catalog")}</a>
-        <a class="btn-ghost border-paper text-paper" href={quoteHref}>{t("cta.quote")}</a>
+  <div class="absolute inset-0 bg-ink/25"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-transparent"></div>
+  <div class="site-wrap relative z-10 pt-36 pb-16 lg:pb-24">
+    <div class="max-w-5xl">
+      <h1 class="t-display whitespace-pre-line">{copy.h1}</h1>
+      <p class="t-lead t-lead-on-dark">{copy.heroLead}</p>
+      <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <a class="btn-accent" href={quoteHref}>{t("cta.quote")}</a>
+        <a class="text-link text-link-on-dark" href={catalogHref}>
+          {t("cta.catalog")}
+          <span aria-hidden="true">→</span>
+        </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Bento каталога -->
-<section class="bg-paper py-20 lg:py-28" data-reveal>
+<!-- 2. Каталог -->
+<section id="catalog" class="section-y bg-paper">
   <div class="site-wrap">
-    <p class="text-xs font-bold tracking-[0.18em] text-accent-ink uppercase">{t("home.catalogEyebrow")}</p>
-    <p class="mt-4 max-w-2xl text-lg text-muted">{copy.catalogIntro}</p>
-    <div class="site-grid mt-12">
+    <h2 class="t-display">{t("nav.catalog")}</h2>
+    <p class="t-lead">{copy.catalogLead}</p>
+    <div class="site-grid mt-12 lg:mt-16">
       {
         copy.categories.map((cat) => (
           <a
             href={hrefFor(lang, cat.path)}
             class:list={[
-              "group relative isolate flex min-h-56 flex-col justify-end overflow-hidden rounded-sm bg-ink p-5 text-paper lg:min-h-64",
-              cat.featured ? "col-span-4 lg:col-span-8 lg:min-h-[28rem]" : "col-span-4 lg:col-span-4",
-              !cat.featured && cat.path === "/catalog/oborudovanie/" && "lg:col-span-6",
-              !cat.featured && cat.path === "/catalog/roliki/" && "lg:col-span-6",
+              "group relative isolate flex min-h-52 flex-col justify-end overflow-hidden bg-ink p-5 text-paper lg:min-h-64 lg:p-6",
+              cat.featured
+                ? "col-span-4 lg:col-span-8 lg:min-h-[32rem]"
+                : cat.path === "/catalog/oborudovanie/" || cat.path === "/catalog/roliki/"
+                  ? "col-span-4 lg:col-span-6"
+                  : "col-span-4 lg:col-span-4",
             ]}
           >
             <img
               src={cat.image}
-              alt={t(cat.labelKey)}
-              class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              alt=""
+              class="photo-grade absolute inset-0 h-full w-full object-cover"
               width="800"
               height="600"
               loading="lazy"
               decoding="async"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"></div>
-            <div class="relative">
-              <h2 class="text-xl font-extrabold tracking-tight sm:text-2xl">{t(cat.labelKey)}</h2>
-              <p class="mt-1 text-sm text-muted-on-ink">{cat.lead}</p>
-            </div>
+            <div class="photo-veil absolute inset-0"></div>
+            <h3
+              class:list={[
+                "relative font-medium tracking-[-0.02em]",
+                cat.featured ? "text-2xl lg:text-4xl" : "text-lg lg:text-xl",
+              ]}
+            >
+              {t(cat.labelKey)}
+            </h3>
           </a>
         ))
       }
@@ -80,109 +89,80 @@ const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
   </div>
 </section>
 
-<!-- Производство -->
-<section class="bg-ink py-20 text-paper lg:py-28" data-reveal>
-  <div class="site-wrap site-grid items-end">
-    <div class="col-span-4 lg:col-span-6">
-      <p class="text-xs font-bold tracking-[0.18em] text-accent uppercase">{t("home.productionEyebrow")}</p>
-      <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">{copy.productionTitle}</h2>
-      <p class="mt-6 max-w-xl text-muted-on-ink">{copy.productionLead}</p>
-      <p class="mt-6 max-w-xl text-sm text-muted-on-ink">{copy.aboutLead}</p>
-      <a class="btn-on-dark mt-8" href={hrefFor(lang, "/about/")}>{t("cta.about")}</a>
-    </div>
-    <div class="col-span-4 mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3 lg:col-span-6 lg:mt-0">
-      <div>
-        <p class="text-5xl font-extrabold tracking-tight text-accent sm:text-6xl">
-          <span data-count={HOME_STATS.years}>0</span>
-        </p>
-        <p class="mt-2 text-sm text-muted-on-ink">{t("home.statYears")}</p>
-      </div>
-      <div>
-        <p class="text-5xl font-extrabold tracking-tight text-accent sm:text-6xl">
-          <span data-count={HOME_STATS.lines}>0</span>
-        </p>
-        <p class="mt-2 text-sm text-muted-on-ink">{t("home.statLines")}</p>
-      </div>
-      <div>
-        <p class="text-5xl font-extrabold tracking-tight text-accent sm:text-6xl">{copy.thickness}</p>
-        <p class="mt-2 text-sm text-muted-on-ink">{t("home.statThickness")}</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Услуги -->
-<section class="bg-fog py-20 lg:py-28" data-reveal>
+<!-- 3. Производство -->
+<section id="production" class="section-y border-t border-line bg-paper">
   <div class="site-wrap">
-    <p class="text-xs font-bold tracking-[0.18em] text-accent-ink uppercase">{t("home.servicesEyebrow")}</p>
-    <div class="site-grid mt-10">
+    <h2 class="t-display">{copy.productionTitle}</h2>
+    <p class="t-lead">{copy.productionLead}</p>
+    <div class="mt-16 grid grid-cols-3 lg:mt-24">
+      <div class="pr-3 sm:pr-8">
+        <p class="stat-num">{HOME_STATS.years}</p>
+        <p class="mt-3 text-xs tracking-wide text-muted sm:text-sm">{t("home.statYears")}</p>
+      </div>
+      <div class="border-l border-line px-3 sm:px-8">
+        <p class="stat-num">{HOME_STATS.lines}</p>
+        <p class="mt-3 text-xs tracking-wide text-muted sm:text-sm">{t("home.statLines")}</p>
+      </div>
+      <div class="border-l border-line pl-3 sm:pl-8">
+        <p class="stat-num">{HOME_STATS.thickness}</p>
+        <p class="mt-3 text-xs tracking-wide text-muted sm:text-sm">{t("home.statThickness")}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Кейсы -->
+<section id="cases" class="section-y border-t border-line bg-paper">
+  <div class="site-wrap">
+    <h2 class="t-display">{t("home.cases")}</h2>
+    <p class="t-lead">{copy.casesLead}</p>
+    <div class="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-6 lg:mt-16 lg:gap-8">
       {
-        copy.services.map((item) => (
-          <a
-            href={hrefFor(lang, item.path)}
-            class="col-span-4 rounded-sm border border-line bg-paper p-6 transition-transform duration-300 hover:-translate-y-1 lg:col-span-6"
-          >
-            <h2 class="text-xl font-extrabold">{t(item.labelKey)}</h2>
-            <p class="mt-3 text-sm leading-relaxed text-muted">{item.lead}</p>
-            <span class="mt-5 inline-block text-sm font-semibold text-accent-ink">{t("home.more")}</span>
+        copy.cases.map((item) => (
+          <a href={videoHref} class="group block">
+            <div class="relative aspect-[4/5] overflow-hidden bg-ink">
+              <img
+                src={item.image}
+                alt=""
+                class="photo-grade absolute inset-0 h-full w-full object-cover"
+                width="800"
+                height="1000"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="absolute inset-0 bg-ink/20"></div>
+            </div>
+            <p class="mt-4 text-sm font-medium tracking-wide">{t(item.labelKey)}</p>
           </a>
         ))
       }
     </div>
+    <a class="btn-accent mt-12 lg:mt-16" href={videoHref}>{t("cta.video")}</a>
   </div>
 </section>
 
-<!-- Видеокейсы: в content/ нет URL роликов — только текст-тизер. -->
-<section class="bg-paper py-20 lg:py-28" data-reveal>
-  <div class="site-wrap max-w-3xl">
-    <p class="text-xs font-bold tracking-[0.18em] text-accent-ink uppercase">{t("home.videoEyebrow")}</p>
-    <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">{t("nav.video")}</h2>
-    <p class="mt-5 text-lg text-muted">{copy.videoLead}</p>
-    <a class="btn-primary mt-8" href={hrefFor(lang, "/video/")}>{t("cta.video")}</a>
-  </div>
-</section>
-
-<!-- Карта + финальный CTA -->
-<section class="bg-fog py-20 lg:py-28" data-reveal>
-  <div class="site-wrap site-grid items-center">
-    <div class="col-span-4 lg:col-span-5">
-      <p class="text-xs font-bold tracking-[0.18em] text-accent-ink uppercase">{t("home.mapEyebrow")}</p>
-      <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">{copy.ctaTitle}</h2>
-      <p class="mt-5 text-muted">{copy.ctaLead}</p>
-      <p class="mt-6 text-sm">
-        <a class="font-semibold hover:text-accent-ink" href={SITE.mapsUrl} target="_blank" rel="noopener noreferrer">
-          {address}
-        </a>
-      </p>
-      <p class="mt-2">
-        <a class="text-lg font-extrabold hover:text-accent-ink" href={`tel:${SITE.phone.tel}`}>
-          {SITE.phone.display}
-        </a>
-      </p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a class="btn-primary" href={quoteHref}>{t("cta.quote")}</a>
-        <a class="btn-ghost border-ink" href={SITE.mapsUrl} target="_blank" rel="noopener noreferrer">
-          {t("cta.map")}
-        </a>
+<!-- 5. CTA -->
+<section id="quote" class="section-y bg-ink text-paper">
+  <div class="site-wrap">
+    <div class="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+      <div class="max-w-3xl">
+        <h2 class="t-display">{copy.ctaTitle}</h2>
+        <p class="t-lead t-lead-on-dark">{copy.ctaLead}</p>
       </div>
+      <a class="btn-accent shrink-0" href={quoteHref}>{t("cta.quote")}</a>
     </div>
-    <div class="col-span-4 mt-10 lg:col-span-7 lg:mt-0">
+    <div class="mt-20 flex flex-col gap-6 text-sm text-muted-on-ink sm:mt-28 sm:flex-row sm:flex-wrap sm:gap-x-16 sm:gap-y-4">
+      <p>{address}</p>
       <a
+        class="text-paper underline decoration-accent decoration-1 underline-offset-4 transition-opacity hover:opacity-70"
         href={SITE.mapsUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="block overflow-hidden rounded-sm border border-line bg-line"
-        aria-label={t("cta.map")}
       >
-        <img
-          src={SITE.mapsImage}
-          alt={address}
-          class="h-72 w-full object-cover lg:h-[28rem]"
-          width="1200"
-          height="640"
-          loading="lazy"
-          decoding="async"
-        />
+        {t("cta.map")}
+      </a>
+      <a class="text-paper transition-colors hover:text-accent" href={`tel:${SITE.phone.tel}`}>
+        {SITE.phone.display}
       </a>
     </div>
   </div>

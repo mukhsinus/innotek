@@ -1,6 +1,6 @@
 ---
 import Logo from "./Logo.astro";
-import { catalogNav, primaryNav, servicesNav } from "../data/navigation";
+import { catalogNav, primaryNav } from "../data/navigation";
 import { SITE } from "../data/site";
 import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
@@ -13,43 +13,25 @@ const { lang } = Astro.props;
 const t = useT(lang);
 const year = new Date().getFullYear();
 const homeHref = hrefFor(lang, "/");
+const companyLinks = primaryNav.filter((i) => i.path !== "/catalog/");
 ---
 
-<footer class="bg-ink text-paper">
-  <div class="site-wrap site-grid py-16 lg:py-20">
-    <div class="col-span-4 lg:col-span-4">
+<footer class="border-t border-line bg-paper text-ink">
+  <div class="site-wrap grid grid-cols-4 gap-x-8 gap-y-12 py-14 text-[0.8125rem] leading-6 lg:grid-cols-12 lg:py-16">
+    <div class="col-span-4 lg:col-span-3">
       <a href={homeHref} class="inline-flex items-center gap-2.5" aria-label={SITE.name}>
-        <Logo class="h-8 w-8 text-paper" />
-        <span class="text-sm font-extrabold tracking-[0.16em]">INNOTEK</span>
+        <Logo class="h-7 w-7" />
+        <span class="text-xs font-semibold tracking-[0.16em]">INNOTEK</span>
       </a>
-      <p class="mt-5 max-w-sm text-sm leading-relaxed text-muted-on-ink">
-        {t("footer.copyright")}
-      </p>
-      <!-- TODO: режим работы — в content/ нет подтверждённого графика, добавим позже. -->
     </div>
 
-    <div class="col-span-4 md:col-span-4 lg:col-span-3">
-      <p class="text-xs font-bold tracking-[0.14em] uppercase">{t("footer.products")}</p>
-      <ul class="mt-4 space-y-2 text-sm text-muted-on-ink">
+    <div class="col-span-4 md:col-span-2 lg:col-span-3">
+      <p class="text-[0.7rem] tracking-[0.12em] text-muted uppercase">{t("footer.products")}</p>
+      <ul class="mt-4 space-y-2 text-muted">
         {
           catalogNav.map((item) => (
             <li>
-              <a class="hover:text-paper" href={hrefFor(lang, item.path)}>
-                {t(item.labelKey)}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-
-    <div class="col-span-4 md:col-span-2 lg:col-span-2">
-      <p class="text-xs font-bold tracking-[0.14em] uppercase">{t("footer.company")}</p>
-      <ul class="mt-4 space-y-2 text-sm text-muted-on-ink">
-        {
-          [...primaryNav.filter((i) => i.path !== "/catalog/"), ...servicesNav].map((item) => (
-            <li>
-              <a class="hover:text-paper" href={hrefFor(lang, item.path)}>
+              <a class="hover:text-ink" href={hrefFor(lang, item.path)}>
                 {t(item.labelKey)}
               </a>
             </li>
@@ -59,43 +41,33 @@ const homeHref = hrefFor(lang, "/");
     </div>
 
     <div class="col-span-4 md:col-span-2 lg:col-span-3">
-      <p class="text-xs font-bold tracking-[0.14em] uppercase">{t("footer.contacts")}</p>
-      <ul class="mt-4 space-y-3 text-sm">
-        <li>
-          <span class="block text-xs text-muted-on-ink">{t("footer.phone")}</span>
-          <a class="hover:text-accent" href={`tel:${SITE.phone.tel}`}>{SITE.phone.display}</a>
-          <ul class="mt-1 space-y-1 text-muted-on-ink">
-            {
-              SITE.mobiles.map((m) => (
-                <li>
-                  <a class="hover:text-paper" href={`tel:${m.tel}`}>
-                    {m.display}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </li>
-        <li>
-          <span class="block text-xs text-muted-on-ink">{t("footer.email")}</span>
-          <a class="hover:text-accent" href={`mailto:${SITE.email}`}>{SITE.email}</a>
-        </li>
-        <li>
-          <span class="block text-xs text-muted-on-ink">{t("footer.address")}</span>
-          <a class="hover:text-accent" href={SITE.mapsUrl} target="_blank" rel="noopener noreferrer">
-            {lang === "uz" ? SITE.address.uz : SITE.address.ru}
-          </a>
-        </li>
+      <p class="text-[0.7rem] tracking-[0.12em] text-muted uppercase">{t("footer.company")}</p>
+      <ul class="mt-4 space-y-2 text-muted">
+        {
+          companyLinks.map((item) => (
+            <li>
+              <a class="hover:text-ink" href={hrefFor(lang, item.path)}>
+                {t(item.labelKey)}
+              </a>
+            </li>
+          ))
+        }
       </ul>
-      <p class="mt-6 text-xs font-bold tracking-[0.14em] text-muted-on-ink uppercase">{t("footer.social")}</p>
-      <ul class="mt-3 flex flex-wrap gap-3 text-sm font-semibold">
-        <li><a class="hover:text-accent" href={SITE.socials.facebook} target="_blank" rel="noopener noreferrer">Facebook</a></li>
-        <li><a class="hover:text-accent" href={SITE.socials.instagram} target="_blank" rel="noopener noreferrer">Instagram</a></li>
-        <li><a class="hover:text-accent" href={SITE.socials.telegram} target="_blank" rel="noopener noreferrer">Telegram</a></li>
+    </div>
+
+    <div class="col-span-4 lg:col-span-3">
+      <p class="text-[0.7rem] tracking-[0.12em] text-muted uppercase">{t("footer.contacts")}</p>
+      <ul class="mt-4 space-y-2">
+        <li>
+          <a class="hover:text-accent-ink" href={`tel:${SITE.phone.tel}`}>{SITE.phone.display}</a>
+        </li>
+        <li>
+          <a class="hover:text-accent-ink" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </li>
       </ul>
     </div>
   </div>
-  <div class="border-t border-white/10">
-    <p class="site-wrap py-5 text-xs text-muted-on-ink">© {year} {SITE.legalName}</p>
+  <div class="border-t border-line">
+    <p class="site-wrap py-4 text-[0.7rem] text-muted">© {year} {SITE.legalName}</p>
   </div>
 </footer>

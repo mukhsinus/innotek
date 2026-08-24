@@ -36,19 +36,19 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
 >
   <div class="header-inner site-wrap flex items-center justify-between gap-4 py-4 lg:py-5">
     <a href={homeHref} class="flex shrink-0 items-center gap-2.5" aria-label={SITE.name}>
-      <Logo class="h-8 w-8" />
-      <span class="text-[0.95rem] font-extrabold tracking-[0.16em]">INNOTEK</span>
+      <Logo class="h-7 w-7" />
+      <span class="text-[0.8125rem] font-semibold tracking-[0.18em]">INNOTEK</span>
     </a>
 
     <nav class="hidden lg:block" aria-label="Primary">
-      <ul class="flex items-center gap-1 text-sm font-semibold">
+      <ul class="flex items-center text-[0.8125rem] font-medium">
         {
           primaryNav.map((item) => (
             <li class:list={["group/item", item.path === "/catalog/" ? "static" : "relative"]}>
               <a
                 href={link(item)}
                 class:list={[
-                  "inline-flex items-center gap-1 rounded-sm px-3 py-2 opacity-80 transition-opacity hover:opacity-100",
+                  "inline-flex items-center gap-1 px-3 py-2 opacity-70 transition-opacity hover:opacity-100",
                   isActive(item.path) && "opacity-100",
                 ]}
                 aria-current={isActive(item.path) ? "page" : undefined}
@@ -56,25 +56,25 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
               >
                 {t(item.labelKey)}
                 {item.children && (
-                  <svg class="h-3.5 w-3.5 opacity-70" viewBox="0 0 12 12" aria-hidden="true">
+                  <svg class="h-3 w-3 opacity-70" viewBox="0 0 12 12" aria-hidden="true">
                     <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.4"></path>
                   </svg>
                 )}
               </a>
 
               {item.path === "/catalog/" && item.children && (
-                <div class="invisible absolute top-full right-0 left-0 z-50 pt-3 opacity-0 transition group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100">
-                  <div class="site-wrap">
-                    <div class="rounded-sm border border-line bg-paper p-6 text-ink shadow-[var(--shadow-header)]">
+                <div class="invisible absolute top-full right-0 left-0 z-50 pt-2 opacity-0 transition group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100">
+                  <div class="border-t border-line bg-paper text-ink">
+                    <div class="site-wrap py-10">
                       <div class="site-grid">
                         {
                           catalogNav.map((cat) => (
                             <div class="col-span-4 lg:col-span-3">
-                              <a href={link(cat)} class="text-xs font-bold tracking-[0.12em] uppercase hover:text-accent-ink">
+                              <a href={link(cat)} class="text-sm font-medium hover:text-accent-ink">
                                 {t(cat.labelKey)}
                               </a>
                               {cat.children && (
-                                <ul class="mt-3 space-y-1.5 text-sm font-medium text-muted">
+                                <ul class="mt-3 space-y-1.5 text-sm text-muted">
                                   {cat.children.map((child) => (
                                     <li>
                                       <a class="hover:text-ink" href={link(child)}>
@@ -94,11 +94,11 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
               )}
 
               {item.path === "/services/" && (
-                <div class="invisible absolute top-full left-0 z-50 min-w-56 pt-3 opacity-0 transition group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100">
-                  <ul class="rounded-sm border border-line bg-paper py-2 text-ink shadow-[var(--shadow-header)]">
+                <div class="invisible absolute top-full left-0 z-50 min-w-52 pt-2 opacity-0 transition group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100">
+                  <ul class="border-t border-line bg-paper py-3 text-ink">
                     {servicesNav.map((child) => (
                       <li>
-                        <a class="block px-4 py-2 text-sm font-medium hover:bg-fog" href={link(child)}>
+                        <a class="block px-4 py-2 text-sm hover:text-accent-ink" href={link(child)}>
                           {t(child.labelKey)}
                         </a>
                       </li>
@@ -112,17 +112,10 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
       </ul>
     </nav>
 
-    <div class="flex items-center gap-3 sm:gap-4">
+    <div class="flex items-center gap-3">
       <a
-        class="hidden text-sm font-semibold tracking-wide sm:inline-flex"
+        class="hidden text-[0.8125rem] font-medium tracking-wide min-[1281px]:inline-flex"
         href={`tel:${SITE.phone.tel}`}
-      >
-        {SITE.phone.display}
-      </a>
-      <a
-        class="inline-flex text-sm font-semibold sm:hidden"
-        href={`tel:${SITE.phone.tel}`}
-        aria-label={SITE.phone.display}
       >
         {SITE.phone.display}
       </a>
@@ -131,7 +124,7 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
       <button
         id="menu-btn"
         type="button"
-        class="inline-flex h-10 w-10 items-center justify-center rounded-sm lg:hidden"
+        class="inline-flex h-10 w-10 items-center justify-center lg:hidden"
         aria-expanded="false"
         aria-controls="mobile-nav"
         aria-label={t("menu.open")}
@@ -145,7 +138,7 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
 
   <div id="mobile-nav" class="hidden border-t border-line bg-paper text-ink lg:hidden" hidden>
     <nav class="site-wrap max-h-[min(80vh,40rem)] overflow-y-auto py-4" aria-label="Mobile">
-      <a class="btn-primary mb-4 w-full" href={quoteHref}>{t("cta.quote")}</a>
+      <a class="btn-primary mb-6 w-full" href={quoteHref}>{t("cta.quote")}</a>
       {
         primaryNav.map((item) =>
           item.children ? (
