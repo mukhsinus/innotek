@@ -1,0 +1,67 @@
+---
+import QuoteBand from "../../../components/QuoteBand.astro";
+import SectionMeta from "../../../components/SectionMeta.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { SERVICE_PAINT } from "../../../data/examples";
+import { hrefFor, useT } from "../../../i18n/utils";
+
+const lang = "ru" as const;
+const t = useT(lang);
+const page = SERVICE_PAINT;
+const TOTAL = 3;
+---
+
+<BaseLayout title={page.title} description={page.description}>
+  <article>
+    <header class="page-head bg-paper" data-reveal>
+      <div class="site-wrap">
+        <SectionMeta kicker={page.kicker} index={1} total={TOTAL} />
+        <h1 class="t-display">{page.h1}</h1>
+        <p class="t-lead">{page.lead}</p>
+      </div>
+    </header>
+
+    <section class="bg-paper pb-0" data-reveal>
+      <div class="site-wrap">
+        <div class="relative aspect-[16/9] overflow-hidden bg-ink lg:aspect-[16/7]">
+          <img
+            src={page.image}
+            alt=""
+            class="photo-grade absolute inset-0 h-full w-full object-cover"
+            width="1400"
+            height="700"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="section-y bg-paper" data-reveal>
+      <div class="site-wrap grid gap-16 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <SectionMeta kicker="Как работаем" index={2} total={TOTAL} />
+          <p class="max-w-xl text-lg leading-relaxed text-muted">{page.body}</p>
+        </div>
+        <div class="lg:col-span-4 lg:col-start-9">
+          <p class="t-overline mb-6">Ещё услуги</p>
+          <ul class="spec-list">
+            {
+              page.related.map((item, i) => (
+                <li class="spec-row">
+                  <p class="spec-key">{String(i + 1).padStart(2, "0")}</p>
+                  <a class="text-link" href={hrefFor(lang, item.path)}>
+                    {t(item.labelKey)}
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <QuoteBand lang={lang} index={3} total={TOTAL} />
+  </article>
+</BaseLayout>

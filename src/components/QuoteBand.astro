@@ -1,0 +1,49 @@
+---
+import SectionMeta from "./SectionMeta.astro";
+import { HOME } from "../data/home";
+import { SITE } from "../data/site";
+import type { Lang } from "../i18n/ui";
+import { hrefFor, useT } from "../i18n/utils";
+
+interface Props {
+  lang: Lang;
+  index: number;
+  total: number;
+}
+
+const { lang, index, total } = Astro.props;
+const t = useT(lang);
+const copy = HOME[lang];
+const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
+const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
+---
+
+<section class="section-y relative isolate overflow-hidden bg-ink text-paper" data-reveal>
+  <div class="site-wrap">
+    <SectionMeta kicker={t("home.kickerCta")} index={index} total={total} tone="dark" />
+    <div class="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+      <div class="max-w-3xl">
+        <h2 class="t-display">
+          {copy.ctaHeading.before}
+          <span class="t-stroke t-stroke-on-dark">{copy.ctaHeading.accent}</span>
+        </h2>
+        <p class="t-lead t-lead-on-dark">{copy.ctaLead}</p>
+      </div>
+      <a class="btn-accent shrink-0" href={quoteHref}>{t("cta.quote")}</a>
+    </div>
+    <div class="mt-20 flex flex-col gap-6 text-sm text-muted-on-ink sm:mt-28 sm:flex-row sm:flex-wrap sm:gap-x-16 sm:gap-y-4">
+      <p>{address}</p>
+      <a
+        class="text-paper underline decoration-accent decoration-1 underline-offset-4 transition-opacity hover:opacity-70"
+        href={SITE.mapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {t("cta.map")}
+      </a>
+      <a class="text-paper transition-colors hover:text-accent" href={`tel:${SITE.phone.tel}`}>
+        {SITE.phone.display}
+      </a>
+    </div>
+  </div>
+</section>

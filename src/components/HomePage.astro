@@ -1,5 +1,6 @@
 ---
 import "../styles/home.css";
+import SectionMeta from "./SectionMeta.astro";
 import { HOME, HOME_STATS } from "../data/home";
 import { SITE } from "../data/site";
 import type { Lang } from "../i18n/ui";
@@ -18,9 +19,11 @@ const videoHref = hrefFor(lang, "/video/");
 const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
 const heroLines = copy.h1.split("\n");
 const marquee = copy.marquee.repeat(4);
+const pad = (n: number) => String(n).padStart(2, "0");
+const SECTIONS = 5;
 ---
 
-<!-- 1. Hero -->
+<!-- 01 Hero -->
 <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink text-paper">
   <img
     src={copy.heroImage}
@@ -34,7 +37,8 @@ const marquee = copy.marquee.repeat(4);
   <div class="absolute inset-0 z-[1] bg-ink/25"></div>
   <div class="absolute inset-0 z-[1] bg-gradient-to-t from-ink via-ink/50 to-transparent"></div>
   <div class="home-noise" aria-hidden="true"></div>
-  <div class="site-wrap relative z-10 pt-36 pb-16 lg:pb-24">
+  <div class="site-wrap relative z-10 pt-36 pb-20 lg:pb-24">
+    <p class="t-overline t-overline-on-dark mb-6">01 / {pad(SECTIONS)}</p>
     <div class="max-w-5xl">
       <h1 class="t-display">
         {
@@ -55,15 +59,16 @@ const marquee = copy.marquee.repeat(4);
       </div>
     </div>
   </div>
+  <p class="hero-stick">{t("home.heroStick")}</p>
+  <div class="hero-scroll" aria-hidden="true">
+    <span class="hero-scroll-line"></span>
+  </div>
 </section>
 
-<!-- 2. Каталог -->
+<!-- 02 Каталог -->
 <section id="catalog" class="section-y bg-paper" data-reveal>
   <div class="site-wrap">
-    <p class="home-kicker">
-      <span class="home-kicker-line" aria-hidden="true"></span>
-      {t("home.kickerCatalog")}
-    </p>
+    <SectionMeta kicker={t("home.kickerCatalog")} index={2} total={SECTIONS} />
     <h2 class="t-display">
       {copy.catalogHeading.before}
       <span class="t-stroke">{copy.catalogHeading.accent}</span>
@@ -85,19 +90,22 @@ const marquee = copy.marquee.repeat(4);
                   : "col-span-4 lg:col-span-4",
             ]}
           >
-            <img
-              src={cat.image}
-              alt=""
-              class="photo-grade absolute inset-0 h-full w-full object-cover"
-              width="800"
-              height="600"
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="photo-veil absolute inset-0"></div>
+            <span class="bento-media" data-parallax>
+              <img
+                src={cat.image}
+                alt=""
+                class="photo-grade"
+                width="800"
+                height="600"
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
+            <div class="photo-veil absolute inset-0 z-[1]"></div>
+            <span class="bento-num">{pad(i + 1)}</span>
             <h3
               class:list={[
-                "bento-label relative font-medium tracking-[-0.02em]",
+                "bento-label relative z-[2] font-medium tracking-[-0.02em]",
                 cat.featured ? "text-2xl lg:text-4xl" : "text-lg lg:text-xl",
               ]}
             >
@@ -111,42 +119,36 @@ const marquee = copy.marquee.repeat(4);
   </div>
 </section>
 
-<!-- 3. Производство -->
-<section id="production" class="section-y border-t border-line bg-paper" data-reveal>
+<!-- 03 Производство -->
+<section id="production" class="section-y bg-paper" data-reveal>
   <div class="site-wrap">
-    <p class="home-kicker">
-      <span class="home-kicker-line" aria-hidden="true"></span>
-      {t("home.kickerProduction")}
-    </p>
+    <SectionMeta kicker={t("home.kickerProduction")} index={3} total={SECTIONS} />
     <h2 class="t-display">
       {copy.productionHeading.before}
       <span class="t-stroke">{copy.productionHeading.accent}</span>
     </h2>
     <p class="t-lead">{copy.productionLead}</p>
-    <div class="mt-16 grid grid-cols-3 lg:mt-24">
-      <div class="pr-3 sm:pr-8" data-stagger style="--stagger: 0">
+    <div class="stats-row mt-16 lg:mt-24">
+      <div class="stat" data-stagger style="--stagger: 0">
         <p class="stat-num"><span data-count={HOME_STATS.years}>{HOME_STATS.years}</span></p>
-        <p class="mt-3 text-xs tracking-wide text-muted sm:text-sm">{t("home.statYears")}</p>
+        <p class="stat-cap">{t("home.statYears")}</p>
       </div>
-      <div class="border-l border-line px-3 sm:px-8" data-stagger style="--stagger: 1">
+      <div class="stat" data-stagger style="--stagger: 1">
         <p class="stat-num"><span data-count={HOME_STATS.lines}>{HOME_STATS.lines}</span></p>
-        <p class="mt-3 text-xs tracking-wide text-muted sm:text-sm">{t("home.statLines")}</p>
+        <p class="stat-cap">{t("home.statLines")}</p>
       </div>
-      <div class="border-l border-line pl-3 sm:pl-8" data-stagger style="--stagger: 2">
-        <p class="stat-num">{HOME_STATS.thickness}</p>
-        <p class="mt-3 text-xs tracking-wide text-muted sm:text-sm">{t("home.statThickness")}</p>
+      <div class="stat" data-stagger style="--stagger: 2">
+        <p class="stat-num stat-num-long">{HOME_STATS.thickness}</p>
+        <p class="stat-cap">{t("home.statThickness")}</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 4. Кейсы -->
-<section id="cases" class="section-y border-t border-line bg-paper" data-reveal>
+<!-- 04 Кейсы -->
+<section id="cases" class="section-y bg-paper" data-reveal>
   <div class="site-wrap">
-    <p class="home-kicker">
-      <span class="home-kicker-line" aria-hidden="true"></span>
-      {t("home.kickerCases")}
-    </p>
+    <SectionMeta kicker={t("home.kickerCases")} index={4} total={SECTIONS} />
     <h2 class="t-display">
       {copy.casesHeading.before}
       <span class="t-stroke">{copy.casesHeading.accent}</span>
@@ -180,7 +182,7 @@ const marquee = copy.marquee.repeat(4);
   </div>
 </section>
 
-<!-- 5. CTA -->
+<!-- 05 CTA -->
 <section id="quote" class="section-y relative isolate overflow-hidden bg-ink text-paper" data-reveal>
   <div class="cta-marquee" aria-hidden="true">
     <div class="cta-marquee-track">
@@ -190,6 +192,7 @@ const marquee = copy.marquee.repeat(4);
   </div>
   <div class="home-noise" aria-hidden="true"></div>
   <div class="cta-content site-wrap">
+    <SectionMeta kicker={t("home.kickerCta")} index={5} total={SECTIONS} tone="dark" />
     <div class="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
       <div class="max-w-3xl">
         <h2 class="t-display">

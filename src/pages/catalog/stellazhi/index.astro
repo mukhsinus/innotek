@@ -1,0 +1,92 @@
+---
+import QuoteBand from "../../../components/QuoteBand.astro";
+import SectionMeta from "../../../components/SectionMeta.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { RACKS_CATEGORY } from "../../../data/examples";
+import { hrefFor, useT } from "../../../i18n/utils";
+
+const lang = "ru" as const;
+const t = useT(lang);
+const page = RACKS_CATEGORY;
+const pad = (n: number) => String(n).padStart(2, "0");
+const TOTAL = 4;
+---
+
+<BaseLayout title={page.title} description={page.description}>
+  <article>
+    <header class="page-head bg-paper" data-reveal>
+      <div class="site-wrap">
+        <SectionMeta kicker={page.kicker} index={1} total={TOTAL} />
+        <h1 class="t-display">{page.h1}</h1>
+        <p class="t-lead">{page.lead}</p>
+      </div>
+    </header>
+
+    <section class="section-y bg-paper" data-reveal>
+      <div class="site-wrap">
+        <SectionMeta kicker="Линейка" index={2} total={TOTAL} />
+        <div class="site-grid">
+          {
+            page.products.map((item, i) => (
+              <a
+                href={hrefFor(lang, item.path)}
+                data-stagger
+                class:list={[
+                  "group col-span-4 block",
+                  i === 0 ? "lg:col-span-8" : "lg:col-span-4",
+                ]}
+              >
+                <div
+                  class:list={[
+                    "relative overflow-hidden bg-ink",
+                    i === 0 ? "aspect-[16/10] lg:aspect-[16/9]" : "aspect-[4/5]",
+                  ]}
+                >
+                  <span class="bento-media" data-parallax>
+                    <img
+                      src={item.image}
+                      alt=""
+                      class="photo-grade"
+                      width="800"
+                      height="600"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      decoding="async"
+                    />
+                  </span>
+                  <span class="bento-num">{pad(i + 1)}</span>
+                </div>
+                <h2 class="mt-4 text-lg font-medium tracking-[-0.02em] lg:text-xl">
+                  {t(item.labelKey)}
+                  <span class="link-arrow" aria-hidden="true"> →</span>
+                </h2>
+                <p class="mt-1.5 text-sm text-muted">{item.excerpt}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <QuoteBand lang={lang} index={3} total={TOTAL} />
+
+    <section class="section-y bg-paper" data-reveal>
+      <div class="site-wrap">
+        <SectionMeta kicker={page.seo.kicker} index={4} total={TOTAL} />
+        <h2 class="t-display">{page.seo.heading}</h2>
+        <div class="seo-block mt-8">
+          {page.seo.paragraphs.map((p) => <p>{p}</p>)}
+        </div>
+        <div class="mt-16 max-w-3xl">
+          {
+            page.seo.faqs.map((item) => (
+              <details class="faq-item">
+                <summary>{item.q}</summary>
+                <p>{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

@@ -16,8 +16,9 @@ const homeHref = hrefFor(lang, "/");
 const companyLinks = primaryNav.filter((i) => i.path !== "/catalog/");
 ---
 
-<footer class="border-t border-line bg-paper text-ink">
-  <div class="site-wrap grid grid-cols-4 gap-x-8 gap-y-12 py-14 text-[0.8125rem] leading-6 lg:grid-cols-12 lg:py-16">
+<footer class="footer-root border-t border-line bg-paper text-ink">
+  <p class="footer-mark" aria-hidden="true">INNOTEK</p>
+  <div class="footer-inner site-wrap grid grid-cols-4 gap-x-8 gap-y-12 py-14 text-[0.8125rem] leading-6 lg:grid-cols-12 lg:py-16">
     <div class="col-span-4 lg:col-span-3">
       <a href={homeHref} class="inline-flex items-center gap-2.5" aria-label={SITE.name}>
         <Logo class="h-7 w-7" />
@@ -26,7 +27,7 @@ const companyLinks = primaryNav.filter((i) => i.path !== "/catalog/");
     </div>
 
     <div class="col-span-4 md:col-span-2 lg:col-span-3">
-      <p class="text-[0.7rem] tracking-[0.12em] text-muted uppercase">{t("footer.products")}</p>
+      <p class="t-overline">{t("footer.products")}</p>
       <ul class="mt-4 space-y-2 text-muted">
         {
           catalogNav.map((item) => (
@@ -41,7 +42,7 @@ const companyLinks = primaryNav.filter((i) => i.path !== "/catalog/");
     </div>
 
     <div class="col-span-4 md:col-span-2 lg:col-span-3">
-      <p class="text-[0.7rem] tracking-[0.12em] text-muted uppercase">{t("footer.company")}</p>
+      <p class="t-overline">{t("footer.company")}</p>
       <ul class="mt-4 space-y-2 text-muted">
         {
           companyLinks.map((item) => (
@@ -56,7 +57,7 @@ const companyLinks = primaryNav.filter((i) => i.path !== "/catalog/");
     </div>
 
     <div class="col-span-4 lg:col-span-3">
-      <p class="text-[0.7rem] tracking-[0.12em] text-muted uppercase">{t("footer.contacts")}</p>
+      <p class="t-overline">{t("footer.contacts")}</p>
       <ul class="mt-4 space-y-2">
         <li>
           <a class="hover:text-accent-ink" href={`tel:${SITE.phone.tel}`}>{SITE.phone.display}</a>
@@ -67,7 +68,7 @@ const companyLinks = primaryNav.filter((i) => i.path !== "/catalog/");
       </ul>
     </div>
   </div>
-  <div class="border-t border-line">
-    <p class="site-wrap py-4 text-[0.7rem] text-muted">© {year} {SITE.legalName}</p>
+  <div class="footer-inner border-t border-line">
+    <p class="site-wrap t-caption py-4 pb-10">© {year} {SITE.legalName}</p>
   </div>
 </footer>

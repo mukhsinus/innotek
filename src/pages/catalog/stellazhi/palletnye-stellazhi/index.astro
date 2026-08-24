@@ -1,0 +1,87 @@
+---
+import QuoteBand from "../../../../components/QuoteBand.astro";
+import SectionMeta from "../../../../components/SectionMeta.astro";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { PALLET_PRODUCT } from "../../../../data/examples";
+import { hrefFor } from "../../../../i18n/utils";
+
+const lang = "ru" as const;
+const page = PALLET_PRODUCT;
+const pad = (n: number) => String(n).padStart(2, "0");
+const TOTAL = 4;
+const parentHref = hrefFor(lang, page.parentPath);
+---
+
+<BaseLayout title={page.title} description={page.description}>
+  <article>
+    <header class="page-head bg-paper" data-reveal>
+      <div class="site-wrap">
+        <a class="t-overline mb-8 inline-block transition-colors hover:text-ink" href={parentHref}>← {page.parentLabel}</a>
+        <SectionMeta kicker={page.kicker} index={1} total={TOTAL} />
+        <h1 class="t-display">{page.h1}</h1>
+        <p class="t-lead">{page.lead}</p>
+      </div>
+    </header>
+
+    <section class="section-y bg-paper" data-reveal>
+      <div class="site-wrap">
+        <SectionMeta kicker="Галерея" index={2} total={TOTAL} />
+        <div class="site-grid">
+          {
+            page.images.map((src, i) => (
+              <div
+                class:list={[
+                  "relative overflow-hidden bg-ink",
+                  i === 0 ? "col-span-4 aspect-[16/10] lg:col-span-12 lg:aspect-[16/8]" : "col-span-2 aspect-[4/3] lg:col-span-3",
+                ]}
+              >
+                <img
+                  src={src}
+                  alt=""
+                  class="photo-grade absolute inset-0 h-full w-full object-cover"
+                  width={i === 0 ? 1400 : 600}
+                  height={i === 0 ? 800 : 450}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="section-y bg-paper" data-reveal>
+      <div class="site-wrap grid gap-16 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-5">
+          <SectionMeta kicker="Спецификация" index={3} total={TOTAL} />
+          <div class="spec-list">
+            {
+              page.specs.map((row) => (
+                <div class="spec-row">
+                  <p class="spec-key">{row.key}</p>
+                  <p>{row.value}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <p class="t-overline mb-6">О продукте</p>
+          <div>
+            {
+              page.features.map((item, i) => (
+                <div class="feature-item">
+                  <span class="t-overline">{pad(i + 1)}</span>
+                  <p>{item}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <QuoteBand lang={lang} index={4} total={TOTAL} />
+  </article>
+</BaseLayout>

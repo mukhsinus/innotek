@@ -1,0 +1,20 @@
+---
+interface Props {
+  kicker: string;
+  index: number;
+  total: number;
+  tone?: "light" | "dark";
+}
+
+const { kicker, index, total, tone = "light" } = Astro.props;
+const current = String(index).padStart(2, "0");
+const of = String(total).padStart(2, "0");
+---
+
+<div class:list={["section-meta", tone === "dark" && "is-dark"]}>
+  <div class="section-meta-rule" aria-hidden="true"></div>
+  <div class="section-meta-row">
+    <p class="t-overline">{kicker}</p>
+    <p class="t-overline">{current} / {of}</p>
+  </div>
+</div>

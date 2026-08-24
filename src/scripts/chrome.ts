@@ -181,9 +181,41 @@ function initCounters() {
   nodes.forEach((el) => io.observe(el));
 }
 
+function initParallax() {
+  if (reducedMotion()) return;
+  if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+  const nodes = document.querySelectorAll<HTMLElement>("[data-parallax]");
+  if (!nodes.length) return;
+
+  const max = 6;
+
+  nodes.forEach((el) => {
+    const card = el.closest(".group") ?? el.parentElement;
+    if (!card) return;
+
+    const onMove = (e: MouseEvent) => {
+      const r = (card as HTMLElement).getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width - 0.5) * 2 * max;
+      const y = ((e.clientY - r.top) / r.height - 0.5) * 2 * max;
+      el.style.setProperty("--px", `${x.toFixed(2)}px`);
+      el.style.setProperty("--py", `${y.toFixed(2)}px`);
+    };
+
+    const onLeave = () => {
+      el.style.setProperty("--px", "0px");
+      el.style.setProperty("--py", "0px");
+    };
+
+    card.addEventListener("mousemove", onMove);
+    card.addEventListener("mouseleave", onLeave);
+  });
+}
+
 initHeader();
 initHeaderHide();
 initProgress();
 initMobileNav();
 initReveal();
 initCounters();
+initParallax();

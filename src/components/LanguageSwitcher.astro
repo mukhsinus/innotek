@@ -11,7 +11,7 @@ const t = useT(lang);
 const pathname = Astro.url.pathname;
 ---
 
-<div class="lang-switch inline-flex items-center gap-1 text-xs font-semibold tracking-[0.14em]" role="group" aria-label={t("lang.label")}>
+<div class="lang-switch inline-flex items-center gap-1 text-xs tracking-[0.08em]" role="group" aria-label={t("lang.label")}>
   {
     (Object.keys(languages) as Lang[]).map((code) => {
       const href = switchLocalePath(code, pathname);
