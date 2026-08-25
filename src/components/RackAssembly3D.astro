@@ -1,0 +1,486 @@
+---
+import SectionMeta from "./SectionMeta.astro";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+  index?: number;
+  total?: number;
+}
+
+const { lang, index = 2, total = 6 } = Astro.props;
+
+const isUz = lang === "uz";
+
+const texts = {
+  ru: {
+    kicker: "Инженерная 3D-сборка",
+    steps: [
+      {
+        index: "01 / СТОЙКИ",
+        title: "Рама выходит на позицию",
+        desc: "Вертикальные стойки с перфорацией — основа конструкции, рассчитанная на нагрузку до 5000 кг на секцию.",
+      },
+      {
+        index: "02 / БАЛКИ",
+        title: "Балки фиксируются по ярусам",
+        desc: "Горизонтальные балки крепятся защёлками — регулировка высоты яруса без сварки и болтов.",
+      },
+      {
+        index: "03 / НАСТИЛ",
+        title: "Паллеты занимают места",
+        desc: "Каждый ярус рассчитывается индивидуально под тип груза — от паллет до мелкой номенклатуры.",
+      },
+      {
+        index: "04 / ГОТОВО",
+        title: "Система готова к работе",
+        desc: "От расчёта до монтажа на объекте — под ключ, с гарантией на конструкцию.",
+      },
+    ],
+    dimH: "H 2400 мм",
+    dimW: "L 900 мм",
+    dimLoad: "до 1500 кг/ярус",
+  },
+  uz: {
+    kicker: "Muhandislik 3D-yig'ish",
+    steps: [
+      {
+        index: "01 / USTUNLAR",
+        title: "Rama o'rniga joylashadi",
+        desc: "Perforatsiyali vertikal ustunlar — har bir seksiyaga 5000 kg gacha yuk ko'tarishga mo'ljallangan konstruksiya asosi.",
+      },
+      {
+        index: "02 / BALKALAR",
+        title: "Balkalar qavatlar bo'ylab mahkamlanadi",
+        desc: "Gorizontal balkalar qulflar bilan o'rnatiladi — payvandlash va murvatlarsiz balandlikni sozlash.",
+      },
+      {
+        index: "03 / YUKLASH",
+        title: "Palletalar o'z o'rnini egallaydi",
+        desc: "Har bir yarus yuk turiga mos ravishda alohida hisoblanadi — yevropalletlardan tortib mayda mahsulotlargacha.",
+      },
+      {
+        index: "04 / TAYYOR",
+        title: "Tizim ishga tayyor",
+        desc: "Hisob-kitobdan tortib obyektda montajgacha — to'liq tayyor holda, kafolat bilan.",
+      },
+    ],
+    dimH: "H 2400 mm",
+    dimW: "L 900 mm",
+    dimLoad: "1500 kg/yarusgacha",
+  },
+}[lang];
+---
+
+<section class="assembly-wrap relative border-y border-line" id="assembly">
+  <div
+    class="assembly-pin sticky top-0 h-screen w-full overflow-hidden bg-paper"
+  >
+    <canvas id="rack-canvas" class="absolute inset-0 h-full w-full"></canvas>
+    <div class="rack-grid-overlay absolute inset-0 pointer-events-none"></div>
+
+    <!-- Header Section Info (Top Left) -->
+    <div class="site-wrap relative z-20 pt-8">
+      <SectionMeta kicker={texts.kicker} index={index} total={total} />
+    </div>
+
+    <!-- Scroll Content Steps (Middle Left) -->
+    <div
+      class="assembly-copy absolute top-1/2 left-[5vw] lg:left-[6vw] -translate-y-1/2 max-w-[380px] z-20 pointer-events-none"
+    >
+      {
+        texts.steps.map((step, i) => (
+          <div
+            class:list={["assembly-step", i === 0 && "active"]}
+            data-step={i}
+          >
+            <span class="step-index font-mono text-accent text-xs font-bold tracking-widest mb-3 block">
+              {step.index}
+            </span>
+            <h2 class="font-display font-semibold text-ink text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3">
+              {step.title}
+            </h2>
+            <p class="text-muted-on-ink text-sm sm:text-base leading-relaxed">
+              {step.desc}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Progress Rail (Right Edge) -->
+    <div
+      class="progress-rail hidden sm:block absolute right-[5vw] top-1/2 -translate-y-1/2 w-[2px] h-[180px] bg-line z-20 overflow-hidden rounded-full"
+    >
+      <div
+        class="progress-fill w-full bg-accent h-0 transition-all duration-75 ease-linear"
+        id="progress-fill"
+      >
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .assembly-wrap {
+    position: relative;
+    height: 380vh;
+  }
+
+  .assembly-pin {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #rack-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .rack-grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(2, 132, 199, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  :global([color-scheme="dark"]) .rack-grid-overlay {
+    background-image:
+      linear-gradient(rgba(94, 200, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(94, 200, 255, 0.04) 1px, transparent 1px);
+  }
+
+  .assembly-copy {
+    min-height: 220px;
+  }
+
+  .assembly-step {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+    transform: translateY(14px);
+    pointer-events: none;
+  }
+
+  .assembly-step.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .dim-label {
+    position: absolute;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--color-cyan, #0284c7);
+    opacity: 0;
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+    transform: translateX(6px);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
+    user-select: none;
+    background: var(--color-paper, #ffffff);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(2, 132, 199, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .dim-label.show {
+    opacity: 0.95;
+    transform: translateX(0);
+  }
+
+  .dim-label .tick {
+    width: 14px;
+    height: 1px;
+    background: var(--color-cyan, #0284c7);
+  }
+
+  @media (max-width: 820px) {
+    .assembly-copy {
+      max-width: 280px;
+      left: 20px;
+    }
+    .progress-rail {
+      display: none;
+    }
+  }
+</style>
+
+<!-- Load Three.js library -->
+<script
+  is:inline
+  src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+></script>
+
+<script is:inline>
+  (function () {
+    function init3DRack() {
+      const section = document.getElementById("assembly");
+      const canvas = document.getElementById("rack-canvas");
+      if (!section || !canvas || typeof THREE === "undefined") return;
+
+      // Check if already initialized on this canvas
+      if (canvas.dataset.initialized === "true") return;
+      canvas.dataset.initialized = "true";
+
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      // ---------- SCENE SETUP ----------
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        38,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        100,
+      );
+      camera.position.set(0, 2.6, 11);
+      camera.lookAt(0, 2, 0);
+
+      function resize() {
+        if (!canvas) return;
+        const w = window.innerWidth,
+          h = window.innerHeight;
+        renderer.setSize(w, h);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      resize();
+      window.addEventListener("resize", resize);
+
+      // Lighting
+      scene.add(new THREE.HemisphereLight(0x99aabb, 0x111111, 0.7));
+      const key = new THREE.DirectionalLight(0xffffff, 1.2);
+      key.position.set(5, 8, 6);
+      scene.add(key);
+      const rim = new THREE.PointLight(0xff6b1a, 1.4, 20);
+      rim.position.set(-4, 3, -3);
+      scene.add(rim);
+
+      // Blueprint floor grid
+      const grid = new THREE.GridHelper(20, 40, 0x0284c7, 0xd0d5da);
+      grid.position.y = -0.02;
+      grid.material.transparent = true;
+      grid.material.opacity = 0.28;
+      scene.add(grid);
+
+      // ---------- MATERIALS ----------
+      const steelMat = new THREE.MeshStandardMaterial({
+        color: 0x9aa2a8,
+        metalness: 0.6,
+        roughness: 0.35,
+      });
+      const steelDarkMat = new THREE.MeshStandardMaterial({
+        color: 0x5c646b,
+        metalness: 0.6,
+        roughness: 0.4,
+      });
+      const accentMat = new THREE.MeshStandardMaterial({
+        color: 0xff6b1a,
+        metalness: 0.3,
+        roughness: 0.4,
+      });
+      const palletMat = new THREE.MeshStandardMaterial({
+        color: 0xc98a4b,
+        roughness: 0.8,
+        metalness: 0.05,
+      });
+      const boxMat = new THREE.MeshStandardMaterial({
+        color: 0x4a5259,
+        roughness: 0.7,
+      });
+
+      // ---------- RACK GROUP ----------
+      const rack = new THREE.Group();
+      scene.add(rack);
+
+      const FRAME_H = 4.4,
+        FRAME_W = 0.9,
+        BAY_W = 2.6;
+      const levelYs = [0.55, 1.9, 3.25];
+
+      function makeUpright(x) {
+        const g = new THREE.Group();
+        const postGeo = new THREE.BoxGeometry(0.08, FRAME_H, 0.08);
+        const p1 = new THREE.Mesh(postGeo, steelMat);
+        p1.position.set(-FRAME_W / 2, FRAME_H / 2, 0);
+        const p2 = new THREE.Mesh(postGeo, steelMat);
+        p2.position.set(FRAME_W / 2, FRAME_H / 2, 0);
+        g.add(p1, p2);
+        for (let i = 0; i < 4; i++) {
+          const braceGeo = new THREE.BoxGeometry(0.035, 1.15, 0.035);
+          const b = new THREE.Mesh(braceGeo, steelDarkMat);
+          b.position.set(0, 0.55 + i * 1.05, 0);
+          b.rotation.z = i % 2 === 0 ? 0.62 : -0.62;
+          g.add(b);
+        }
+        g.position.x = x;
+        return g;
+      }
+
+      const leftFrame = makeUpright(-BAY_W / 2);
+      const rightFrame = makeUpright(BAY_W / 2);
+      rack.add(leftFrame, rightFrame);
+
+      const beams = [];
+      levelYs.forEach((y) => {
+        const beamGeo = new THREE.BoxGeometry(BAY_W - FRAME_W + 0.1, 0.14, 0.1);
+        const front = new THREE.Mesh(beamGeo, accentMat);
+        front.position.set(0, y, FRAME_W / 2 - 0.02);
+        const back = new THREE.Mesh(beamGeo, accentMat);
+        back.position.set(0, y, -FRAME_W / 2 + 0.02);
+        rack.add(front, back);
+        beams.push({ front, back, startX: 3.5 });
+      });
+
+      const pallets = [];
+      levelYs.forEach((y) => {
+        const p = new THREE.Group();
+        const base = new THREE.Mesh(
+          new THREE.BoxGeometry(BAY_W - FRAME_W - 0.05, 0.12, FRAME_W - 0.1),
+          palletMat,
+        );
+        base.position.y = y + 0.13;
+        p.add(base);
+        const box = new THREE.Mesh(
+          new THREE.BoxGeometry(0.7, 0.55, 0.55),
+          boxMat,
+        );
+        box.position.set(0, y + 0.13 + 0.06 + 0.275, 0);
+        p.add(box);
+        rack.add(p);
+        pallets.push(p);
+      });
+
+      rack.position.y = 0;
+      rack.rotation.y = -0.35;
+
+      // Initial unbuilt state
+      leftFrame.position.y = -FRAME_H - 0.5;
+      rightFrame.position.y = -FRAME_H - 0.5;
+      beams.forEach((b) => {
+        b.front.position.x = b.startX;
+        b.back.position.x = -b.startX;
+      });
+      pallets.forEach((p) => {
+        p.position.y = 3.5;
+        p.visible = false;
+      });
+
+      // Scroll-driven progress
+      let targetProgress = 0,
+        smoothProgress = 0;
+
+      function computeProgress() {
+        const rect = section.getBoundingClientRect();
+        const total = section.offsetHeight - window.innerHeight;
+        if (total <= 0) return;
+        const scrolled = -rect.top;
+        targetProgress = Math.min(1, Math.max(0, scrolled / total));
+      }
+      window.addEventListener("scroll", computeProgress, { passive: true });
+      computeProgress();
+
+      const steps = section.querySelectorAll(".assembly-step");
+      const progressFill = document.getElementById("progress-fill");
+
+      function updateOverlay(p) {
+        let stepIdx = 0;
+        if (p < 0.28) stepIdx = 0;
+        else if (p < 0.6) stepIdx = 1;
+        else if (p < 0.88) stepIdx = 2;
+        else stepIdx = 3;
+
+        steps.forEach((s) =>
+          s.classList.toggle("active", Number(s.dataset.step) === stepIdx),
+        );
+
+        if (progressFill) progressFill.style.height = p * 100 + "%";
+      }
+
+      function lerp(a, b, t) {
+        return a + (b - a) * t;
+      }
+
+      function updateRack(p) {
+        // Stage 1: frames rise 0 -> 0.28
+        const frameT = Math.min(1, p / 0.28);
+        const eased = 1 - Math.pow(1 - frameT, 3);
+        leftFrame.position.y = lerp(-FRAME_H - 0.5, 0, eased);
+        rightFrame.position.y = lerp(-FRAME_H - 0.5, 0, eased);
+
+        // Stage 2: beams slide in, staggered per level, 0.24 -> 0.62
+        beams.forEach((b, i) => {
+          const start = 0.24 + i * 0.08;
+          const end = start + 0.16;
+          const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
+          const e = 1 - Math.pow(1 - t, 3);
+          b.front.position.x = lerp(b.startX, 0, e);
+          b.back.position.x = lerp(-b.startX, 0, e);
+        });
+
+        // Stage 3: pallets drop, staggered, 0.58 -> 0.9
+        pallets.forEach((pl, i) => {
+          const start = 0.58 + i * 0.08;
+          const end = start + 0.18;
+          const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
+          if (t > 0) pl.visible = true;
+          const e = 1 - Math.pow(1 - t, 3);
+          pl.position.y = lerp(3.5, 0, e);
+        });
+
+        // Camera orbit across scroll progress
+        const angle = lerp(-0.35, 0.35, p);
+        rack.rotation.y = angle;
+      }
+
+      let isRunning = true;
+      function animate() {
+        if (!isRunning) return;
+        requestAnimationFrame(animate);
+        smoothProgress = reducedMotion
+          ? targetProgress
+          : lerp(smoothProgress, targetProgress, 0.09);
+        updateRack(smoothProgress);
+        updateOverlay(smoothProgress);
+        renderer.render(scene, camera);
+      }
+      animate();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init3DRack);
+    } else {
+      init3DRack();
+    }
+    document.addEventListener("astro:page-load", init3DRack);
+  })();
+</script>

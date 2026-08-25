@@ -39,13 +39,19 @@
 }
 
 @utility site-wrap {
-  width: min(100% - 3rem, var(--max-width-site));
+  width: min(100% - 4rem, var(--max-width-site));
   margin-inline: auto;
 }
 
 @media (min-width: 768px) {
   .site-wrap {
-    width: min(100% - 6rem, var(--max-width-site));
+    width: min(100% - 8rem, var(--max-width-site));
+  }
+}
+
+@media (min-width: 1280px) {
+  .site-wrap {
+    width: min(100% - 10rem, var(--max-width-site));
   }
 }
 
@@ -630,45 +636,45 @@
   }
 }
 
-.stat {
+.stat-card {
   position: relative;
   min-width: 0;
-  padding: 1.5rem 1.25rem;
-  border-top: 1px solid var(--color-line);
-  transition: border-color 0.4s ease, transform 0.4s var(--ease-home, ease);
+  padding: 2.25rem 2rem;
+  border: 1px solid var(--color-line);
+  background: rgba(246, 248, 250, 0.75);
+  backdrop-filter: blur(8px);
+  border-radius: 0.75rem;
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.stat:hover {
-  border-color: var(--color-accent);
+.stat-card:hover {
+  border-color: rgba(255, 107, 26, 0.45);
+  background: var(--color-surface);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.08);
 }
 
 .stat-num {
   font-family: var(--font-display);
-  font-size: clamp(3.75rem, 2rem + 7vw, 9rem);
-  line-height: 0.85;
+  font-size: clamp(3.25rem, 1.8rem + 4.5vw, 6.5rem);
+  line-height: 0.9;
   letter-spacing: -0.04em;
-  font-weight: 300;
+  font-weight: 600;
   color: var(--color-ink);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-.stat:hover .stat-num {
-  color: #FFFFFF;
-  text-shadow: 0 0 30px rgba(255, 107, 26, 0.2);
+  transition: color 0.3s ease;
 }
 
 .stat-num-long {
-  font-size: clamp(2.5rem, 1.2rem + 4.5vw, 6.5rem);
+  font-size: clamp(2.25rem, 1.2rem + 3vw, 4.5rem);
 }
 
 .stat-cap {
   margin-top: 1rem;
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-cyan);
   display: flex;
