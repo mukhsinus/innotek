@@ -1,7 +1,10 @@
 ---
+import Breadcrumbs from "./Breadcrumbs.astro";
+import PhotoFrame from "./PhotoFrame.astro";
 import QuoteBand from "./QuoteBand.astro";
+import RelatedLinks from "./RelatedLinks.astro";
 import SectionMeta from "./SectionMeta.astro";
-import type { CatalogCategory } from "../data/catalog";
+import { CATALOG_CATEGORIES, type CatalogCategory } from "../data/catalog";
 import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
 
@@ -14,11 +17,18 @@ const { lang, category } = Astro.props;
 const t = useT(lang);
 const pad = (n: number) => String(n).padStart(2, "0");
 const hasGrid = category.products.length > 0;
+const hasDetails = Boolean(category.body?.length || category.specs?.length || category.features?.length);
 const hasSeo = Boolean(category.seo);
-const TOTAL = 2 + (hasGrid ? 1 : 0) + (hasSeo ? 1 : 0);
+const related = CATALOG_CATEGORIES.filter((item) => item.slug !== category.slug).map((item) => ({
+  path: item.path,
+  label: t(item.labelKey),
+}));
+const TOTAL = 2 + (hasGrid ? 1 : 0) + (hasDetails ? 1 : 0) + (related.length ? 1 : 0) + (hasSeo ? 1 : 0);
 let n = 1;
 const introN = n++;
 const gridN = hasGrid ? n++ : 0;
+const detailsN = hasDetails ? n++ : 0;
+const relatedN = related.length ? n++ : 0;
 const ctaN = n++;
 const seoN = hasSeo ? n++ : 0;
 ---
@@ -26,6 +36,14 @@ const seoN = hasSeo ? n++ : 0;
 <article>
   <header class="page-head bg-paper" data-reveal>
     <div class="site-wrap">
+      <Breadcrumbs
+        lang={lang}
+        items={[
+          { label: t("crumb.home"), path: "/" },
+          { label: t("nav.catalog"), path: "/catalog/" },
+          { label: t(category.labelKey) },
+        ]}
+      />
       <SectionMeta kicker={t("nav.catalog")} index={introN} total={TOTAL} />
       <h1 class="t-display">{category.h1}</h1>
       <p class="t-lead">{category.lead}</p>
@@ -51,15 +69,7 @@ const seoN = hasSeo ? n++ : 0;
                   ]}
                 >
                   <span class="bento-media" data-parallax>
-                    <img
-                      src={item.image}
-                      alt=""
-                      class="photo-grade"
-                      width="800"
-                      height="600"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      decoding="async"
-                    />
+                    <PhotoFrame src={item.image} width={800} height={600} loading={i === 0 ? "eager" : "lazy"} />
                   </span>
                   <span class="bento-num">{pad(i + 1)}</span>
                 </div>
@@ -84,20 +94,66 @@ const seoN = hasSeo ? n++ : 0;
       <section class="bg-paper pb-0" data-reveal>
         <div class="site-wrap">
           <div class="relative aspect-[16/9] overflow-hidden bg-ink lg:aspect-[16/7]">
-            <img
+            <PhotoFrame
               src={category.image}
-              alt=""
-              class="photo-grade absolute inset-0 h-full w-full object-cover"
-              width="1400"
-              height="700"
+              class="absolute inset-0 h-full w-full object-cover"
+              width={1400}
+              height={700}
+              loading="eager"
               fetchpriority="high"
-              decoding="async"
             />
           </div>
         </div>
       </section>
     )
   }
+
+  {
+    hasDetails && (
+      <section class="section-y bg-paper" data-reveal>
+        <div class="site-wrap grid gap-16 lg:grid-cols-12 lg:gap-8">
+          {category.body && category.body.length > 0 && (
+            <div class={category.specs?.length ? "lg:col-span-7" : "lg:col-span-8"}>
+              <SectionMeta kicker={t("page.aboutProduct")} index={detailsN} total={TOTAL} />
+              <div class="max-w-xl space-y-4 text-lg leading-relaxed text-muted">
+                {category.body.map((p) => <p>{p}</p>)}
+              </div>
+            </div>
+          )}
+          {category.specs && category.specs.length > 0 && (
+            <div class={category.body?.length ? "lg:col-span-4 lg:col-start-9" : "lg:col-span-8"}>
+              {(!category.body || category.body.length === 0) && (
+                <SectionMeta kicker={t("page.specs")} index={detailsN} total={TOTAL} />
+              )}
+              {category.body && category.body.length > 0 && <p class="t-overline mb-6">{t("page.specs")}</p>}
+              <div class="spec-list">
+                {category.specs.map((row) => (
+                  <div class="spec-row">
+                    <p class="spec-key">{row.key}</p>
+                    <p>{row.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {category.features && category.features.length > 0 && (
+            <div class="lg:col-span-8">
+              <div>
+                {category.features.map((item, i) => (
+                  <div class="feature-item">
+                    <span class="t-overline">{pad(i + 1)}</span>
+                    <p>{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  <RelatedLinks lang={lang} kicker={t("page.related")} index={relatedN} total={TOTAL} items={related} />
 
   <QuoteBand lang={lang} index={ctaN} total={TOTAL} />
 
@@ -108,9 +164,7 @@ const seoN = hasSeo ? n++ : 0;
           <SectionMeta kicker={t("page.seo")} index={seoN} total={TOTAL} />
           <h2 class="t-display">{category.seo.heading}</h2>
           <div class="seo-block mt-8">
-            {category.seo.paragraphs.map((p) => (
-              <p>{p}</p>
-            ))}
+            {category.seo.paragraphs.map((p) => <p>{p}</p>)}
           </div>
           <div class="mt-16 max-w-3xl">
             {category.seo.faqs.map((item) => (

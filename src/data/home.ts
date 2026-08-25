@@ -46,8 +46,8 @@ const IMG = {
   metal: "https://innotek.uz/wp-content/uploads/2023/10/17.jpg",
   office: "https://innotek.uz/wp-content/uploads/2023/10/25-2.jpg",
   conveyors: "https://innotek.uz/wp-content/uploads/2023/10/40-969x1024.jpg",
-  equipment: "https://innotek.uz/wp-content/uploads/2024/05/Снимок-экрана-2024-05-03-163152.png",
-  rollers: "https://innotek.uz/wp-content/uploads/2024/01/rolik.png",
+  equipment: "https://innotek.uz/wp-content/uploads/2023/10/1-13.jpg",
+  rollers: "https://innotek.uz/wp-content/uploads/2024/05/photo_2024-05-16_10-06-30.jpg",
 } as const;
 
 export const HOME: Record<Lang, HomeCopy> = {

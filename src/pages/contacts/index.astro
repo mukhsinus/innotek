@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import QuoteForm from "../../components/QuoteForm.astro";
 import SectionMeta from "../../components/SectionMeta.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -16,6 +17,13 @@ const address = SITE.address.ru;
   <article>
     <header class="page-head bg-paper" data-reveal>
       <div class="site-wrap">
+        <Breadcrumbs
+          lang={lang}
+          items={[
+            { label: t("crumb.home"), path: "/" },
+            { label: t("nav.contacts") },
+          ]}
+        />
         <SectionMeta kicker={t("page.kickerCompany")} index={1} total={TOTAL} />
         <h1 class="t-display">{CONTACTS.h1}</h1>
         <p class="t-lead">{CONTACTS.lead}</p>

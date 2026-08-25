@@ -1,0 +1,18 @@
+---
+import SeoPage from "../../components/SeoPage.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { SEO_LANDINGS, landingBySlug } from "../../data/landings";
+
+export function getStaticPaths() {
+  return SEO_LANDINGS.map((page) => ({
+    params: { landing: page.slug },
+  }));
+}
+
+const lang = "ru" as const;
+const page = landingBySlug(Astro.params.landing!)!;
+---
+
+<BaseLayout title={page.title} description={page.description}>
+  <SeoPage lang={lang} page={page} />
+</BaseLayout>

@@ -1,0 +1,136 @@
+---
+import Breadcrumbs from "./Breadcrumbs.astro";
+import PhotoFrame from "./PhotoFrame.astro";
+import QuoteBand from "./QuoteBand.astro";
+import RelatedLinks from "./RelatedLinks.astro";
+import SectionMeta from "./SectionMeta.astro";
+import type { SeoLanding } from "../data/landings";
+import type { Lang } from "../i18n/ui";
+import { hrefFor, useT } from "../i18n/utils";
+
+interface Props {
+  lang: Lang;
+  page: SeoLanding;
+}
+
+const { lang, page } = Astro.props;
+const t = useT(lang);
+const pad = (n: number) => String(n).padStart(2, "0");
+const hasTypes = Boolean(page.types?.length);
+const hasPoints = Boolean(page.points?.length);
+const hasRelated = page.related.length > 0;
+const hasSeo = Boolean(page.seo);
+const TOTAL = 2 + (hasTypes ? 1 : 0) + (hasPoints ? 1 : 0) + (hasRelated ? 1 : 0) + (hasSeo ? 1 : 0);
+let n = 1;
+const introN = n++;
+const typesN = hasTypes ? n++ : 0;
+const pointsN = hasPoints ? n++ : 0;
+const relatedN = hasRelated ? n++ : 0;
+const ctaN = n++;
+const seoN = hasSeo ? n++ : 0;
+---
+
+<article>
+  <header class="page-head bg-paper" data-reveal>
+    <div class="site-wrap grid items-end gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <Breadcrumbs
+          lang={lang}
+          items={[
+            { label: t("crumb.home"), path: "/" },
+            { label: t("nav.catalog"), path: "/catalog/" },
+            { label: page.h1 },
+          ]}
+        />
+        <SectionMeta kicker={t("page.kickerLanding")} index={introN} total={TOTAL} />
+        <h1 class="t-display">{page.h1}</h1>
+        <p class="t-lead">{page.lead}</p>
+      </div>
+      <div class="relative aspect-[4/5] overflow-hidden bg-ink lg:col-span-4 lg:col-start-9 lg:aspect-[4/5]">
+        <PhotoFrame
+          src={page.image}
+          class="absolute inset-0 h-full w-full object-cover"
+          width={800}
+          height={1000}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </header>
+
+  {
+    (page.intro.length > 0 || hasTypes || hasPoints) && (
+      <section class="section-y bg-paper" data-reveal>
+        <div class="site-wrap">
+          {hasTypes && <SectionMeta kicker={t("page.lineup")} index={typesN} total={TOTAL} />}
+          {!hasTypes && <SectionMeta kicker={t("page.aboutProduct")} index={pointsN || introN} total={TOTAL} />}
+          {page.intro.length > 0 && (
+            <div class="max-w-2xl space-y-4 text-[1.0625rem] leading-relaxed text-muted">
+              {page.intro.map((p) => <p>{p}</p>)}
+            </div>
+          )}
+          {hasTypes && (
+            <div class="mt-16 grid gap-0 sm:grid-cols-2">
+              {page.types!.map((item, i) => (
+                <a
+                  href={hrefFor(lang, item.path)}
+                  class="group border-t border-line py-8 pr-8 last:border-b sm:border-line sm:[&:nth-child(odd)]:pr-10 sm:[&:nth-child(even)]:border-l sm:[&:nth-child(even)]:pl-10 sm:[&:nth-last-child(-n+2)]:border-b"
+                >
+                  <p class="t-overline">{pad(i + 1)}</p>
+                  <h2 class="mt-4 text-2xl font-medium tracking-[-0.02em]">
+                    {item.title}
+                    <span class="link-arrow" aria-hidden="true"> →</span>
+                  </h2>
+                  {item.text && <p class="mt-2 text-sm text-muted">{item.text}</p>}
+                </a>
+              ))}
+            </div>
+          )}
+          {hasPoints && (
+            <ul class="mt-16 max-w-xl">
+              {page.points!.map((item, i) => (
+                <li class="feature-item">
+                  <span class="t-overline">{pad(i + 1)}</span>
+                  <p>{item}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    hasRelated && (
+      <RelatedLinks lang={lang} kicker={t("page.related")} index={relatedN} total={TOTAL} items={page.related} />
+    )
+  }
+
+  <QuoteBand lang={lang} index={ctaN} total={TOTAL} />
+
+  {
+    page.seo && (
+      <section class="section-y bg-paper" data-reveal>
+        <div class="site-wrap">
+          <SectionMeta kicker={t("page.seo")} index={seoN} total={TOTAL} />
+          <h2 class="t-display">{page.seo.heading}</h2>
+          <div class="seo-block mt-8">
+            {page.seo.paragraphs.map((p) => <p>{p}</p>)}
+          </div>
+          {page.seo.faqs.length > 0 && (
+            <div class="mt-16 max-w-3xl">
+              {page.seo.faqs.map((item) => (
+                <details class="faq-item">
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    )
+  }
+</article>

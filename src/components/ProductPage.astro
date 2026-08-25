@@ -1,7 +1,10 @@
 ---
+import Breadcrumbs from "./Breadcrumbs.astro";
+import PhotoFrame from "./PhotoFrame.astro";
 import QuoteBand from "./QuoteBand.astro";
+import RelatedLinks from "./RelatedLinks.astro";
 import SectionMeta from "./SectionMeta.astro";
-import type { CatalogProduct } from "../data/catalog";
+import { CATALOG_PRODUCTS, type CatalogProduct } from "../data/catalog";
 import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
 
@@ -15,11 +18,15 @@ const t = useT(lang);
 const pad = (n: number) => String(n).padStart(2, "0");
 const hasGallery = product.images.length > 0;
 const hasDetails = product.specs.length > 0 || product.features.length > 0;
-const TOTAL = 2 + (hasGallery ? 1 : 0) + (hasDetails ? 1 : 0);
+const related = CATALOG_PRODUCTS.filter(
+  (item) => item.categorySlug === product.categorySlug && item.slug !== product.slug,
+).map((item) => ({ path: item.path, label: t(item.labelKey) }));
+const TOTAL = 2 + (hasGallery ? 1 : 0) + (hasDetails ? 1 : 0) + (related.length ? 1 : 0);
 let n = 1;
 const introN = n++;
 const galleryN = hasGallery ? n++ : 0;
 const detailsN = hasDetails ? n++ : 0;
+const relatedN = related.length ? n++ : 0;
 const ctaN = n++;
 const parentHref = hrefFor(lang, product.parentPath);
 ---
@@ -27,6 +34,15 @@ const parentHref = hrefFor(lang, product.parentPath);
 <article>
   <header class="page-head bg-paper" data-reveal>
     <div class="site-wrap">
+      <Breadcrumbs
+        lang={lang}
+        items={[
+          { label: t("crumb.home"), path: "/" },
+          { label: t("nav.catalog"), path: "/catalog/" },
+          { label: t(product.parentLabelKey), path: product.parentPath },
+          { label: t(product.labelKey) },
+        ]}
+      />
       <a class="t-overline mb-8 inline-block transition-colors hover:text-ink" href={parentHref}>
         ← {t(product.parentLabelKey)}
       </a>
@@ -37,7 +53,7 @@ const parentHref = hrefFor(lang, product.parentPath);
   </header>
 
   {
-    hasGallery && (
+    hasGallery ? (
       <section class="section-y bg-paper" data-reveal>
         <div class="site-wrap">
           <SectionMeta kicker={t("page.gallery")} index={galleryN} total={TOTAL} />
@@ -51,17 +67,30 @@ const parentHref = hrefFor(lang, product.parentPath);
                     : "col-span-2 aspect-[4/3] lg:col-span-3",
                 ]}
               >
-                <img
+                <PhotoFrame
                   src={src}
-                  alt=""
-                  class="photo-grade absolute inset-0 h-full w-full object-cover"
+                  class="absolute inset-0 h-full w-full object-cover"
                   width={i === 0 ? 1400 : 600}
                   height={i === 0 ? 800 : 450}
                   loading={i === 0 ? "eager" : "lazy"}
-                  decoding="async"
+                  fetchpriority={i === 0 ? "high" : undefined}
                 />
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+    ) : (
+      <section class="bg-paper pb-0" data-reveal>
+        <div class="site-wrap">
+          <div class="relative aspect-[16/9] overflow-hidden bg-ink lg:aspect-[16/7]">
+            <PhotoFrame
+              class="absolute inset-0 h-full w-full object-cover"
+              width={1400}
+              height={700}
+              loading="eager"
+              fetchpriority="high"
+            />
           </div>
         </div>
       </section>
@@ -105,6 +134,8 @@ const parentHref = hrefFor(lang, product.parentPath);
       </section>
     )
   }
+
+  <RelatedLinks lang={lang} kicker={t("page.related")} index={relatedN} total={TOTAL} items={related} />
 
   <QuoteBand lang={lang} index={ctaN} total={TOTAL} />
 </article>

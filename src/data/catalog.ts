@@ -6,7 +6,7 @@ export type { FaqItem, SpecRow };
 export type CatalogProductCard = {
   path: string;
   labelKey: UiKey;
-  image: string;
+  image?: string;
   excerpt?: string;
 };
 
@@ -18,7 +18,11 @@ export type CatalogCategory = {
   description: string;
   h1: string;
   lead: string;
-  image: string;
+  image?: string;
+  body?: string[];
+  specs?: SpecRow[];
+  features?: string[];
+  todo?: boolean;
   products: CatalogProductCard[];
   seo?: {
     heading: string;
@@ -122,8 +126,8 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
     lead: "Столы и стулья для офиса. Изготовление под заказ.",
     image: "https://innotek.uz/wp-content/uploads/2023/10/25-2.jpg",
     products: [
-      { path: "/catalog/ofisnaya-mebel/stoly/", labelKey: "product.desks", image: "https://innotek.uz/wp-content/uploads/2023/10/26.jpg" },
-      { path: "/catalog/ofisnaya-mebel/stulya/", labelKey: "product.chairs", image: "https://innotek.uz/wp-content/uploads/2023/10/40.png" },
+      { path: "/catalog/ofisnaya-mebel/stoly/", labelKey: "product.desks", image: "https://innotek.uz/wp-content/uploads/2023/10/26.jpg", excerpt: "Рабочие, компьютерные, переговорные, приставные и журнальные." },
+      { path: "/catalog/ofisnaya-mebel/stulya/", labelKey: "product.chairs", image: "https://innotek.uz/wp-content/uploads/2023/10/40.png", excerpt: "Кресла для персонала, руководителя, посетителей и зоны ожидания." },
     ],
   },
   {
@@ -160,11 +164,26 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
     slug: "oborudovanie",
     path: "/catalog/oborudovanie/",
     labelKey: "nav.equipment",
-    title: "Оборудование и металлоконструкции | Innotek",
-    description: "Оборудование и металлоконструкции от производителя Innotek. Ташкент.",
-    h1: "Оборудование",
-    lead: "Металлоконструкции по чертежам объекта.",
-    image: "https://innotek.uz/wp-content/uploads/2024/05/Снимок-экрана-2024-05-03-163152.png",
+    title: "Купить оборудование и металлоконструкции в Ташкенте и Узбекистане | Innotek",
+    description:
+      "Купить оборудование и металлоконструкции в Ташкенте и Узбекистане. Производство и поставка промышленного оборудования и металлоконструкций от компании Innotek.",
+    h1: "Оборудование и металлоконструкции",
+    lead: "Изготовление металлоконструкций по чертежам или проектам объекта: каркасы, балки, перекрытия и узлы.",
+    image: "https://innotek.uz/wp-content/uploads/2023/10/1-13.jpg",
+    body: [
+      "Специалисты компании выполняют заказы на изготовление металлоконструкций по индивидуально разработанным чертежам или проектам с учётом особенностей конкретного объекта. Производим несущие элементы и узлы, которые используются в строительстве, включая каркасы, балки, перекрытия и другие детали.",
+    ],
+    specs: [
+      { key: "Материал", value: "ST 37" },
+      { key: "Спецификация", value: "Двутавр Б1 / Б2 / под заказ / сэндвич-панель" },
+      { key: "Высота", value: "По высоте объекта, под заказ" },
+      { key: "Применение", value: "Промышленный склад, распределительный центр" },
+      { key: "Сертификат", value: CERT },
+    ],
+    features: [
+      "Металлоконструкции позволяют обойтись без капитального строительства в ряде задач и соответствуют современным нормам эксплуатации и безопасности.",
+      "Доступная стоимость и короткие сроки строительства ангаров. По затратам и скорости ввода с ними не конкурируют другие виды зданий при высоких показателях прочности и несущей нагрузки.",
+    ],
     products: [],
   },
   {
@@ -174,8 +193,9 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
     title: "Купить ролики в Ташкенте и Узбекистане | Innotek",
     description: "Купить ролики в Ташкенте и Узбекистане. Промышленные ролики для конвейеров и оборудования от компании Innotek.",
     h1: "Колёса и ролики",
-    lead: "Для конвейеров и оборудования. Изготовление по чертежам объекта.",
-    image: "https://innotek.uz/wp-content/uploads/2024/01/rolik.png",
+    lead: "Промышленные ролики для конвейеров и оборудования.",
+    image: "https://innotek.uz/wp-content/uploads/2024/05/photo_2024-05-16_10-06-30.jpg",
+    todo: true,
     products: [],
   },
 ];
@@ -384,7 +404,11 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       { key: "Высота", value: "По высоте склада" },
       { key: "Сертификат", value: CERT },
     ],
-    features: [],
+    features: [
+      "Пространственная металлическая конструкция вертикальной или наклонной ориентации для кабельной продукции",
+      "Отдающие или подающие стойки для разматывания барабанов и бухт",
+      "Прямой доступ на все уровни, отмотка без изъятия тяжёлых барабанов",
+    ],
   },
   {
     slug: "samonesushchie-stellazhi",
@@ -409,7 +433,12 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       { key: "Применение", value: "Промышленный склад" },
       { key: "Сертификат", value: CERT },
     ],
-    features: [],
+    features: [
+      "Проектирование, поставка и монтаж, в том числе самонесущих стеллажей",
+      "Единый блок: монтаж, эксплуатация, наращивание или уменьшение объёма склада",
+      "Установка на подготовленное бетонное основание с учётом климата",
+      "При площади склада до 1500 м² дополнительная строительная экспертиза проекта не требуется",
+    ],
   },
   {
     slug: "smart-stellazhi",
@@ -421,7 +450,7 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     title: "Smart-стеллажи в Ташкенте | Innotek",
     description: "Smart-стеллажи Innotek. Складские системы SMART, проектирование, поставка и монтаж.",
     h1: "Smart-стеллажи",
-    lead: "Складские системы SMART. Материал ST 37, стойка 40/60 × 1.5–2.5 mm.",
+    lead: "Приставные стеллажи для торца островных стеллажей: закрывают торец, высота совпадает с островом. Двухсторонние стойки и задние панели с фронта и со стороны примыкания. Расчёт каждого стеллажа — с замыкающей стойкой и опорой.",
     images: [
       "https://innotek.uz/wp-content/uploads/2023/10/IMAGE-2023-10-31-123248.jpg",
       "https://innotek.uz/wp-content/uploads/2023/10/IMAGE-2023-10-31-123255.jpg",
@@ -436,7 +465,13 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       { key: "Применение", value: "Промышленный склад, распределительный центр" },
       { key: "Сертификат", value: CERT },
     ],
-    features: [],
+    features: [
+      "Удобные в загрузке и извлечении товара",
+      "Неприхотливые в сервисном уходе",
+      "Эстетически привлекательные",
+      "Оптимальной конструкции под тип товара и особенности зала",
+    ],
+    todo: true,
   },
   {
     slug: "pristennye-stellazhi",
@@ -455,7 +490,11 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       "https://innotek.uz/wp-content/uploads/2023/10/4-7.jpg",
     ],
     specs: SPEC_RETAIL,
-    features: [],
+    features: [
+      "Самый распространённый вид торговых стеллажей",
+      "Вдоль стен, для зонирования зала и в составе островных линий",
+      "В том числе для обхода колонн",
+    ],
   },
   {
     slug: "ostrovnye-stellazhi",
@@ -474,7 +513,11 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       "https://innotek.uz/wp-content/uploads/2023/10/IMAGE-2023-10-31-122736.jpg",
     ],
     specs: SPEC_RETAIL,
-    features: [],
+    features: [
+      "Двухсторонние стеллажи в центре торгового зала",
+      "Высота, как правило, не превышает 1850 мм",
+      "Наиболее распространённая высота — 1650 мм",
+    ],
   },
   {
     slug: "stoly",
@@ -493,8 +536,19 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       "https://innotek.uz/wp-content/uploads/2023/10/24.jpg",
       "https://innotek.uz/wp-content/uploads/2023/10/8.png",
     ],
-    specs: [{ key: "Материал", value: "ST 37 / ДСП / МДФ" }],
-    features: [],
+    specs: [
+      { key: "Материал", value: "ST 37 / ДСП / МДФ" },
+      { key: "Размер", value: "30×60 мм / 40×60 мм / 1500×700×750 (h) мм, под заказ" },
+      { key: "Применение", value: "Офис, учебный центр, школа" },
+      { key: "Сертификат", value: CERT },
+    ],
+    features: [
+      "Рабочие столы",
+      "Компьютерные столы",
+      "Столы для переговоров",
+      "Приставные столы",
+      "Журнальные столики",
+    ],
   },
   {
     slug: "stulya",
@@ -512,8 +566,19 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       "https://innotek.uz/wp-content/uploads/2023/10/37.jpg",
       "https://innotek.uz/wp-content/uploads/2023/10/27.jpg",
     ],
-    specs: [],
-    features: [],
+    specs: [
+      { key: "Материал", value: "ST 37" },
+      { key: "Цвет", value: "Под заказ" },
+      { key: "Размер", value: "600×500×1200 (h) мм / 700×600×1400 (h) мм, под заказ" },
+      { key: "Применение", value: "Офис, учебный центр, школа" },
+      { key: "Сертификат", value: CERT },
+    ],
+    features: [
+      "Офисные кресла для персонала",
+      "Офисные кресла для руководителя",
+      "Кресла для посетителей",
+      "Офисные стулья и многоместные секции для зон ожидания",
+    ],
   },
   {
     slug: "shkafy-dlya-ofisa",
@@ -532,7 +597,11 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       "https://innotek.uz/wp-content/uploads/2023/10/4-12.jpg",
     ],
     specs: [{ key: "Материал", value: "ST 37" }, { key: "Сертификат", value: CERT }],
-    features: [],
+    features: [
+      "Долговечность: материал рассчитан на длительное и интенсивное использование",
+      "Простота в уходе: полимерное покрытие моется и не подвержено коррозии",
+      "Сборка модельного ряда металлической мебели",
+    ],
   },
   {
     slug: "mebel-dlya-razdevalok",
@@ -555,7 +624,11 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       { key: "Цвет", value: "RAL 7035. Под заказ — по коду RAL." },
       { key: "Сертификат", value: CERT },
     ],
-    features: [],
+    features: [
+      "Полки для головных уборов и обуви",
+      "Перекладина для вешалки и двухсторонние крючки",
+      "Вентиляция",
+    ],
   },
   {
     slug: "mebel-dlya-proizvodstva",
@@ -574,7 +647,11 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
       "https://innotek.uz/wp-content/uploads/2023/10/31-1.jpg",
     ],
     specs: [{ key: "Материал", value: "ST 37" }, { key: "Сертификат", value: CERT }],
-    features: [],
+    features: [
+      "Рамы верстаков на болтах с самоконтрящимися гайками",
+      "Перфорированные экраны: аксессуары крепятся зацепами",
+      "Ящики полного выдвижения на шариковых направляющих, нагрузка 100 кг",
+    ],
   },
   {
     slug: "rolikovye-konvejery",

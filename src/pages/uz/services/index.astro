@@ -1,4 +1,6 @@
 ---
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import PhotoFrame from "../../../components/PhotoFrame.astro";
 import QuoteBand from "../../../components/QuoteBand.astro";
 import SectionMeta from "../../../components/SectionMeta.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
@@ -15,6 +17,13 @@ const TOTAL = 3;
   <article>
     <header class="page-head bg-paper" data-reveal>
       <div class="site-wrap">
+        <Breadcrumbs
+          lang={lang}
+          items={[
+            { label: t("crumb.home"), path: "/" },
+            { label: t("nav.services") },
+          ]}
+        />
         <SectionMeta kicker={t("page.kickerService")} index={1} total={TOTAL} />
         <h1 class="t-display">{t("nav.services")}</h1>
         <p class="t-lead">{t("services.lead")}</p>
@@ -39,15 +48,7 @@ const TOTAL = 3;
                   ]}
                 >
                   <span class="bento-media" data-parallax>
-                    <img
-                      src={item.image}
-                      alt=""
-                      class="photo-grade"
-                      width="800"
-                      height="600"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      decoding="async"
-                    />
+                    <PhotoFrame src={item.image} width={800} height={600} loading={i === 0 ? "eager" : "lazy"} />
                   </span>
                   <span class="bento-num">{pad(i + 1)}</span>
                 </div>

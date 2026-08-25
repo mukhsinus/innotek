@@ -1,15 +1,14 @@
 ---
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import QuoteBand from "../../components/QuoteBand.astro";
+import RelatedLinks from "../../components/RelatedLinks.astro";
 import SectionMeta from "../../components/SectionMeta.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { VIDEO } from "../../data/company";
-import { HOME } from "../../data/home";
 import { useT } from "../../i18n/utils";
 
 const lang = "ru" as const;
 const t = useT(lang);
-const pad = (n: number) => String(n).padStart(2, "0");
-const stills = HOME.ru.cases;
 const TOTAL = 3;
 ---
 
@@ -17,40 +16,30 @@ const TOTAL = 3;
   <article>
     <header class="page-head bg-paper" data-reveal>
       <div class="site-wrap">
+        <Breadcrumbs
+          lang={lang}
+          items={[
+            { label: t("crumb.home"), path: "/" },
+            { label: t("nav.video") },
+          ]}
+        />
         <SectionMeta kicker={t("page.kickerCompany")} index={1} total={TOTAL} />
         <h1 class="t-display">{VIDEO.h1}</h1>
         <p class="t-lead">{VIDEO.lead}</p>
       </div>
     </header>
 
-    <section class="section-y bg-paper" data-reveal>
-      <div class="site-wrap">
-        <SectionMeta kicker={t("page.stills")} index={2} total={TOTAL} />
-        <div class="site-grid">
-          {
-            stills.map((item, i) => (
-              <div
-                class:list={[
-                  "relative overflow-hidden bg-ink",
-                  i === 0 ? "col-span-4 aspect-[16/10] lg:col-span-12 lg:aspect-[16/8]" : "col-span-4 aspect-[4/5] lg:col-span-6 lg:aspect-[16/10]",
-                ]}
-              >
-                <img
-                  src={item.image}
-                  alt=""
-                  class="photo-grade absolute inset-0 h-full w-full object-cover"
-                  width={i === 0 ? 1200 : 800}
-                  height={i === 0 ? 750 : 1000}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  decoding="async"
-                />
-                <span class="bento-num">{pad(i + 1)}</span>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </section>
+    <RelatedLinks
+      lang={lang}
+      kicker={t("page.related")}
+      index={2}
+      total={TOTAL}
+      items={[
+        { path: "/catalog/", label: t("nav.catalog") },
+        { path: "/services/", label: t("nav.services") },
+        { path: "/about/", label: t("nav.about") },
+      ]}
+    />
 
     <QuoteBand lang={lang} index={3} total={TOTAL} />
   </article>

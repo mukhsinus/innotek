@@ -1,5 +1,8 @@
 ---
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import PhotoFrame from "../../components/PhotoFrame.astro";
 import QuoteBand from "../../components/QuoteBand.astro";
+import RelatedLinks from "../../components/RelatedLinks.astro";
 import SectionMeta from "../../components/SectionMeta.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { ABOUT } from "../../data/company";
@@ -7,13 +10,20 @@ import { useT } from "../../i18n/utils";
 
 const lang = "ru" as const;
 const t = useT(lang);
-const TOTAL = 3;
+const TOTAL = 4;
 ---
 
 <BaseLayout title={ABOUT.title} description={ABOUT.description}>
   <article>
     <header class="page-head bg-paper" data-reveal>
       <div class="site-wrap">
+        <Breadcrumbs
+          lang={lang}
+          items={[
+            { label: t("crumb.home"), path: "/" },
+            { label: t("nav.about") },
+          ]}
+        />
         <SectionMeta kicker={t("page.kickerCompany")} index={1} total={TOTAL} />
         <h1 class="t-display">{ABOUT.h1}</h1>
         <p class="t-lead">{ABOUT.lead}</p>
@@ -23,15 +33,7 @@ const TOTAL = 3;
     <section class="bg-paper pb-0" data-reveal>
       <div class="site-wrap">
         <div class="relative aspect-[16/9] overflow-hidden bg-ink lg:aspect-[16/7]">
-          <img
-            src={ABOUT.image}
-            alt=""
-            class="photo-grade absolute inset-0 h-full w-full object-cover"
-            width="1400"
-            height="700"
-            fetchpriority="high"
-            decoding="async"
-          />
+          <PhotoFrame class="absolute inset-0 h-full w-full object-cover" width={1400} height={700} loading="eager" fetchpriority="high" />
         </div>
       </div>
     </section>
@@ -61,6 +63,19 @@ const TOTAL = 3;
       </div>
     </section>
 
-    <QuoteBand lang={lang} index={3} total={TOTAL} />
+    <RelatedLinks
+      lang={lang}
+      kicker={t("page.related")}
+      index={3}
+      total={TOTAL}
+      items={[
+        { path: "/services/proektirovanie/", label: t("service.design") },
+        { path: "/services/montazh-demontazh/", label: t("service.install") },
+        { path: "/catalog/", label: t("nav.catalog") },
+        { path: "/services/", label: t("nav.services") },
+      ]}
+    />
+
+    <QuoteBand lang={lang} index={4} total={TOTAL} />
   </article>
 </BaseLayout>

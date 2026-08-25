@@ -34,21 +34,21 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
   class="fixed top-0 right-0 left-0 z-50"
   data-overlay={overlay ? "" : undefined}
 >
-  <div class="header-inner site-wrap flex items-stretch justify-between gap-4">
+  <div class="header-inner site-wrap flex items-center justify-between gap-4 py-4 lg:py-5">
     <a href={homeHref} class="flex shrink-0 items-center gap-2.5" aria-label={SITE.name}>
       <Logo class="h-7 w-7" />
       <span class="text-[0.8125rem] font-semibold tracking-[0.18em]">INNOTEK</span>
     </a>
 
-    <nav class="hidden h-full lg:block" aria-label="Primary">
-      <ul class="flex h-full items-stretch text-[0.8125rem] font-medium">
+    <nav class="hidden lg:block" aria-label="Primary">
+      <ul class="flex items-center text-[0.8125rem] font-medium">
         {
           primaryNav.map((item) => (
-            <li class:list={["flex items-center", item.path === "/services/" && "relative"]}>
+            <li class:list={[item.path === "/services/" && "relative"]}>
               <a
                 href={link(item)}
                 class:list={[
-                  "inline-flex h-full items-center gap-1 px-3 opacity-70 transition-opacity hover:opacity-100",
+                  "inline-flex items-center gap-1 px-3 py-2 opacity-70 transition-opacity hover:opacity-100",
                   isActive(item.path) && "opacity-100",
                 ]}
                 aria-current={isActive(item.path) ? "page" : undefined}

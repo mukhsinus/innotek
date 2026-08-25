@@ -1,0 +1,45 @@
+---
+import SectionMeta from "./SectionMeta.astro";
+import type { Lang } from "../i18n/ui";
+import { hrefFor } from "../i18n/utils";
+
+export type RelatedItem = {
+  path: string;
+  label: string;
+};
+
+interface Props {
+  lang: Lang;
+  kicker: string;
+  index: number;
+  total: number;
+  items: RelatedItem[];
+}
+
+const { lang, kicker, index, total, items } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <section class="section-y bg-paper" data-reveal>
+      <div class="site-wrap grid gap-16 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <SectionMeta kicker={kicker} index={index} total={total} />
+          <ul class="spec-list">
+            {items.map((item, i) => (
+              <li class="spec-row">
+                <p class="spec-key">{String(i + 1).padStart(2, "0")}</p>
+                <a class="text-link" href={hrefFor(lang, item.path)}>
+                  {item.label}
+                  <span class="link-arrow" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  )
+}

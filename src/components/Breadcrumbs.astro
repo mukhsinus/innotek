@@ -1,0 +1,49 @@
+---
+import { SITE } from "../data/site";
+import type { Lang } from "../i18n/ui";
+import { hrefFor } from "../i18n/utils";
+
+export type Crumb = {
+  label: string;
+  path?: string;
+};
+
+interface Props {
+  lang: Lang;
+  items: Crumb[];
+}
+
+const { lang, items } = Astro.props;
+const origin = SITE.url.replace(/\/$/, "");
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: item.label,
+    item: `${origin}${item.path ? hrefFor(lang, item.path) : Astro.url.pathname}`,
+  })),
+};
+---
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <ol>
+    {
+      items.map((item, i) => {
+        const current = !item.path || i === items.length - 1;
+        return (
+          <li>
+            {current ? (
+              <span aria-current="page">{item.label}</span>
+            ) : (
+              <a href={hrefFor(lang, item.path!)}>{item.label}</a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

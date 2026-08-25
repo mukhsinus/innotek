@@ -1,4 +1,6 @@
 ---
+import Breadcrumbs from "./Breadcrumbs.astro";
+import PhotoFrame from "./PhotoFrame.astro";
 import QuoteBand from "./QuoteBand.astro";
 import SectionMeta from "./SectionMeta.astro";
 import { SERVICES, type ServicePage } from "../data/services";
@@ -19,31 +21,34 @@ const related = SERVICES.filter((s) => s.path !== service.path);
 <article>
   <header class="page-head bg-paper" data-reveal>
     <div class="site-wrap">
+      <Breadcrumbs
+        lang={lang}
+        items={[
+          { label: t("crumb.home"), path: "/" },
+          { label: t("nav.services"), path: "/services/" },
+          { label: t(service.labelKey) },
+        ]}
+      />
       <SectionMeta kicker={t("page.kickerService")} index={1} total={TOTAL} />
       <h1 class="t-display">{service.h1}</h1>
       <p class="t-lead">{service.lead}</p>
     </div>
   </header>
 
-  {
-    service.image && (
-      <section class="bg-paper pb-0" data-reveal>
-        <div class="site-wrap">
-          <div class="relative aspect-[16/9] overflow-hidden bg-ink lg:aspect-[16/7]">
-            <img
-              src={service.image}
-              alt=""
-              class="photo-grade absolute inset-0 h-full w-full object-cover"
-              width="1400"
-              height="700"
-              fetchpriority="high"
-              decoding="async"
-            />
-          </div>
-        </div>
-      </section>
-    )
-  }
+  <section class="bg-paper pb-0" data-reveal>
+    <div class="site-wrap">
+      <div class="relative aspect-[16/9] overflow-hidden bg-ink lg:aspect-[16/7]">
+        <PhotoFrame
+          src={service.image}
+          class="absolute inset-0 h-full w-full object-cover"
+          width={1400}
+          height={700}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
 
   <section class="section-y bg-paper" data-reveal>
     <div class="site-wrap grid gap-16 lg:grid-cols-12">

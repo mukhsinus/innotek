@@ -1,0 +1,38 @@
+---
+interface Props {
+  src?: string;
+  class?: string;
+  width?: number;
+  height?: number;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+}
+
+const {
+  src,
+  class: className,
+  width = 800,
+  height = 600,
+  loading = "lazy",
+  fetchpriority,
+} = Astro.props;
+---
+
+{
+  src ? (
+    <img
+      src={src}
+      alt=""
+      class:list={["photo-grade", className]}
+      width={width}
+      height={height}
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchpriority}
+    />
+  ) : (
+    <div class:list={["photo-placeholder", className]} aria-hidden="true">
+      <span>INNOTEK</span>
+    </div>
+  )
+}
