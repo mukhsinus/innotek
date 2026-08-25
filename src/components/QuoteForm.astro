@@ -1,6 +1,7 @@
 ---
-import { hrefFor, useT } from "../i18n/utils";
+import { SITE } from "../data/site";
 import type { Lang } from "../i18n/ui";
+import { hrefFor, useT } from "../i18n/utils";
 
 interface Props {
   lang: Lang;
@@ -11,28 +12,134 @@ const t = useT(lang);
 const thanks = hrefFor(lang, "/contacts/thanks/");
 ---
 
-<form class="quote-form" name="quote" method="POST" data-netlify="true" netlify-honeypot="bot-field" action={thanks}>
-  <input type="hidden" name="form-name" value="quote" />
+<form
+  class="quote-form"
+  name="quote"
+  method="POST"
+  action="/api/quote"
+  data-thanks={thanks}
+  data-phone={SITE.phone.display}
+  data-tel={SITE.phone.tel}
+>
+  <input type="hidden" name="page" value={Astro.url.pathname} />
   <p class="sr-only">
     <label>
       {t("form.bot")}
       <input name="bot-field" tabindex="-1" autocomplete="off" />
     </label>
   </p>
-  <label>
-    <span class="t-overline">{t("form.name")}</span>
-    <input type="text" name="name" required autocomplete="name" />
-  </label>
-  <label>
-    <span class="t-overline">{t("form.phone")}</span>
-    <input type="tel" name="phone" required autocomplete="tel" inputmode="tel" />
-  </label>
-  <label>
-    <span class="t-overline">{t("form.comment")}</span>
-    <textarea name="comment" rows="4"></textarea>
-  </label>
-  <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
-    <button class="btn-primary" type="submit">{t("form.send")}</button>
-    <p class="t-caption">{t("form.note")}</p>
+  <div data-fields>
+    <label>
+      <span class="t-overline">{t("form.name")}</span>
+      <input type="text" name="name" required autocomplete="name" maxlength="120" />
+    </label>
+    <label>
+      <span class="t-overline">{t("form.phone")}</span>
+      <input type="tel" name="phone" required autocomplete="tel" inputmode="tel" maxlength="40" />
+    </label>
+    <label>
+      <span class="t-overline">{t("form.comment")}</span>
+      <textarea name="comment" rows="4" maxlength="2000"></textarea>
+    </label>
+    <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+      <button class="btn-primary" type="submit" data-submit data-sending={t("form.sending")}>{t("form.send")}</button>
+      <p class="t-caption">{t("form.note")}</p>
+    </div>
+  </div>
+  <div class="quote-form-fallback" data-fallback hidden>
+    <p>{t("form.fallback")}</p>
+    <a class="btn-primary mt-6 inline-flex" href={`tel:${SITE.phone.tel}`} data-call>
+      {t("form.call")}
+      {" "}
+      {SITE.phone.display}
+    </a>
   </div>
 </form>
+
+<script>
+  const STATUS_URL = "/api/quote";
+
+  type Status = { enabled?: boolean };
+  type SubmitResult = { ok?: boolean; fallback?: boolean };
+
+  async function readJson<T>(res: Response): Promise<T | null> {
+    try {
+      return (await res.json()) as T;
+    } catch {
+      return null;
+    }
+  }
+
+  function showFallback(form: HTMLFormElement) {
+    const fields = form.querySelector<HTMLElement>("[data-fields]");
+    const fallback = form.querySelector<HTMLElement>("[data-fallback]");
+    if (fields) {
+      fields.hidden = true;
+      fields.querySelectorAll("input, textarea, button").forEach((el) => {
+        (el as HTMLInputElement).disabled = true;
+      });
+    }
+    if (fallback) fallback.hidden = false;
+    form.classList.add("is-fallback");
+  }
+
+  async function checkStatus(form: HTMLFormElement) {
+    try {
+      const res = await fetch(STATUS_URL, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
+      if (!res.ok) {
+        showFallback(form);
+        return;
+      }
+      const data = await readJson<Status>(res);
+      if (!data?.enabled) showFallback(form);
+    } catch {
+      showFallback(form);
+    }
+  }
+
+  async function onSubmit(event: SubmitEvent) {
+    const form = event.currentTarget as HTMLFormElement;
+    if (form.classList.contains("is-fallback")) {
+      event.preventDefault();
+      return;
+    }
+    event.preventDefault();
+    const submit = form.querySelector<HTMLButtonElement>("[data-submit]");
+    const thanks = form.dataset.thanks ?? "/contacts/thanks/";
+    if (submit) {
+      submit.disabled = true;
+      submit.dataset.label = submit.textContent ?? "";
+      submit.textContent = submit.dataset.sending ?? submit.textContent;
+    }
+    try {
+      const res = await fetch(STATUS_URL, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      });
+      const data = await readJson<SubmitResult>(res);
+      if (res.ok && data?.ok && !data.fallback) {
+        window.location.assign(thanks);
+        return;
+      }
+      showFallback(form);
+    } catch {
+      showFallback(form);
+    } finally {
+      if (submit && !form.classList.contains("is-fallback")) {
+        submit.disabled = false;
+        if (submit.dataset.label) submit.textContent = submit.dataset.label;
+      }
+    }
+  }
+
+  document.querySelectorAll<HTMLFormElement>("form.quote-form").forEach((form) => {
+    if (form.dataset.bound === "1") return;
+    form.dataset.bound = "1";
+    void checkStatus(form);
+    form.addEventListener("submit", onSubmit);
+  });
+</script>

@@ -20,15 +20,41 @@ const UZ_EXCERPTS: Record<string, string> = {
   "/catalog/stellazhi/nabivnye-stellazhi/":
     "Yo‘laksiz zich saqlash: texnika tizim ichiga kiradi.",
   "/catalog/stellazhi/konsolnye-stellazhi/":
-    "Uzun o‘lchamli yuk: quvur, profil, to‘sin, list.",
+    "Uzun o‘lchamli va nostandart yuk: to‘sin, quvur, profil, list, taxta.",
   "/catalog/stellazhi/mezoninnye-stellazhi/":
-    "Baland shiftlarda qo‘shimcha qavatlar saqlash.",
+    "Baland shiftli binolarda ko‘p qavatli ombor tizimlari.",
   "/catalog/stellazhi/stellazhi-dlya-pressform/":
-    "Press-forma, shtamp va stanoklar uchun chiqariladigan platformalar.",
+    "Og‘ir press-formalar, shtamplar va ishlab chiqarish anjomlari.",
   "/catalog/stellazhi/kabelnye-stellazhi/":
-    "Katushka va buxtalar: kabelni frontal tizimda saqlash.",
+    "Kabel, katushka va buxtalar: qulay yoyish va saqlash.",
   "/catalog/stellazhi/samonesushchie-stellazhi/":
-    "Stelaj — bino karkasi: tom va devorlar konstruksiyaga mahkamlanadi.",
+    "Stelaj konstruksiyasi bino karkasi vazifasini bajaradi.",
+};
+
+const UZ_RACKS_SEO = {
+  heading: "Toshkentda metall stellajlar ishlab chiqaruvchisi",
+  paragraphs: [
+    "Innotek metall stellajlari mustahkam konstruksiyasi, uzoq muddat xizmat qilishi va yuk ko‘tarish qobiliyatining yuqoriligi bilan ajralib turadi. Sifatli materiallar va puxta o‘ylangan konstruksiya tufayli stellajlar mahsulotlarni saqlashni samarali tashkil etish va xona maydonidan foydalanish imkonini beradi.",
+    "Kompaniya mutaxassislari vazifalar, xona o‘lchamlari va kerakli yuklamani hisobga olgan holda stellajlarning maqbul turini tanlashda yordam berishadi. Maslahat, loyihalash, yetkazib berish va o‘rnatish — bir majmua.",
+  ],
+  faqs: [
+    {
+      q: "Toshkentda metall stellajlarni qayerdan sotib olish mumkin?",
+      a: "Toshkentda metall stellajlarni Innotek kompaniyasidan sotib olish mumkin. Biz omborlar, do‘konlar, arxivlar va ishlab chiqarish binolari uchun stellaj tizimlarini yetkazib berish va o‘rnatish xizmatlari bilan birga taklif etamiz.",
+    },
+    {
+      q: "Toshkentda metall stellajlar qancha turadi?",
+      a: "Narx konstruksiya o‘lchamlari, tokchalar soni, ruxsat etilgan yuklama va metall turiga bog‘liq. Aniq narxni bilish uchun mutaxassislarga murojaat qiling.",
+    },
+    {
+      q: "Metall stellajlarni individual o‘lchamlarda buyurtma qilish mumkinmi?",
+      a: "Ha, metall stellajlarni individual parametrlarga asosan tayyorlash mumkin. Bu ombor yoki xona maydonidan samarali foydalanish imkonini beradi.",
+    },
+    {
+      q: "Metall stelajlarni O‘zbekiston bo‘ylab yetkazib berasizlarmi?",
+      a: "Ha, Innotek kompaniyasi metall stelajlarni Toshkent va O‘zbekistonning boshqa shaharlariga yetkazib beradi.",
+    },
+  ],
 };
 
 const PRODUCT_UZ: Record<string, Partial<CatalogProduct>> = {
@@ -64,6 +90,7 @@ const PRODUCT_UZ: Record<string, Partial<CatalogProduct>> = {
       "Polkalar orasidagi masofani o‘zgartirish",
       "Mahsulotga qulay kirish",
       "Demontaj va boshqa xonaga ko‘chirish",
+      "Pol qoplamasini himoya qilish uchun oyoq tagliklari",
     ],
   },
   "nabivnye-stellazhi": {
@@ -92,7 +119,7 @@ export function localizeCategory(cat: CatalogCategory, lang: Lang): CatalogCateg
       "Toshkentda ombor va do‘konlar uchun metall stelajlarni sotib oling. Mustahkam stelaj tizimlari qulay narxlarda va O‘zbekiston bo‘ylab yetkazib berish xizmati bilan.",
     h1: "Toshkentda metall stelajlar",
     lead: "Ombor, do‘kon va ishlab chiqarish uchun. O‘z zavodimiz Toshkentda.",
-    seo: undefined,
+    seo: UZ_RACKS_SEO,
     products: cat.products.map((item) => ({
       ...item,
       excerpt: UZ_EXCERPTS[item.path],
@@ -115,6 +142,6 @@ export function localizeService(service: ServicePage, lang: Lang): ServicePage {
       "Toshkentda metallni bo‘yash xizmatlari. Innotek kompaniyasi sifatli va uzoq muddatli qoplama. Buyurtma — yetkazib berish va xizmat mavjud.",
     h1: "Metallni bo‘yash",
     lead: "Mahsulotlarga tashqi ko‘rinish va korroziyadan himoya. Sirtni tayyorlaymiz va uzoq muddatga mo‘ljallangan qoplama surtamiz.",
-    body: "Bizning metallni bo‘yash bo‘yicha xizmatlarimiz mahsulotlaringizga nafaqat jozibali tashqi ko‘rinish beradi, balki ularni korroziya va tashqi muhit ta’siridan ham himoya qiladi.",
+    body: "Bizning metallni bo‘yash bo‘yicha professional xizmatlarimiz mahsulotlaringizga nafaqat jozibali tashqi ko‘rinish beradi, balki ularni korroziya va tashqi muhit ta’siridan ham himoya qiladi. Biz yuqori sifatli bo‘yoqlardan foydalanamiz va metall yuzasini puxta tayyorlaymiz, shunda qoplama bir tekis va uzoq muddat xizmat qiladi. Tajriba va har bir detalga e’tibor — metall mahsulot a’lo darajada ko‘rinadi va uzoq yillar xizmat qiladi.",
   };
 }

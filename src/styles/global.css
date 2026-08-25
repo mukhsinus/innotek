@@ -749,6 +749,16 @@
   min-height: 7rem;
 }
 
+.quote-form-fallback {
+  max-width: 28rem;
+}
+
+.quote-form-fallback p {
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
 .client-logos {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -2,6 +2,7 @@
 import Breadcrumbs from "./Breadcrumbs.astro";
 import PhotoFrame from "./PhotoFrame.astro";
 import QuoteBand from "./QuoteBand.astro";
+import QuoteSection from "./QuoteSection.astro";
 import RelatedLinks from "./RelatedLinks.astro";
 import SectionMeta from "./SectionMeta.astro";
 import { CATALOG_CATEGORIES, type CatalogCategory } from "../data/catalog";
@@ -17,7 +18,9 @@ const { lang, category } = Astro.props;
 const t = useT(lang);
 const pad = (n: number) => String(n).padStart(2, "0");
 const hasGrid = category.products.length > 0;
-const hasDetails = Boolean(category.body?.length || category.specs?.length || category.features?.length);
+const hasDetails = Boolean(
+  category.body?.length || category.aiBody?.length || category.specs?.length || category.features?.length,
+);
 const hasSeo = Boolean(category.seo);
 const related = CATALOG_CATEGORIES.filter((item) => item.slug !== category.slug).map((item) => ({
   path: item.path,
@@ -120,6 +123,17 @@ const seoN = hasSeo ? n++ : 0;
               </div>
             </div>
           )}
+          {category.aiBody && category.aiBody.length > 0 && (
+            <div class={category.body?.length ? "lg:col-span-8" : category.specs?.length ? "lg:col-span-7" : "lg:col-span-8"}>
+              {(!category.body || category.body.length === 0) && (
+                <SectionMeta kicker={t("page.aboutProduct")} index={detailsN} total={TOTAL} />
+              )}
+              <div class="max-w-xl space-y-4 text-lg leading-relaxed text-muted">
+                <!-- AI-текст, проверить -->
+                {category.aiBody.map((p) => <p>{p}</p>)}
+              </div>
+            </div>
+          )}
           {category.specs && category.specs.length > 0 && (
             <div class={category.body?.length ? "lg:col-span-4 lg:col-start-9" : "lg:col-span-8"}>
               {(!category.body || category.body.length === 0) && (
@@ -155,7 +169,13 @@ const seoN = hasSeo ? n++ : 0;
 
   <RelatedLinks lang={lang} kicker={t("page.related")} index={relatedN} total={TOTAL} items={related} />
 
-  <QuoteBand lang={lang} index={ctaN} total={TOTAL} />
+  {
+    category.embedQuote ? (
+      <QuoteSection lang={lang} index={ctaN} total={TOTAL} catalogCta={category.ctaCatalog} />
+    ) : (
+      <QuoteBand lang={lang} index={ctaN} total={TOTAL} />
+    )
+  }
 
   {
     category.seo && (

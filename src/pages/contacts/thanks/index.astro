@@ -2,6 +2,7 @@
 import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import SectionMeta from "../../../components/SectionMeta.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { SITE } from "../../../data/site";
 import { hrefFor, useT } from "../../../i18n/utils";
 
 const lang = "ru" as const;
@@ -23,7 +24,12 @@ const t = useT(lang);
       <h1 class="t-display">{t("form.thanksTitle")}</h1>
       <p class="t-lead">{t("form.thanksLead")}</p>
       <div class="mt-10 flex flex-wrap gap-3">
-        <a class="btn-primary" href={hrefFor(lang, "/")}>{t("notFound.home")}</a>
+        <a class="btn-primary" href={`tel:${SITE.phone.tel}`}>
+          {t("form.call")}
+          {" "}
+          {SITE.phone.display}
+        </a>
+        <a class="btn-ghost border-ink" href={hrefFor(lang, "/")}>{t("notFound.home")}</a>
         <a class="btn-ghost border-ink" href={hrefFor(lang, "/catalog/")}>{t("cta.catalog")}</a>
       </div>
     </div>

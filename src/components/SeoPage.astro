@@ -2,6 +2,7 @@
 import Breadcrumbs from "./Breadcrumbs.astro";
 import PhotoFrame from "./PhotoFrame.astro";
 import QuoteBand from "./QuoteBand.astro";
+import QuoteSection from "./QuoteSection.astro";
 import RelatedLinks from "./RelatedLinks.astro";
 import SectionMeta from "./SectionMeta.astro";
 import type { SeoLanding } from "../data/landings";
@@ -20,6 +21,7 @@ const hasTypes = Boolean(page.types?.length);
 const hasPoints = Boolean(page.points?.length);
 const hasRelated = page.related.length > 0;
 const hasSeo = Boolean(page.seo);
+const hasAi = Boolean(page.aiParagraphs?.length);
 const TOTAL = 2 + (hasTypes ? 1 : 0) + (hasPoints ? 1 : 0) + (hasRelated ? 1 : 0) + (hasSeo ? 1 : 0);
 let n = 1;
 const introN = n++;
@@ -60,7 +62,7 @@ const seoN = hasSeo ? n++ : 0;
   </header>
 
   {
-    (page.intro.length > 0 || hasTypes || hasPoints) && (
+    (page.intro.length > 0 || hasAi || hasTypes || hasPoints) && (
       <section class="section-y bg-paper" data-reveal>
         <div class="site-wrap">
           {hasTypes && <SectionMeta kicker={t("page.lineup")} index={typesN} total={TOTAL} />}
@@ -68,6 +70,12 @@ const seoN = hasSeo ? n++ : 0;
           {page.intro.length > 0 && (
             <div class="max-w-2xl space-y-4 text-[1.0625rem] leading-relaxed text-muted">
               {page.intro.map((p) => <p>{p}</p>)}
+            </div>
+          )}
+          {hasAi && (
+            <div class:list={["max-w-2xl space-y-4 text-[1.0625rem] leading-relaxed text-muted", page.intro.length > 0 && "mt-4"]}>
+              <!-- AI-текст, проверить -->
+              {page.aiParagraphs!.map((p) => <p>{p}</p>)}
             </div>
           )}
           {hasTypes && (
@@ -108,7 +116,13 @@ const seoN = hasSeo ? n++ : 0;
     )
   }
 
-  <QuoteBand lang={lang} index={ctaN} total={TOTAL} />
+  {
+    page.embedQuote ? (
+      <QuoteSection lang={lang} index={ctaN} total={TOTAL} catalogCta={page.ctaCatalog} />
+    ) : (
+      <QuoteBand lang={lang} index={ctaN} total={TOTAL} />
+    )
+  }
 
   {
     page.seo && (

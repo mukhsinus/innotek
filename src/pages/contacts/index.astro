@@ -1,6 +1,7 @@
 ---
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import QuoteForm from "../../components/QuoteForm.astro";
+import RelatedLinks from "../../components/RelatedLinks.astro";
 import SectionMeta from "../../components/SectionMeta.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { CONTACTS } from "../../data/company";
@@ -9,7 +10,7 @@ import { useT } from "../../i18n/utils";
 
 const lang = "ru" as const;
 const t = useT(lang);
-const TOTAL = 3;
+const TOTAL = 4;
 const address = SITE.address.ru;
 ---
 
@@ -113,5 +114,18 @@ const address = SITE.address.ru;
         </div>
       </div>
     </section>
+
+    <RelatedLinks
+      lang={lang}
+      kicker={t("page.related")}
+      index={4}
+      total={TOTAL}
+      items={[
+        { path: "/catalog/", label: t("nav.catalog") },
+        { path: "/catalog/stellazhi/", label: t("nav.racks") },
+        { path: "/services/", label: t("nav.services") },
+        { path: "/about/", label: t("nav.about") },
+      ]}
+    />
   </article>
 </BaseLayout>

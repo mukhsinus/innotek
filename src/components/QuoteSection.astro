@@ -1,0 +1,42 @@
+---
+import QuoteForm from "./QuoteForm.astro";
+import SectionMeta from "./SectionMeta.astro";
+import type { Lang } from "../i18n/ui";
+import { hrefFor, useT } from "../i18n/utils";
+
+interface Props {
+  lang: Lang;
+  index: number;
+  total: number;
+  catalogCta?: { path: string; label: string };
+}
+
+const { lang, index, total, catalogCta } = Astro.props;
+const t = useT(lang);
+---
+
+<section id="quote" class="section-y bg-paper" data-reveal>
+  <div class="site-wrap grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <SectionMeta kicker={t("contacts.quote")} index={index} total={total} />
+      <h2 class="t-display">{t("form.ctaManager")}</h2>
+      <p class="t-lead">{t("form.note")}</p>
+      {
+        catalogCta && (
+          <p class="mt-8">
+            <a class="btn-ghost border-ink" href={hrefFor(lang, catalogCta.path)}>
+              {catalogCta.label}
+              <span class="link-arrow" aria-hidden="true">
+                {" "}
+                →
+              </span>
+            </a>
+          </p>
+        )
+      }
+    </div>
+    <div class="lg:col-span-6 lg:col-start-7">
+      <QuoteForm lang={lang} />
+    </div>
+  </div>
+</section>
