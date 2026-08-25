@@ -7,3 +7,12 @@
 
 [functions]
   directory = "netlify/functions"
+
+# ДЕМО: закрыть *.netlify.app от индексации.
+# При подключении боевого домена innotek.uz — УДАЛИТЬ этот блок [[headers]],
+# иначе X-Robots-Tag останется и на проде. robots.txt и meta в HTML
+# сами переключатся по хосту (см. netlify/edge-functions/robots.ts и BaseLayout).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

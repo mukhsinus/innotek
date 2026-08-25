@@ -41,6 +41,11 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim() || "";
 <html lang={htmlLang}>
   <head>
     <meta charset="utf-8" />
+    <script is:inline>
+      if (location.hostname.toLowerCase().endsWith(".netlify.app")) {
+        document.write('<meta name="robots" content="noindex, nofollow">');
+      }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
