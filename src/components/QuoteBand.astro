@@ -6,54 +6,189 @@ import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
 
 interface Props {
-    lang: Lang;
-    index: number;
-    total: number;
+  lang: Lang;
+  index?: number;
+  total?: number;
 }
 
-const { lang, index, total } = Astro.props;
+const { lang, index = 6, total = 6 } = Astro.props;
 const t = useT(lang);
 const copy = HOME[lang];
 const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
-const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
+const isUz = lang === "uz";
+const address = isUz ? SITE.address.uz : SITE.address.ru;
+const marquee = copy.marquee.repeat(4);
 ---
 
-<section
-    class="section-y relative isolate overflow-hidden bg-surface"
-    data-reveal
->
-    <div class="site-wrap">
+<section id="quote" class="section-y relative isolate overflow-hidden bg-paper" data-reveal>
+  <div class="cta-marquee" aria-hidden="true">
+    <div class="cta-marquee-track">
+      <span>{marquee}</span>
+      <span>{marquee}</span>
+    </div>
+  </div>
+  <div class="cta-noise" aria-hidden="true"></div>
+
+  <div class="cta-content site-wrap">
+    <div
+      data-spotlight
+      class="group relative rounded-xl border border-line bg-surface/70 backdrop-blur-md p-8 sm:p-12 lg:p-16 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.06)]"
+    >
+      <span class="cad-cross cad-tl" aria-hidden="true">+</span>
+      <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+      <span class="cad-cross cad-bl" aria-hidden="true">+</span>
+      <span class="cad-cross cad-br" aria-hidden="true">+</span>
+
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
         <SectionMeta kicker={t("home.kickerCta")} index={index} total={total} />
-        <div
-            class="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between"
-        >
-            <div class="max-w-3xl">
-                <h2 class="t-display">
-                    {copy.ctaHeading.before}
-                    <span class="t-stroke">{copy.ctaHeading.accent}</span>
-                </h2>
-                <p class="t-lead">{copy.ctaLead}</p>
-            </div>
-            <a class="btn-accent shrink-0" href={quoteHref}>{t("cta.quote")}</a>
+        <div class="telemetry-pill" aria-label="Status">
+          <span class="relative flex h-1.5 w-1.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan"></span>
+          </span>
+          <span>RAPID CAD SPECIFICATION // 24H</span>
         </div>
-        <div
-            class="mt-20 flex flex-col gap-6 text-sm text-muted-on-ink sm:mt-28 sm:flex-row sm:flex-wrap sm:gap-x-16 sm:gap-y-4"
-        >
-            <p>{address}</p>
-            <a
-                class="text-ink underline decoration-accent decoration-1 underline-offset-4 transition-opacity hover:opacity-70"
-                href={SITE.mapsUrl}
+      </div>
+
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
+        <!-- Left details & value proposition -->
+        <div class="lg:col-span-7">
+          <h2 class="t-display">
+            {copy.ctaHeading.before}
+            <span class="t-stroke">{copy.ctaHeading.accent}</span>
+          </h2>
+          <p class="t-lead text-base lg:text-lg mt-4 max-w-xl text-muted-on-ink leading-relaxed">
+            {copy.ctaLead}
+          </p>
+        </div>
+
+        <!-- Right Action Hub Card -->
+        <div class="lg:col-span-5">
+          <div class="rounded-lg border border-line bg-paper p-6 sm:p-8 shadow-sm">
+            <p class="text-xs font-mono text-cyan tracking-wider uppercase mb-2">
+              [ {isUz ? "Bog'lanish va narx" : "Расчёт стоимости"} ]
+            </p>
+            <p class="text-lg font-semibold text-ink" style="font-family: var(--font-display)">
+              {isUz ? "Mutaxassis bilan bog'laning" : "Свяжитесь с инженером проекта"}
+            </p>
+            <p class="text-xs text-muted-on-ink mt-1 mb-6">
+              {isUz ? "Sizga mos konfiguratsiyani tanlashda yordam beramiz." : "Ответим на вопросы и подготовим коммерческое предложение."}
+            </p>
+
+            <div class="space-y-3">
+              <a
+                class="btn-accent w-full justify-center text-center shadow-md hover:shadow-accent/25 transition-all"
+                href={quoteHref}
+              >
+                <span>{t("cta.quote")}</span>
+                <span class="link-arrow" aria-hidden="true">→</span>
+              </a>
+
+              <a
+                class="btn-primary w-full justify-center text-center gap-2.5 hover:border-cyan hover:text-cyan transition-colors"
+                href={SITE.socials.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
-            >
-                {t("cta.map")}
-            </a>
-            <a
-                class="text-ink transition-colors hover:text-accent"
-                href={`tel:${SITE.phone.tel}`}
-            >
-                {SITE.phone.display}
-            </a>
+              >
+                <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+                </svg>
+                <span>{isUz ? "Telegram orqali yozish" : "Написать в Telegram"}</span>
+              </a>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Bottom Contacts Strip inside the card -->
+      <div class="mt-10 pt-8 border-t border-line/80 flex flex-col gap-4 text-xs font-mono text-muted-on-ink sm:flex-row sm:items-center sm:justify-between">
+        <p class="truncate max-w-md">{address}</p>
+        <div class="flex flex-wrap items-center gap-6">
+          <a
+            class="text-cyan hover:text-accent transition-colors inline-flex items-center gap-1"
+            href={SITE.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>[41.3300° N, 69.2501° E]</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a
+            class="text-ink font-semibold hover:text-accent transition-colors text-sm"
+            href={`tel:${SITE.phone.tel}`}
+          >
+            {SITE.phone.display}
+          </a>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
+
+<style>
+  .t-stroke {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--color-ink);
+  }
+
+  .cta-marquee {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0.06;
+    display: flex;
+    align-items: center;
+  }
+
+  .cta-marquee-track {
+    display: flex;
+    white-space: nowrap;
+    font-family: var(--font-display);
+    font-size: clamp(4.5rem, 14vw, 11rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--color-line);
+    animation: cta-marquee-anim 48s linear infinite;
+  }
+
+  .cta-marquee-track span {
+    padding-right: 0.35em;
+  }
+
+  @keyframes cta-marquee-anim {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .cta-noise {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-marquee-track {
+      animation: none !important;
+    }
+    .cta-marquee {
+      display: none;
+    }
+  }
+</style>

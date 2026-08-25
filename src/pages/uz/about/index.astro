@@ -1,47 +1,47 @@
 ---
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
-import PhotoFrame from "../../components/PhotoFrame.astro";
-import QuoteBand from "../../components/QuoteBand.astro";
-import RelatedLinks from "../../components/RelatedLinks.astro";
-import SectionMeta from "../../components/SectionMeta.astro";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import { ABOUT } from "../../data/company";
-import { useT } from "../../i18n/utils";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import PhotoFrame from "../../../components/PhotoFrame.astro";
+import QuoteBand from "../../../components/QuoteBand.astro";
+import RelatedLinks from "../../../components/RelatedLinks.astro";
+import SectionMeta from "../../../components/SectionMeta.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { ABOUT } from "../../../data/company";
+import { useT } from "../../../i18n/utils";
 
-const lang = "ru" as const;
+const lang = "uz" as const;
 const t = useT(lang);
 const TOTAL = 5;
 
 const STATS = [
-  { value: "5", label: "Автоматических линий", desc: "Профилирование, лазерная резка и гибка" },
-  { value: "0.2–6.0 мм", label: "Толщина стали", desc: "Конструкционная сталь ST 37" },
-  { value: "до 14 000 мм", label: "Высота рам", desc: "Индивидуальные типоразмеры под проект" },
-  { value: "до 4 500 кг", label: "Нагрузка на ярус", desc: "Сертифицировано по ISO 9001:2015" },
+  { value: "5", label: "Avtomatlashtirilgan liniya", desc: "Profillash, lazerli kesish va bukish" },
+  { value: "0.2–6.0 mm", label: "Po'lat qalinligi", desc: "ST 37 konstruksion po'lati" },
+  { value: "14 000 mm gacha", label: "Rama balandligi", desc: "Loyiha bo'yicha individual o'lchamlar" },
+  { value: "4 500 kg gacha", label: "Yarus yuk ko'tarish", desc: "ISO 9001:2015 sertifikatlangan" },
 ];
 
 const PILLARS = [
   {
     num: "01",
-    tag: "ПРОЕКТИРОВАНИЕ",
-    title: "Инженерный расчёт и моделирование",
-    desc: "Собственный конструкторский отдел рассчитывает распределение нагрузок, плотность хранения и сейсмоустойчивость при поддержке итальянских специалистов.",
+    tag: "LOYIHALASH",
+    title: "Muhandislik hisob-kitobi va modellashtirish",
+    desc: "O'zimizning konstruktorlik bo'limimiz italiyalik mutaxassislar ko'magida yuk taqsimoti, saqlash zichligi va seysmik barqarorlikni hisoblab chiqadi.",
   },
   {
     num: "02",
-    tag: "ПРОИЗВОДСТВО",
-    title: "Завод полного цикла в Ташкенте",
-    desc: "Автоматизированные линии проката, порошковой полимерной окраски и термообработки металла гарантируют стабильность геометрии и долговечность.",
+    tag: "ISHLAB CHIQARISH",
+    title: "Toshkentda to'liq siklli zavod",
+    desc: "Avtomatlashtirilgan prokat liniyalari, polimer kukunli bo'yash va metallga termik ishlov berish aniq geometriya va mustahkamlikni ta'minlaydi.",
   },
   {
     num: "03",
-    tag: "МОНТАЖ И СЕРВИС",
-    title: "Сборка по стандартам ГОСТ",
-    desc: "Квалифицированные монтажные бригады с допусками проводят сборку, переезд и ремонт стеллажных систем без остановки работы действующего склада.",
+    tag: "O'RNATISH VA SERVIS",
+    title: "GOST standartlari bo'yicha yig'ish",
+    desc: "Malakali montaj brigadalari amaldagi ombor faoliyatini to'xtatmasdan qisqa muddatda stelaj tizimlarini o'rnatish va ta'mirlashni amalga oshiradi.",
   },
 ];
 ---
 
-<BaseLayout title={ABOUT.title} description={ABOUT.description}>
+<BaseLayout title="Kompaniya haqida | Innotek" description="Ombor uskunalarini loyihalash va stelajlarni o'rnatish. Innotek jamoasi, Toshkent.">
   <article>
     <!-- Header -->
     <header class="page-head bg-surface" data-reveal>
@@ -49,13 +49,13 @@ const PILLARS = [
         <Breadcrumbs
           lang={lang}
           items={[
-            { label: t("crumb.home"), path: "/" },
+            { label: t("crumb.home"), path: "/uz/" },
             { label: t("nav.about") },
           ]}
         />
         <SectionMeta kicker={t("page.kickerCompany")} index={1} total={TOTAL} />
-        <h1 class="t-display">{ABOUT.h1}</h1>
-        <p class="t-lead">{ABOUT.lead}</p>
+        <h1 class="t-display">Kompaniya haqida</h1>
+        <p class="t-lead">Kompaniyaning uzoq muddatli va mustahkam muvaffaqiyati to'g'ri falsafa va qadriyatlarga asoslanadi.</p>
       </div>
     </header>
 
@@ -91,7 +91,7 @@ const PILLARS = [
     <!-- Key Principles & Pillars -->
     <section class="section-y bg-paper" data-reveal>
       <div class="site-wrap">
-        <SectionMeta kicker="НАШ ПОДХОД" index={2} total={TOTAL} />
+        <SectionMeta kicker="BIZNING YONDASHUV" index={2} total={TOTAL} />
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
           {
             PILLARS.map((p, i) => (
@@ -130,7 +130,7 @@ const PILLARS = [
     <!-- Engineering Stats -->
     <section class="section-y bg-surface border-y border-line" data-reveal>
       <div class="site-wrap">
-        <SectionMeta kicker="ПРОИЗВОДСТВЕННЫЕ ПОКАЗАТЕЛИ" index={3} total={TOTAL} />
+        <SectionMeta kicker="ISHLAB CHIQARISH KO'RSATKICHLARI" index={3} total={TOTAL} />
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
           {
             STATS.map((stat, i) => (

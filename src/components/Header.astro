@@ -19,6 +19,7 @@ interface Props {
 
 const { lang, overlay = false } = Astro.props;
 const t = useT(lang);
+const isUz = lang === "uz";
 const here = Astro.url.pathname;
 const copy = HOME[lang];
 
@@ -150,18 +151,17 @@ copy.categories.forEach((cat) => {
       <button
         id="menu-btn"
         type="button"
-        class="inline-flex h-10 w-10 items-center justify-center lg:hidden"
+        class="relative inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-paper text-ink transition-colors hover:border-accent lg:hidden cursor-pointer shadow-xs"
         aria-expanded="false"
         aria-controls="mobile-nav"
         aria-label={t("menu.open")}
       >
-        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <path
-            d="M3 5h14M3 10h14M3 15h14"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"></path>
-        </svg>
+        <span class="sr-only">{t("menu.open")}</span>
+        <div class="relative flex h-3.5 w-4 flex-col justify-between" aria-hidden="true">
+          <span class="bar-1 block h-[2px] w-full rounded bg-current transition-all duration-300"></span>
+          <span class="bar-2 block h-[2px] w-full rounded bg-current transition-all duration-300"></span>
+          <span class="bar-3 block h-[2px] w-full rounded bg-current transition-all duration-300"></span>
+        </div>
       </button>
     </div>
   </div>
@@ -169,116 +169,302 @@ copy.categories.forEach((cat) => {
   <!-- Mega menu: catalog with thumbnails -->
   <div
     id="nav-flyout-catalog"
-    class="nav-flyout nav-flyout-full"
+    class="nav-flyout nav-flyout-full shadow-2xl"
     data-flyout-panel="catalog"
   >
-    <div class="border-t border-line bg-surface text-ink">
-      <div class="site-wrap py-10">
-        <div class="site-grid" style="background: transparent; gap: 0">
+    <div
+      class="border-t border-b border-line bg-surface text-ink max-h-[calc(100vh-5rem)] overflow-y-auto"
+    >
+      <div class="site-wrap py-5">
+        <div class="grid grid-cols-12 gap-x-6 gap-y-4">
           {
-            catalogNav.map((cat) => (
-              <div
-                class="col-span-4 lg:col-span-3 p-4"
-                style="background: transparent"
-              >
-                <a href={link(cat)} class="group block">
+            catalogNav.map((cat, idx) => {
+              const hasChildren = Boolean(
+                cat.children && cat.children.length > 0,
+              );
+              const accordionId = `cat-sub-${idx}`;
+
+              return (
+                <div class="col-span-6 md:col-span-4 lg:col-span-3">
                   {catImages[cat.path] && (
-                    <div class="relative aspect-[4/3] overflow-hidden bg-paper mb-3">
-                      <img
-                        src={catImages[cat.path]}
-                        alt=""
-                        class="h-full w-full object-cover photo-grade"
-                        width="400"
-                        height="300"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </div>
+                    <a
+                      href={link(cat)}
+                      class="group block mb-2"
+                      title={t(cat.labelKey)}
+                    >
+                      <div class="relative h-30 w-full overflow-hidden bg-paper/60 border border-line/30">
+                        <img
+                          src={catImages[cat.path]}
+                          alt=""
+                          class="h-full w-full object-cover photo-grade group-hover:scale-105 transition-transform duration-300"
+                          width="240"
+                          height="120"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                    </a>
                   )}
-                  <span class="text-sm font-medium text-ink group-hover:text-accent transition-colors">
-                    {t(cat.labelKey)}
-                  </span>
-                </a>
-                {cat.children && (
-                  <ul class="mt-3 space-y-1.5 text-sm text-muted">
-                    {cat.children.map((child) => (
-                      <li>
-                        <a
-                          class="hover:text-ink transition-colors"
-                          href={link(child)}
+
+                  {hasChildren ? (
+                    <div>
+                      <button
+                        type="button"
+                        class="cat-accordion-btn flex items-center justify-between w-full text-left py-1 text-xs font-bold uppercase tracking-wider text-ink hover:text-accent transition-colors cursor-pointer group"
+                        aria-expanded="false"
+                        aria-controls={accordionId}
+                        data-cat-accordion-btn
+                      >
+                        <span>{t(cat.labelKey)}</span>
+                        <svg
+                          class="cat-chevron h-3.5 w-3.5 opacity-60 group-hover:opacity-100 group-hover:text-accent shrink-0 ml-1.5"
+                          viewBox="0 0 12 12"
+                          fill="none"
+                          aria-hidden="true"
                         >
-                          {t(child.labelKey)}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))
+                          <path
+                            d="M2.5 4.5 6 8l3.5-3.5"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </button>
+
+                      <div id={accordionId} class="cat-accordion-content">
+                        <div>
+                          <ul class="pt-1.5 pb-1 space-y-1 text-xs text-muted">
+                            <li>
+                              <a
+                                class="text-accent hover:underline block py-0.5 font-medium"
+                                href={link(cat)}
+                              >
+                                {isUz
+                                  ? "Barcha mahsulotlar →"
+                                  : "Все товары категории →"}
+                              </a>
+                            </li>
+                            {cat.children!.map((child) => (
+                              <li>
+                                <a
+                                  class="hover:text-accent transition-colors block py-0.5"
+                                  href={link(child)}
+                                >
+                                  {t(child.labelKey)}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <a
+                      href={link(cat)}
+                      class="flex items-center justify-between w-full py-1 text-xs font-bold uppercase tracking-wider text-ink hover:text-accent transition-colors"
+                    >
+                      <span>{t(cat.labelKey)}</span>
+                    </a>
+                  )}
+                </div>
+              );
+            })
           }
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Mobile nav -->
+  <!-- Mobile nav with Smooth Animated Appearance & Accordions -->
   <div
     id="mobile-nav"
-    class="hidden border-t border-line bg-surface text-ink lg:hidden"
-    hidden
+    class="mobile-nav-panel border-t border-line bg-surface/98 backdrop-blur-xl text-ink lg:hidden shadow-2xl"
+    aria-hidden="true"
   >
     <nav
-      class="site-wrap max-h-[min(80vh,40rem)] overflow-y-auto py-4"
+      class="site-wrap max-h-[calc(100vh-4.5rem)] overflow-y-auto py-5 space-y-2"
       aria-label="Mobile"
     >
-      <a class="btn-accent mb-6 w-full" href={quoteHref}>{t("cta.quote")}</a>
+      <a class="btn-accent mb-4 w-full justify-center shadow-md text-center" href={quoteHref}>
+        <span>{t("cta.quote")}</span>
+        <span class="link-arrow" aria-hidden="true">→</span>
+      </a>
+
       {
-        primaryNav.map((item) =>
-          item.children ? (
-            <details class="border-b border-line py-2">
-              <summary class="cursor-pointer py-2 text-sm font-semibold">
-                {t(item.labelKey)}
-              </summary>
-              <ul class="space-y-3 pb-3 pl-1 text-sm text-muted">
-                <li>
-                  <a class="font-semibold text-ink" href={link(item)}>
-                    {t(item.labelKey)}
+        primaryNav.map((item, idx) => {
+          const hasChildren = Boolean(item.children && item.children.length > 0);
+          const topAccordionId = `mob-acc-${idx}`;
+
+          if (!hasChildren) {
+            return (
+              <a
+                class:list={[
+                  "flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200",
+                  isActive(item.path)
+                    ? "bg-paper text-accent shadow-xs border border-line"
+                    : "text-ink hover:bg-paper hover:text-accent border border-transparent",
+                ]}
+                href={link(item)}
+              >
+                <span>{t(item.labelKey)}</span>
+                <span class="text-xs text-muted-on-ink">→</span>
+              </a>
+            );
+          }
+
+          return (
+            <div class="rounded-xl border border-line/60 bg-paper/50 overflow-hidden shadow-xs">
+              <button
+                type="button"
+                class="mobile-acc-trigger flex w-full items-center justify-between px-4 py-3.5 text-left text-sm font-semibold text-ink hover:text-accent transition-colors cursor-pointer"
+                aria-expanded="false"
+                aria-controls={topAccordionId}
+                data-mob-accordion-btn
+              >
+                <span class="flex items-center gap-2">
+                  <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+                  <span>{t(item.labelKey)}</span>
+                </span>
+                <svg
+                  class="mob-chevron h-4 w-4 text-muted-on-ink transition-transform duration-300 shrink-0"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M4 6l4 4 4-4"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+
+              <div id={topAccordionId} class="mobile-acc-content">
+                <div class="px-3.5 pb-3 pt-1 border-t border-line/40 space-y-2">
+                  <!-- Direct link to category/service hub page -->
+                  <a
+                    class="flex items-center justify-between rounded-lg bg-surface px-3 py-2 text-xs font-semibold text-accent shadow-xs border border-line hover:bg-paper transition-colors"
+                    href={link(item)}
+                  >
+                    <span>
+                      {item.path === "/catalog/"
+                        ? isUz
+                          ? "Barcha mahsulotlar katalogi →"
+                          : "Все категории каталога →"
+                        : isUz
+                          ? "Barcha xizmatlar ro'yxati →"
+                          : "Все услуги компании →"}
+                    </span>
                   </a>
-                </li>
-                {item.path === "/catalog/"
-                  ? catalogNav.map((cat) => (
-                      <li>
-                        <a class="font-semibold text-ink" href={link(cat)}>
-                          {t(cat.labelKey)}
+
+                  {item.path === "/catalog/" ? (
+                    <div class="space-y-1.5 pt-1">
+                      {catalogNav.map((cat, catIdx) => {
+                        const hasSubChildren = Boolean(cat.children && cat.children.length > 0);
+                        const subAccordionId = `mob-sub-${idx}-${catIdx}`;
+
+                        if (!hasSubChildren) {
+                          return (
+                            <a
+                              class="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-ink hover:bg-paper hover:text-accent transition-colors"
+                              href={link(cat)}
+                            >
+                              <span>{t(cat.labelKey)}</span>
+                              <span class="text-[10px] text-muted-on-ink">→</span>
+                            </a>
+                          );
+                        }
+
+                        return (
+                          <div class="rounded-lg bg-surface/80 border border-line/50 overflow-hidden">
+                            <button
+                              type="button"
+                              class="mobile-sub-trigger flex w-full items-center justify-between px-3 py-2.5 text-left text-xs font-semibold text-ink hover:text-accent transition-colors cursor-pointer"
+                              aria-expanded="false"
+                              aria-controls={subAccordionId}
+                              data-mob-accordion-btn
+                            >
+                              <span>{t(cat.labelKey)}</span>
+                              <svg
+                                class="mob-chevron h-3.5 w-3.5 text-muted-on-ink transition-transform duration-300 shrink-0"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  d="M4 6l4 4 4-4"
+                                  stroke="currentColor"
+                                  stroke-width="1.8"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </button>
+
+                            <div id={subAccordionId} class="mobile-acc-content">
+                              <div class="pl-4 pr-3 py-2 space-y-1.5 border-t border-line/30 bg-paper/40">
+                                <a
+                                  class="block py-0.5 text-xs font-semibold text-accent hover:underline"
+                                  href={link(cat)}
+                                >
+                                  {isUz ? "Bo'limga o'tish →" : "Все товары категории →"}
+                                </a>
+                                {cat.children!.map((child) => (
+                                  <a
+                                    class="block py-0.5 text-xs text-muted-on-ink hover:text-accent transition-colors"
+                                    href={link(child)}
+                                  >
+                                    {t(child.labelKey)}
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div class="space-y-1 pt-1">
+                      {servicesNav.map((child) => (
+                        <a
+                          class="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-ink hover:bg-paper hover:text-accent transition-colors"
+                          href={link(child)}
+                        >
+                          <span>{t(child.labelKey)}</span>
+                          <span class="text-[10px] text-muted-on-ink">→</span>
                         </a>
-                        {cat.children && (
-                          <ul class="mt-1.5 space-y-1 pl-3">
-                            {cat.children.map((child) => (
-                              <li>
-                                <a href={link(child)}>{t(child.labelKey)}</a>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </li>
-                    ))
-                  : item.children.map((child) => (
-                      <li>
-                        <a href={link(child)}>{t(child.labelKey)}</a>
-                      </li>
-                    ))}
-              </ul>
-            </details>
-          ) : (
-            <a
-              class="block border-b border-line py-3 text-sm font-semibold"
-              href={link(item)}
-            >
-              {t(item.labelKey)}
-            </a>
-          ),
-        )
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })
       }
+
+      <!-- Bottom Quick Contact Strip in Mobile Menu -->
+      <div class="pt-4 mt-4 border-t border-line flex flex-col gap-2.5 text-xs font-mono text-muted-on-ink">
+        <a
+          class="flex items-center justify-between rounded-xl border border-line bg-paper p-3 text-ink font-semibold hover:border-accent hover:text-accent transition-colors shadow-2xs"
+          href={`tel:${SITE.phone.tel}`}
+        >
+          <span>{SITE.phone.display}</span>
+          <span class="text-accent font-sans text-xs">ПОЗВОНИТЬ</span>
+        </a>
+        <a
+          class="flex items-center justify-between rounded-xl border border-line bg-paper p-3 text-ink hover:border-cyan hover:text-cyan transition-colors shadow-2xs"
+          href={SITE.socials.telegram}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>TELEGRAM // @Innotek_invest</span>
+          <span class="text-cyan font-bold">↗</span>
+        </a>
+      </div>
     </nav>
   </div>
   <div class="read-progress" aria-hidden="true">

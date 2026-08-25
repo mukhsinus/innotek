@@ -196,7 +196,6 @@
 .is-home .hero-photo {
   transform: scale(1.02);
   transform-origin: center center;
-  filter: contrast(1.2) saturate(0.4) brightness(0.65);
 }
 
 /* ── Scroll Reveal ───────────────────────────────────────────────────── */

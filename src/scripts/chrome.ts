@@ -87,14 +87,37 @@ function initMobileNav() {
   const setOpen = (open: boolean) => {
     header.toggleAttribute("data-menu-open", open);
     btn.setAttribute("aria-expanded", String(open));
-    panel.hidden = !open;
-    panel.classList.toggle("hidden", !open);
+    panel.setAttribute("aria-hidden", String(!open));
     document.body.style.overflow = open ? "hidden" : "";
     if (open) header.removeAttribute("data-hidden");
   };
 
   btn.addEventListener("click", () => {
     setOpen(!header.hasAttribute("data-menu-open"));
+  });
+
+  // Mobile Accordion dropdowns
+  const accBtns = panel.querySelectorAll<HTMLButtonElement>("[data-mob-accordion-btn]");
+  accBtns.forEach((accBtn) => {
+    if (accBtn.dataset.mobInit === "true") return;
+    accBtn.dataset.mobInit = "true";
+
+    accBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isExpanded = accBtn.getAttribute("aria-expanded") === "true";
+      const targetId = accBtn.getAttribute("aria-controls");
+      const content = targetId ? document.getElementById(targetId) : null;
+      if (!content) return;
+
+      if (isExpanded) {
+        accBtn.setAttribute("aria-expanded", "false");
+        content.classList.remove("is-expanded");
+      } else {
+        accBtn.setAttribute("aria-expanded", "true");
+        content.classList.add("is-expanded");
+      }
+    });
   });
 
   panel.querySelectorAll("a").forEach((a) => {
@@ -424,12 +447,41 @@ function initAssemblySequence() {
   window.addEventListener("scroll", onScroll, { passive: true });
 }
 
+function initCatalogAccordions() {
+  const flyout = document.getElementById("nav-flyout-catalog");
+  if (!flyout) return;
+
+  const toggles = flyout.querySelectorAll<HTMLButtonElement>("[data-cat-accordion-btn]");
+  toggles.forEach((btn) => {
+    if (btn.dataset.accordionInit === "true") return;
+    btn.dataset.accordionInit = "true";
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isExpanded = btn.getAttribute("aria-expanded") === "true";
+      const targetId = btn.getAttribute("aria-controls");
+      const content = targetId ? document.getElementById(targetId) : null;
+      if (!content) return;
+
+      if (isExpanded) {
+        btn.setAttribute("aria-expanded", "false");
+        content.classList.remove("is-expanded");
+      } else {
+        btn.setAttribute("aria-expanded", "true");
+        content.classList.add("is-expanded");
+      }
+    });
+  });
+}
+
 function initAll() {
   initHeader();
   initHeaderHide();
   initProgress();
   initMobileNav();
   initNavFlyouts();
+  initCatalogAccordions();
   initReveal();
   initCounters();
   initSpotlight();

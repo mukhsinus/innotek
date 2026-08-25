@@ -14,11 +14,14 @@ interface Props {
 
 const { lang, service } = Astro.props;
 const t = useT(lang);
-const TOTAL = 3;
+const pad = (n: number) => String(n).padStart(2, "0");
+const TOTAL = 4;
 const related = SERVICES.filter((s) => s.path !== service.path);
+const isUz = lang === "uz";
 ---
 
 <article>
+  <!-- 01 Header -->
   <header class="page-head bg-surface" data-reveal>
     <div class="site-wrap">
       <Breadcrumbs
@@ -29,53 +32,152 @@ const related = SERVICES.filter((s) => s.path !== service.path);
           { label: t(service.labelKey) },
         ]}
       />
-      <SectionMeta kicker={t("page.kickerService")} index={1} total={TOTAL} />
+      <div class="flex flex-wrap items-center justify-between gap-4 mt-2 mb-4">
+        <SectionMeta kicker={t("page.kickerService")} index={1} total={TOTAL} />
+        <div class="telemetry-pill" aria-label="Status">
+          <span class="relative flex h-1.5 w-1.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan"></span>
+          </span>
+          <span>{service.slug.toUpperCase()} // INNOTEK SERVICE</span>
+        </div>
+      </div>
       <h1 class="t-display">{service.h1}</h1>
-      <p class="t-lead">{service.lead}</p>
+      <p class="t-lead max-w-3xl">{service.lead}</p>
     </div>
   </header>
 
-  <section class="bg-paper pb-0" data-reveal>
-    <div class="site-wrap">
-      <div class="relative aspect-[16/9] overflow-hidden bg-surface lg:aspect-[16/7]">
-        <PhotoFrame
-          src={service.image}
-          class="absolute inset-0 h-full w-full object-cover"
-          width={1400}
-          height={700}
-          loading="eager"
-          fetchpriority="high"
-        />
-      </div>
-    </div>
-  </section>
+  <!-- 02 Visual Media Frame -->
+  {
+    service.image && (
+      <section class="bg-paper pb-0" data-reveal>
+        <div class="site-wrap">
+          <div class="group relative overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
+            <span class="cad-cross cad-tl" aria-hidden="true">+</span>
+            <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+            <span class="cad-cross cad-bl" aria-hidden="true">+</span>
+            <span class="cad-cross cad-br" aria-hidden="true">+</span>
 
-  <section class="section-y bg-paper" data-reveal>
+            <div class="relative aspect-[16/9] overflow-hidden lg:aspect-[21/9]">
+              <PhotoFrame
+                src={service.image}
+                class="h-full w-full object-cover filter contrast-[1.02] brightness-[0.98] transition-transform duration-700 group-hover:scale-105"
+                width={1600}
+                height={700}
+                loading="eager"
+                fetchpriority="high"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent pointer-events-none"></div>
+            </div>
+
+            {service.tag && (
+              <div class="absolute bottom-4 left-4 z-10 sm:bottom-6 sm:left-6">
+                <span class="inline-block rounded-md border border-line/80 bg-paper/95 backdrop-blur-md px-3.5 py-1.5 font-mono text-xs font-semibold text-ink shadow-md">
+                  {isUz ? service.tag.uz : service.tag.ru}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 03 Engineering Process & Steps -->
+  {
+    service.steps && service.steps.length > 0 && (
+      <section class="section-y bg-paper" data-reveal>
+        <div class="site-wrap">
+          <SectionMeta kicker={isUz ? "ISH JARAYONI VA BOSQICHLAR" : "ТЕХНОЛОГИЧЕСКИЙ РЕГЛАМЕНТ"} index={2} total={TOTAL} />
+          
+          <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
+            {service.steps.map((step) => (
+              <div class="relative flex flex-col justify-between rounded-xl border border-line bg-surface/70 p-6 sm:p-8 transition-all duration-300 hover:border-accent/40 hover:bg-surface hover:shadow-md">
+                <div>
+                  <span class="font-mono text-sm font-bold text-cyan tracking-wider">
+                    {step.num} // {isUz ? "BOSQICH" : "ЭТАП"}
+                  </span>
+                  <h3 class="mt-3 font-display text-lg font-semibold text-ink sm:text-xl">
+                    {isUz ? step.title.uz : step.title.ru}
+                  </h3>
+                  <p class="mt-2.5 text-sm leading-relaxed text-muted-on-ink">
+                    {isUz ? step.desc.uz : step.desc.ru}
+                  </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-line/60 flex items-center justify-between text-xs font-mono text-muted-on-ink">
+                  <span>SPEC // ISO 9001</span>
+                  <span class="text-accent font-semibold">✓</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 04 Details & Related Services -->
+  <section class="section-y bg-surface border-t border-line" data-reveal>
     <div class="site-wrap grid gap-16 lg:grid-cols-12">
+      <!-- Left: Comprehensive description & standards -->
       <div class="lg:col-span-7">
-        <SectionMeta kicker={t("page.how")} index={2} total={TOTAL} />
-        <p class="max-w-xl text-lg leading-relaxed text-muted-on-ink">{service.body}</p>
+        <SectionMeta kicker={t("page.how")} index={3} total={TOTAL} />
+        <div class="prose max-w-none text-base leading-relaxed text-muted-on-ink sm:text-lg">
+          <p class="mb-6 leading-relaxed">{service.body}</p>
+        </div>
+
+        <div class="mt-8 rounded-lg border border-line bg-paper p-5 sm:p-6 shadow-xs">
+          <div class="flex items-center gap-3">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-accent"></span>
+            <span class="font-display font-semibold text-ink text-sm sm:text-base">
+              {isUz ? "Sifat va xavfsizlik kafolati" : "Гарантия качества и безопасности"}
+            </span>
+          </div>
+          <p class="mt-2 text-xs leading-relaxed text-muted-on-ink sm:text-sm">
+            {isUz
+              ? "Barcha xizmatlar xalqaro standartlar va O'zbekiston texnik reglamentlariga muvofiq bajariladi."
+              : "Все работы производятся в соответствии с регламентами ГОСТ, СНиП и внутренними стандартами качества Innotek."}
+          </p>
+        </div>
       </div>
-      <div class="lg:col-span-4 lg:col-start-9">
-        <p class="t-overline mb-6">{t("page.moreServices")}</p>
-        <ul class="spec-list">
-          {
-            related.map((item, i) => (
-              <li class="spec-row">
-                <p class="spec-key">{String(i + 1).padStart(2, "0")}</p>
-                <a class="text-link" href={hrefFor(lang, item.path)}>
-                  {t(item.labelKey)}
-                  <span class="link-arrow" aria-hidden="true">
+
+      <!-- Right: Other Services Hub Card -->
+      <div class="lg:col-span-5 lg:col-start-8">
+        <div class="rounded-xl border border-line bg-paper p-6 sm:p-8 shadow-sm">
+          <p class="text-xs font-mono text-cyan tracking-wider uppercase mb-2">
+            [ {isUz ? "Boshqa xizmatlar" : "Все услуги Innotek"} ]
+          </p>
+          <p class="text-lg font-semibold text-ink" style="font-family: var(--font-display)">
+            {t("page.moreServices")}
+          </p>
+
+          <div class="mt-6 space-y-3">
+            {
+              related.map((item, i) => (
+                <a
+                  href={hrefFor(lang, item.path)}
+                  class="group flex items-center justify-between rounded-lg border border-line bg-surface/50 p-4 transition-all duration-300 hover:border-accent/40 hover:bg-surface hover:translate-x-1"
+                >
+                  <div class="flex items-center gap-3">
+                    <span class="font-mono text-xs font-semibold text-muted-on-ink group-hover:text-cyan transition-colors">
+                      {pad(i + 1)}
+                    </span>
+                    <span class="text-sm font-medium text-ink group-hover:text-accent transition-colors">
+                      {t(item.labelKey)}
+                    </span>
+                  </div>
+                  <span class="text-muted-on-ink group-hover:text-accent group-hover:translate-x-1 transition-all">
                     →
                   </span>
                 </a>
-              </li>
-            ))
-          }
-        </ul>
+              ))
+            }
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <QuoteBand lang={lang} index={3} total={TOTAL} />
+  <!-- 05 Unified QuoteBand -->
+  <QuoteBand lang={lang} index={4} total={TOTAL} />
 </article>

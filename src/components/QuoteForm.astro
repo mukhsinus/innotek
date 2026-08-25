@@ -10,10 +10,15 @@ interface Props {
 const { lang } = Astro.props;
 const t = useT(lang);
 const thanks = hrefFor(lang, "/contacts/thanks/");
+const isUz = lang === "uz";
+
+const PROJECT_TYPES = isUz
+  ? ["Sklad stellajlari", "Konveyer tizimlari", "Polimer bo'yash", "Muhandislik loyihasi", "Boshqa"]
+  : ["Складские стеллажи", "Конвейерные линии", "Порошковая покраска", "Проектирование CAD", "Другое"];
 ---
 
 <form
-  class="quote-form"
+  class="quote-form group relative rounded-xl border border-line bg-surface/80 p-6 sm:p-8 shadow-sm transition-all hover:border-accent/40"
   name="quote"
   method="POST"
   action="/api/quote"
@@ -21,6 +26,11 @@ const thanks = hrefFor(lang, "/contacts/thanks/");
   data-phone={SITE.phone.display}
   data-tel={SITE.phone.tel}
 >
+  <span class="cad-cross cad-tl" aria-hidden="true">+</span>
+  <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+  <span class="cad-cross cad-bl" aria-hidden="true">+</span>
+  <span class="cad-cross cad-br" aria-hidden="true">+</span>
+
   <input type="hidden" name="page" value={Astro.url.pathname} />
   <p class="sr-only">
     <label>
@@ -28,30 +38,106 @@ const thanks = hrefFor(lang, "/contacts/thanks/");
       <input name="bot-field" tabindex="-1" autocomplete="off" />
     </label>
   </p>
-  <div data-fields>
-    <label>
-      <span class="t-overline">{t("form.name")}</span>
-      <input type="text" name="name" required autocomplete="name" maxlength="120" />
-    </label>
-    <label>
-      <span class="t-overline">{t("form.phone")}</span>
-      <input type="tel" name="phone" required autocomplete="tel" inputmode="tel" maxlength="40" />
-    </label>
-    <label>
-      <span class="t-overline">{t("form.comment")}</span>
-      <textarea name="comment" rows="4" maxlength="2000"></textarea>
-    </label>
-    <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
-      <button class="btn-primary" type="submit" data-submit data-sending={t("form.sending")}>{t("form.send")}</button>
-      <p class="t-caption">{t("form.note")}</p>
+
+  <div data-fields class="space-y-6">
+    <!-- Quick Subject Selector -->
+    <div>
+      <span class="font-mono text-xs font-semibold text-cyan uppercase tracking-wider block mb-2.5">
+        // {isUz ? "Loyiha yo'nalishi" : "Направление проекта"}
+      </span>
+      <div class="flex flex-wrap gap-2">
+        {PROJECT_TYPES.map((type, i) => (
+          <label class="cursor-pointer">
+            <input
+              type="radio"
+              name="project_type"
+              value={type}
+              checked={i === 0}
+              class="peer sr-only"
+            />
+            <span class="inline-block rounded-md border border-line bg-paper px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-all peer-checked:border-accent peer-checked:bg-accent/10 peer-checked:text-accent hover:border-accent/50 shadow-2xs">
+              {type}
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+
+    <!-- Inputs Grid -->
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div>
+        <label class="block font-mono text-xs font-semibold text-muted-on-ink uppercase tracking-wider mb-1.5">
+          {t("form.name")} <span class="text-accent">*</span>
+        </label>
+        <input
+          type="text"
+          name="name"
+          required
+          autocomplete="name"
+          maxlength="120"
+          placeholder={isUz ? "Ismingiz yoki kompaniya nomi" : "Ваше имя или компания"}
+          class="w-full rounded-lg border border-line bg-paper px-4 py-3 text-sm text-ink outline-none transition-all placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent shadow-xs"
+        />
+      </div>
+
+      <div>
+        <label class="block font-mono text-xs font-semibold text-muted-on-ink uppercase tracking-wider mb-1.5">
+          {t("form.phone")} <span class="text-accent">*</span>
+        </label>
+        <input
+          type="tel"
+          name="phone"
+          required
+          autocomplete="tel"
+          inputmode="tel"
+          maxlength="40"
+          placeholder="+998 __ ___ __ __"
+          class="w-full rounded-lg border border-line bg-paper px-4 py-3 text-sm text-ink outline-none transition-all placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent shadow-xs"
+        />
+      </div>
+    </div>
+
+    <!-- Message / Spec details -->
+    <div>
+      <label class="block font-mono text-xs font-semibold text-muted-on-ink uppercase tracking-wider mb-1.5">
+        {t("form.comment")}
+      </label>
+      <textarea
+        name="comment"
+        rows="4"
+        maxlength="2000"
+        placeholder={isUz ? "Ombor parametrlari, yuk hajmi yoki kerakli o'lchamlar..." : "Параметры склада, габариты грузов или технические требования..."}
+        class="w-full rounded-lg border border-line bg-paper px-4 py-3 text-sm text-ink outline-none transition-all placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent shadow-xs resize-y"
+      ></textarea>
+    </div>
+
+    <!-- Submission Footer -->
+    <div class="pt-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-line/60">
+      <button
+        class="btn-accent justify-center shadow-md hover:shadow-accent/25 transition-all text-sm py-3.5 px-8 cursor-pointer"
+        type="submit"
+        data-submit
+        data-sending={t("form.sending")}
+      >
+        <span>{t("form.send")}</span>
+        <span class="link-arrow" aria-hidden="true">→</span>
+      </button>
+
+      <p class="text-xs text-muted-on-ink leading-relaxed flex items-center gap-2">
+        <span class="text-accent font-bold">✓</span>
+        <span>{isUz ? "24 soat ichida mutaxassis javobi va tijorat taklifi." : "Расчёт спецификации и КП инженером в течение 24ч."}</span>
+      </p>
     </div>
   </div>
-  <div class="quote-form-fallback" data-fallback hidden>
-    <p>{t("form.fallback")}</p>
-    <a class="btn-primary mt-6 inline-flex" href={`tel:${SITE.phone.tel}`} data-call>
-      {t("form.call")}
-      {" "}
-      {SITE.phone.display}
+
+  <div class="quote-form-fallback py-8 text-center" data-fallback hidden>
+    <p class="text-sm text-muted-on-ink leading-relaxed">{t("form.fallback")}</p>
+    <a
+      class="btn-primary mt-6 inline-flex justify-center"
+      href={`tel:${SITE.phone.tel}`}
+      data-call
+    >
+      {t("form.call")} {SITE.phone.display}
     </a>
   </div>
 </form>
@@ -100,46 +186,50 @@ const thanks = hrefFor(lang, "/contacts/thanks/");
     }
   }
 
-  async function onSubmit(event: SubmitEvent) {
-    const form = event.currentTarget as HTMLFormElement;
-    if (form.classList.contains("is-fallback")) {
-      event.preventDefault();
-      return;
-    }
-    event.preventDefault();
+  function initForm(form: HTMLFormElement) {
+    if (form.dataset.ready === "true") return;
+    form.dataset.ready = "true";
+
     const submit = form.querySelector<HTMLButtonElement>("[data-submit]");
-    const thanks = form.dataset.thanks ?? "/contacts/thanks/";
-    if (submit) {
+    const sendingText = submit?.getAttribute("data-sending") || "...";
+    const thanks = form.getAttribute("data-thanks");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!submit) return;
       submit.disabled = true;
-      submit.dataset.label = submit.textContent ?? "";
-      submit.textContent = submit.dataset.sending ?? submit.textContent;
-    }
-    try {
-      const res = await fetch(STATUS_URL, {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: new FormData(form),
-      });
-      const data = await readJson<SubmitResult>(res);
-      if (res.ok && data?.ok && !data.fallback) {
-        window.location.assign(thanks);
-        return;
-      }
-      showFallback(form);
-    } catch {
-      showFallback(form);
-    } finally {
-      if (submit && !form.classList.contains("is-fallback")) {
+      const initialText = submit.innerHTML;
+      submit.textContent = sendingText;
+
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        const data = await readJson<SubmitResult>(res);
+        if (data?.fallback) {
+          showFallback(form);
+          return;
+        }
+        if (thanks) {
+          window.location.href = thanks;
+        } else {
+          form.reset();
+        }
+      } catch {
+        showFallback(form);
+      } finally {
         submit.disabled = false;
-        if (submit.dataset.label) submit.textContent = submit.dataset.label;
+        submit.innerHTML = initialText;
       }
-    }
+    });
+
+    checkStatus(form);
   }
 
-  document.querySelectorAll<HTMLFormElement>("form.quote-form").forEach((form) => {
-    if (form.dataset.bound === "1") return;
-    form.dataset.bound = "1";
-    void checkStatus(form);
-    form.addEventListener("submit", onSubmit);
+  document.querySelectorAll<HTMLFormElement>("form.quote-form").forEach(initForm);
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll<HTMLFormElement>("form.quote-form").forEach(initForm);
   });
 </script>
