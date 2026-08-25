@@ -1,10 +1,12 @@
 ---
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import JsonLd from "../../components/JsonLd.astro";
 import QuoteForm from "../../components/QuoteForm.astro";
 import RelatedLinks from "../../components/RelatedLinks.astro";
 import SectionMeta from "../../components/SectionMeta.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { CONTACTS } from "../../data/company";
+import { localBusinessLd } from "../../data/schema";
 import { SITE } from "../../data/site";
 import { useT } from "../../i18n/utils";
 
@@ -128,4 +130,5 @@ const address = SITE.address.ru;
       ]}
     />
   </article>
+  <JsonLd data={localBusinessLd()} />
 </BaseLayout>

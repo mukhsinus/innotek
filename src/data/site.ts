@@ -23,6 +23,11 @@ export const SITE = {
   address: {
     ru: "Иннотек Инвест, массив Жангох 2аБ, 100128, Ташкент",
     uz: "Innotek Invest, Jangoh 2aB massivi, 100128, Toshkent",
+    /** Части той же строки адреса — для schema.org PostalAddress. */
+    street: { ru: "массив Жангох 2аБ", uz: "Jangoh 2aB massivi" },
+    locality: { ru: "Ташкент", uz: "Toshkent" },
+    postalCode: "100128",
+    country: "UZ",
   },
   mapsUrl:
     "https://www.google.com/maps/place/Innotek+Invest/@41.3300559,69.2501784,19z",

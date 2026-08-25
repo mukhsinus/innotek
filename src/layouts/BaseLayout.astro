@@ -7,8 +7,11 @@ import latinExtFont from "@fontsource-variable/manrope/files/manrope-latin-ext-w
 import latinFont from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url";
 import monoCyrFont from "@fontsource/jetbrains-mono/files/jetbrains-mono-cyrillic-400-normal.woff2?url";
 import monoLatFont from "@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2?url";
+import JsonLd from "../components/JsonLd.astro";
+import { organizationLd } from "../data/schema";
+import { SITE, UZ_PATHS } from "../data/site";
 import type { Lang } from "../i18n/ui";
-import { currentLangFromPath, useT } from "../i18n/utils";
+import { currentLangFromPath, stripLocale, useT } from "../i18n/utils";
 import "../styles/global.css";
 
 interface Props {
@@ -22,6 +25,16 @@ const { title, description = "", overlayHeader = false, home = false } = Astro.p
 const lang = (Astro.currentLocale ?? currentLangFromPath(Astro.url.pathname)) as Lang;
 const t = useT(lang);
 const htmlLang = lang === "uz" ? "uz" : "ru";
+
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const ruPath = stripLocale(Astro.url.pathname);
+const hasUzPair = UZ_PATHS.has(ruPath);
+const ruUrl = new URL(ruPath, SITE.url).href;
+const uzUrl = new URL(ruPath === "/" ? "/uz/" : `/uz${ruPath}`, SITE.url).href;
+
+// Аналитика: подключаем только когда заданы публичные ID (шаг 7).
+const ymId = import.meta.env.PUBLIC_YM_ID?.trim() || "";
+const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim() || "";
 ---
 
 <!doctype html>
@@ -37,9 +50,56 @@ const htmlLang = lang === "uz" ? "uz" : "ru";
     <link rel="preload" href={monoCyrFont} as="font" type="font/woff2" crossorigin />
     {lang === "uz" && <link rel="preload" href={latinExtFont} as="font" type="font/woff2" crossorigin />}
     {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
+    {
+      hasUzPair && (
+        <>
+          <link rel="alternate" hreflang="ru" href={ruUrl} />
+          <link rel="alternate" hreflang="uz" href={uzUrl} />
+          <link rel="alternate" hreflang="x-default" href={ruUrl} />
+        </>
+      )
+    }
     <title>{title}</title>
+    {home && <JsonLd data={organizationLd()} />}
+    {
+      gtmId && (
+        <script is:inline define:vars={{ gtmId }}>
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',gtmId);
+        </script>
+      )
+    }
+    {
+      ymId && (
+        <script is:inline define:vars={{ ymId }}>
+          (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');
+          ym(Number(ymId),'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
+        </script>
+      )
+    }
   </head>
   <body class:list={[home && "is-home"]}>
+    {
+      gtmId && (
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+            title="Google Tag Manager"></iframe>
+        </noscript>
+      )
+    }
+    {
+      ymId && (
+        <noscript>
+          <div>
+            <img src={`https://mc.yandex.ru/watch/${ymId}`} style="position:absolute;left:-9999px" alt="" />
+          </div>
+        </noscript>
+      )
+    }
     <a class="skip-link" href="#main">{t("skip")}</a>
     <!-- Сентинел для сжатия sticky-шапки через IntersectionObserver -->
     <div id="header-sentinel" class="pointer-events-none h-px w-full" aria-hidden="true"></div>

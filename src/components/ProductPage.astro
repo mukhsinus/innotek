@@ -1,10 +1,12 @@
 ---
 import Breadcrumbs from "./Breadcrumbs.astro";
+import JsonLd from "./JsonLd.astro";
 import PhotoFrame from "./PhotoFrame.astro";
 import QuoteBand from "./QuoteBand.astro";
 import RelatedLinks from "./RelatedLinks.astro";
 import SectionMeta from "./SectionMeta.astro";
 import { CATALOG_PRODUCTS, type CatalogProduct } from "../data/catalog";
+import { productLd } from "../data/schema";
 import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
 
@@ -139,3 +141,12 @@ const parentHref = hrefFor(lang, product.parentPath);
 
   <QuoteBand lang={lang} index={ctaN} total={TOTAL} />
 </article>
+<JsonLd
+  data={productLd({
+    h1: product.h1,
+    description: product.description,
+    path: Astro.url.pathname,
+    images: product.images,
+    categoryLabel: t(product.parentLabelKey),
+  })}
+/>

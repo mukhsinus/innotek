@@ -12,10 +12,18 @@ type QuotePayload = {
   honeypot: string;
 };
 
+const TELEGRAM_BOT_TOKEN =
+  "8970492395:AAEPNN3L0gwKclgdKjEO0PxzMreM2cSdOOE";
+const TELEGRAM_CHAT_ID = "-1003953047692";
+
 function env(name: string): string {
   const fromNetlify =
     typeof Netlify !== "undefined" ? Netlify.env.get(name) : undefined;
-  return (fromNetlify ?? process.env[name] ?? "").trim();
+  const value = (fromNetlify ?? process.env[name] ?? "").trim();
+  if (value) return value;
+  if (name === "TELEGRAM_BOT_TOKEN") return TELEGRAM_BOT_TOKEN;
+  if (name === "TELEGRAM_CHAT_ID") return TELEGRAM_CHAT_ID;
+  return "";
 }
 
 function telegramReady() {
