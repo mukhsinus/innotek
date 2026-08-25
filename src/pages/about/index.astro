@@ -15,7 +15,7 @@ const TOTAL = 4;
 
 <BaseLayout title={ABOUT.title} description={ABOUT.description}>
   <article>
-    <header class="page-head bg-paper" data-reveal>
+    <header class="page-head bg-surface" data-reveal>
       <div class="site-wrap">
         <Breadcrumbs
           lang={lang}
@@ -32,7 +32,7 @@ const TOTAL = 4;
 
     <section class="bg-paper pb-0" data-reveal>
       <div class="site-wrap">
-        <div class="relative aspect-[16/9] overflow-hidden bg-ink lg:aspect-[16/7]">
+        <div class="relative aspect-[16/9] overflow-hidden bg-surface lg:aspect-[16/7]">
           <PhotoFrame class="absolute inset-0 h-full w-full object-cover" width={1400} height={700} loading="eager" fetchpriority="high" />
         </div>
       </div>
@@ -41,7 +41,7 @@ const TOTAL = 4;
     <section class="section-y bg-paper" data-reveal>
       <div class="site-wrap grid gap-16 lg:grid-cols-12">
         <div class="lg:col-span-7">
-          <div class="max-w-xl space-y-6 text-lg leading-relaxed text-muted">
+          <div class="max-w-xl space-y-6 text-lg leading-relaxed text-muted-on-ink">
             {ABOUT.paragraphs.map((p) => <p>{p}</p>)}
           </div>
         </div>

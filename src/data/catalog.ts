@@ -80,18 +80,18 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
       "Купить металлические стеллажи в Ташкенте для склада, магазина и хранения. Прочные металлические стеллажи по выгодной цене. Доставка по Ташкенту и Узбекистану.",
     h1: "Металлические стеллажи",
     lead: "Для склада, магазина и производства. Собственный завод в Ташкенте.",
-    image: "https://innotek.uz/wp-content/uploads/2023/10/2.jpg",
+    image: "/src/assets/images/2.jpg",
     products: [
-      { path: "/catalog/stellazhi/palletnye-stellazhi/", labelKey: "product.pallet", image: "https://innotek.uz/wp-content/uploads/2023/10/2.jpg", excerpt: "Классика склада: хранение на паллетах с прямым доступом к каждому месту." },
-      { path: "/catalog/stellazhi/palletno-polochnye-stellazhi/", labelKey: "product.palletShelf", image: "https://innotek.uz/wp-content/uploads/2023/10/2-1.jpg", excerpt: "Сборно-разборные стеллажи для паллет и штучного товара." },
-      { path: "/catalog/stellazhi/nabivnye-stellazhi/", labelKey: "product.driveIn", image: "https://innotek.uz/wp-content/uploads/2023/10/1-1.jpg", excerpt: "Плотное хранение: техника заезжает внутрь системы, проходы не нужны." },
-      { path: "/catalog/stellazhi/konsolnye-stellazhi/", labelKey: "product.cantilever", image: "https://innotek.uz/wp-content/uploads/2023/10/1-2.jpg", excerpt: "Длинномер: трубы, профиль, балки. До 1500 кг на пару консолей." },
-      { path: "/catalog/stellazhi/mezoninnye-stellazhi/", labelKey: "product.mezzanine", image: "https://innotek.uz/wp-content/uploads/2023/10/1-3.jpg", excerpt: "Дополнительные этажи хранения при высоких потолках." },
-      { path: "/catalog/stellazhi/stellazhi-dlya-pressform/", labelKey: "product.mould", image: "https://innotek.uz/wp-content/uploads/2023/10/1-4.jpg", excerpt: "Выкатные платформы для штампов, пресс-форм и станков." },
-      { path: "/catalog/stellazhi/stellazhi-dlya-bibliotek/", labelKey: "product.library", image: "https://innotek.uz/wp-content/uploads/2024/08/биб-с-1.jpg", excerpt: "Полочные системы для книг, архивов и документов." },
-      { path: "/catalog/stellazhi/kabelnye-stellazhi/", labelKey: "product.cable", image: "https://innotek.uz/wp-content/uploads/2024/01/kabelniy-stellaj_1.jpg", excerpt: "Катушки и бухты: хранение кабеля на базе фронтальной системы." },
-      { path: "/catalog/stellazhi/samonesushchie-stellazhi/", labelKey: "product.selfSupporting", image: "https://innotek.uz/wp-content/uploads/2024/05/samonesushchie_konsolnye_stellazhi_07.jpg", excerpt: "Стеллаж как каркас здания: кровля и стены крепятся к конструкции." },
-      { path: "/catalog/stellazhi/smart-stellazhi/", labelKey: "product.smart", image: "https://innotek.uz/wp-content/uploads/2023/10/IMAGE-2023-10-31-123248.jpg", excerpt: "Системы SMART для склада." },
+      { path: "/catalog/stellazhi/palletnye-stellazhi/", labelKey: "product.pallet", image: "/src/assets/images/2.jpg", excerpt: "Классика склада: хранение на паллетах с прямым доступом к каждому месту." },
+      { path: "/catalog/stellazhi/palletno-polochnye-stellazhi/", labelKey: "product.palletShelf", image: "/src/assets/images/2-1.jpg", excerpt: "Сборно-разборные стеллажи для паллет и штучного товара." },
+      { path: "/catalog/stellazhi/nabivnye-stellazhi/", labelKey: "product.driveIn", image: "/src/assets/images/1-1.jpg", excerpt: "Плотное хранение: техника заезжает внутрь системы, проходы не нужны." },
+      { path: "/catalog/stellazhi/konsolnye-stellazhi/", labelKey: "product.cantilever", image: "/src/assets/images/1-2.jpg", excerpt: "Длинномер: трубы, профиль, балки. До 1500 кг на пару консолей." },
+      { path: "/catalog/stellazhi/mezoninnye-stellazhi/", labelKey: "product.mezzanine", image: "/src/assets/images/1-3.jpg", excerpt: "Дополнительные этажи хранения при высоких потолках." },
+      { path: "/catalog/stellazhi/stellazhi-dlya-pressform/", labelKey: "product.mould", image: "/src/assets/images/1-4.jpg", excerpt: "Выкатные платформы для штампов, пресс-форм и станков." },
+      { path: "/catalog/stellazhi/stellazhi-dlya-bibliotek/", labelKey: "product.library", image: "/src/assets/images/биб-с-1.jpg", excerpt: "Полочные системы для книг, архивов и документов." },
+      { path: "/catalog/stellazhi/kabelnye-stellazhi/", labelKey: "product.cable", image: "/src/assets/images/kabelniy-stellaj_1.jpg", excerpt: "Катушки и бухты: хранение кабеля на базе фронтальной системы." },
+      { path: "/catalog/stellazhi/samonesushchie-stellazhi/", labelKey: "product.selfSupporting", image: "/src/assets/images/samonesushchie_konsolnye_stellazhi_07.jpg", excerpt: "Стеллаж как каркас здания: кровля и стены крепятся к конструкции." },
+      { path: "/catalog/stellazhi/smart-stellazhi/", labelKey: "product.smart", image: "/src/assets/images/IMAGE-2023-10-31-123248.jpg", excerpt: "Системы SMART для склада." },
     ],
     seo: {
       heading: "Производитель металлических стеллажей в Ташкенте",
@@ -114,10 +114,10 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
     description: "Купить торговые стеллажи в Ташкенте и Узбекистане. Металлические стеллажи для магазинов, складов и торговых залов от компании Innotek.",
     h1: "Торговые стеллажи",
     lead: "Для магазинов и торговых залов. Пристенные и островные системы.",
-    image: "https://innotek.uz/wp-content/uploads/2023/08/ost6.jpeg",
+    image: "/src/assets/images/ost6.jpeg",
     products: [
-      { path: "/catalog/torgovye-stellazhi/pristennye-stellazhi/", labelKey: "product.wall", image: "https://innotek.uz/wp-content/uploads/2023/10/2-6.jpg", excerpt: "Вдоль стен и в линиях островных стеллажей, в том числе для обхода колонн." },
-      { path: "/catalog/torgovye-stellazhi/ostrovnye-stellazhi/", labelKey: "product.island", image: "https://innotek.uz/wp-content/uploads/2023/10/1-3.png", excerpt: "Двухсторонние стеллажи в центре зала. Высота, как правило, до 1850 мм." },
+      { path: "/catalog/torgovye-stellazhi/pristennye-stellazhi/", labelKey: "product.wall", image: "/src/assets/images/2-6.jpg", excerpt: "Вдоль стен и в линиях островных стеллажей, в том числе для обхода колонн." },
+      { path: "/catalog/torgovye-stellazhi/ostrovnye-stellazhi/", labelKey: "product.island", image: "/src/assets/images/1-3.png", excerpt: "Двухсторонние стеллажи в центре зала. Высота, как правило, до 1850 мм." },
     ],
   },
   {
@@ -128,10 +128,10 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
     description: "Купить офисную мебель в Ташкенте и Узбекистане. Современная офисная мебель для компаний и бизнеса от компании Innotek.",
     h1: "Офисная мебель",
     lead: "Столы и стулья для офиса. Изготовление под заказ.",
-    image: "https://innotek.uz/wp-content/uploads/2023/10/25-2.jpg",
+    image: "/src/assets/images/25-2.jpg",
     products: [
-      { path: "/catalog/ofisnaya-mebel/stoly/", labelKey: "product.desks", image: "https://innotek.uz/wp-content/uploads/2023/10/26.jpg", excerpt: "Рабочие, компьютерные, переговорные, приставные и журнальные." },
-      { path: "/catalog/ofisnaya-mebel/stulya/", labelKey: "product.chairs", image: "https://innotek.uz/wp-content/uploads/2023/10/40.png", excerpt: "Кресла для персонала, руководителя, посетителей и зоны ожидания." },
+      { path: "/catalog/ofisnaya-mebel/stoly/", labelKey: "product.desks", image: "/src/assets/images/26.jpg", excerpt: "Рабочие, компьютерные, переговорные, приставные и журнальные." },
+      { path: "/catalog/ofisnaya-mebel/stulya/", labelKey: "product.chairs", image: "/src/assets/images/40.png", excerpt: "Кресла для персонала, руководителя, посетителей и зоны ожидания." },
     ],
   },
   {
@@ -142,11 +142,11 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
     description: "Купить металлическую мебель в Ташкенте и Узбекистане. Надёжная металлическая мебель для офисов, складов и бизнеса от компании Innotek.",
     h1: "Металлическая мебель",
     lead: "Шкафы, раздевалки и мебель для производства.",
-    image: "https://innotek.uz/wp-content/uploads/2023/10/17.jpg",
+    image: "/src/assets/images/17.jpg",
     products: [
-      { path: "/catalog/metallicheskaya-mebel/shkafy-dlya-ofisa/", labelKey: "product.cabinets", image: "https://innotek.uz/wp-content/uploads/2023/10/1-8.jpg", excerpt: "Для документов и ценных вещей. Офис, банк, отдел кадров, бухгалтерия, архив." },
-      { path: "/catalog/metallicheskaya-mebel/mebel-dlya-razdevalok/", labelKey: "product.lockers", image: "https://innotek.uz/wp-content/uploads/2023/10/2-11.jpg", excerpt: "Полки, перекладина, крючки и вентиляция. Фитнес, школа, бассейн, офис, производство." },
-      { path: "/catalog/metallicheskaya-mebel/mebel-dlya-proizvodstva/", labelKey: "product.workshop", image: "https://innotek.uz/wp-content/uploads/2023/10/34-1.jpg", excerpt: "Сварные тумбы, ящики и слесарные верстаки для цеха, гаража и мастерской." },
+      { path: "/catalog/metallicheskaya-mebel/shkafy-dlya-ofisa/", labelKey: "product.cabinets", image: "/src/assets/images/1-8.jpg", excerpt: "Для документов и ценных вещей. Офис, банк, отдел кадров, бухгалтерия, архив." },
+      { path: "/catalog/metallicheskaya-mebel/mebel-dlya-razdevalok/", labelKey: "product.lockers", image: "/src/assets/images/2-11.jpg", excerpt: "Полки, перекладина, крючки и вентиляция. Фитнес, школа, бассейн, офис, производство." },
+      { path: "/catalog/metallicheskaya-mebel/mebel-dlya-proizvodstva/", labelKey: "product.workshop", image: "/src/assets/images/34-1.jpg", excerpt: "Сварные тумбы, ящики и слесарные верстаки для цеха, гаража и мастерской." },
     ],
   },
   {
@@ -157,11 +157,11 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
     description: "Купить конвейерные линии в Ташкенте и Узбекистане. Промышленные конвейерные системы для автоматизации производства от компании Innotek.",
     h1: "Конвейерные линии",
     lead: "Роликовые и ленточные конвейеры, сборочные линии.",
-    image: "https://innotek.uz/wp-content/uploads/2023/10/40-969x1024.jpg",
+    image: "/src/assets/images/40-969x1024.jpg",
     products: [
-      { path: "/catalog/konvejernye-linii/rolikovye-konvejery/", labelKey: "product.rollerConv", image: "https://innotek.uz/wp-content/uploads/2023/10/1-4.png", excerpt: "Штучные грузы: ящики, поддоны, тара, прокат." },
-      { path: "/catalog/konvejernye-linii/lentochnye-konvejery/", labelKey: "product.beltConv", image: "https://innotek.uz/wp-content/uploads/2023/10/1-11.jpg", excerpt: "Сыпучие и штучные грузы на короткие, средние и дальние расстояния." },
-      { path: "/catalog/konvejernye-linii/sborochnye-linii/", labelKey: "product.assembly", image: "https://innotek.uz/wp-content/uploads/2023/10/1-12.jpg", excerpt: "Модули из промышленных столов и транспортёров. Опционально PLC." },
+      { path: "/catalog/konvejernye-linii/rolikovye-konvejery/", labelKey: "product.rollerConv", image: "/src/assets/images/1-4.png", excerpt: "Штучные грузы: ящики, поддоны, тара, прокат." },
+      { path: "/catalog/konvejernye-linii/lentochnye-konvejery/", labelKey: "product.beltConv", image: "/src/assets/images/1-11.jpg", excerpt: "Сыпучие и штучные грузы на короткие, средние и дальние расстояния." },
+      { path: "/catalog/konvejernye-linii/sborochnye-linii/", labelKey: "product.assembly", image: "/src/assets/images/1-12.jpg", excerpt: "Модули из промышленных столов и транспортёров. Опционально PLC." },
     ],
   },
   {
@@ -173,7 +173,7 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
       "Купить оборудование и металлоконструкции в Ташкенте и Узбекистане. Производство и поставка промышленного оборудования и металлоконструкций от компании Innotek.",
     h1: "Оборудование и металлоконструкции",
     lead: "Изготовление металлоконструкций по чертежам или проектам объекта: каркасы, балки, перекрытия и узлы.",
-    image: "https://innotek.uz/wp-content/uploads/2023/10/1-13.jpg",
+    image: "/src/assets/images/1-13.jpg",
     body: [
       "Специалисты компании выполняют заказы на изготовление металлоконструкций по индивидуально разработанным чертежам или проектам с учётом особенностей конкретного объекта. Производим несущие элементы и узлы, которые используются в строительстве, включая каркасы, балки, перекрытия и другие детали.",
     ],
@@ -198,7 +198,7 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
     description: "Купить ролики в Ташкенте и Узбекистане. Промышленные ролики для конвейеров и оборудования от компании Innotek.",
     h1: "Колёса и ролики",
     lead: "Промышленные ролики для конвейеров и оборудования.",
-    image: "https://innotek.uz/wp-content/uploads/2024/05/photo_2024-05-16_10-06-30.jpg",
+    image: "/src/assets/images/photo_2024-05-16_10-06-30.jpg",
     embedQuote: true,
     ctaCatalog: { path: "/catalog/konvejernye-linii/", label: "Конвейерные линии" },
     aiBody: [
@@ -223,11 +223,11 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Паллетные стеллажи",
     lead: "Наиболее популярный вид стеллажей для крупных и небольших складов. Хранение товаров на паллетах с доступом к каждому месту.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/2.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/1.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/3.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/4.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/8.jpg",
+      "/src/assets/images/2.jpg",
+      "/src/assets/images/1.jpg",
+      "/src/assets/images/3.jpg",
+      "/src/assets/images/4.jpg",
+      "/src/assets/images/8.jpg",
     ],
     specs: SPEC_RACK,
     features: [
@@ -250,10 +250,10 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Паллето-полочные стеллажи",
     lead: "Сборно-разборные стеллажи для складирования вещей и документов. Конструкции под разную нагрузку и размер помещения. Дом, офис, склад, магазин, производство.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/2-1.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/3-1.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/4-1.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/6-1.jpg",
+      "/src/assets/images/2-1.jpg",
+      "/src/assets/images/3-1.jpg",
+      "/src/assets/images/4-1.jpg",
+      "/src/assets/images/6-1.jpg",
     ],
     specs: [
       ...SPEC_RACK.slice(0, 4),
@@ -280,10 +280,10 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Набивные стеллажи",
     lead: "Проходы между секциями отсутствуют: техника заезжает внутрь системы. Рациональное использование объёма и площади, блочное складирование.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/1-1.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/2-2.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/3-2.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/8-2.jpg",
+      "/src/assets/images/1-1.jpg",
+      "/src/assets/images/2-2.jpg",
+      "/src/assets/images/3-2.jpg",
+      "/src/assets/images/8-2.jpg",
     ],
     specs: SPEC_RACK,
     features: [
@@ -306,10 +306,10 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Консольные стеллажи",
     lead: "Для длинномерных грузов — балок, труб, профилей, элементов конструкций. Каждая пара консолей выдерживает нагрузку до 1500 кг.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/1-2.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/2-3.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/3-3.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/5-2.jpg",
+      "/src/assets/images/1-2.jpg",
+      "/src/assets/images/2-3.jpg",
+      "/src/assets/images/3-3.jpg",
+      "/src/assets/images/5-2.jpg",
     ],
     specs: SPEC_RACK,
     features: ["Компактное хранение груза длиной от 1,5 метров"],
@@ -326,10 +326,10 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Мезонинные стеллажи",
     lead: "Для складов с высокими потолками: дополнительные площадки и этажи для грузов, рабочих зон или персонала.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/1-3.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/2-4.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/5-3.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/8-4.jpg",
+      "/src/assets/images/1-3.jpg",
+      "/src/assets/images/2-4.jpg",
+      "/src/assets/images/5-3.jpg",
+      "/src/assets/images/8-4.jpg",
     ],
     specs: [
       ...SPEC_RACK.slice(0, 4),
@@ -355,10 +355,10 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Стеллажи для прессформ",
     lead: "Для штампов, пресс-форм и станков. Выкатные платформы: загрузка краном и прямой доступ к грузу.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/1-4.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/2-5.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/3-5.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/4-5.jpg",
+      "/src/assets/images/1-4.jpg",
+      "/src/assets/images/2-5.jpg",
+      "/src/assets/images/3-5.jpg",
+      "/src/assets/images/4-5.jpg",
     ],
     specs: SPEC_RACK,
     features: [
@@ -380,8 +380,8 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Стеллажи для библиотек",
     lead: "Полочные системы для книг, газет и документов. Открытые и закрытые, с регулировкой высоты полок. Стационарные и мобильные.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2024/08/биб-с-1.jpg",
-      "https://innotek.uz/wp-content/uploads/2024/08/дддддд-1-768x508.jpg",
+      "/src/assets/images/биб-с-1.jpg",
+      "/src/assets/images/дддддд-1-768x508.jpg",
     ],
     specs: [],
     features: [
@@ -403,8 +403,8 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Кабельные стеллажи",
     lead: "Для кабельной продукции на деревянных катушках. Конструкция на базе фронтальных стеллажей.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2024/01/kabelniy-stellaj_1.jpg",
-      "https://innotek.uz/wp-content/uploads/2024/01/kabel_3.png",
+      "/src/assets/images/kabelniy-stellaj_1.jpg",
+      "/src/assets/images/kabel_3.png",
     ],
     specs: [
       { key: "Материал", value: "ST 37" },
@@ -432,8 +432,8 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Самонесущие стеллажи",
     lead: "Сборно-разборная конструкция с элементами для кровли и стеновых панелей. Единый блок: монтаж, эксплуатация, наращивание или уменьшение объёма склада.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2024/05/samonesushchie_konsolnye_stellazhi_07.jpg",
-      "https://innotek.uz/wp-content/uploads/2024/01/8.jpg",
+      "/src/assets/images/samonesushchie_konsolnye_stellazhi_07.jpg",
+      "/src/assets/images/2024-01-8.jpg",
     ],
     specs: [
       { key: "Материал", value: "ST 37" },
@@ -464,9 +464,9 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     // «Приставные стеллажи используются для оформления торцевой части островных стеллажей. Приставной стеллаж полностью закрывает торец островного стеллажа, и его высота соответствует высоте острова. Конструктивной особенностью приставного стеллажа является использование двухсторонних стоек и установка задних панелей, как с фронтальной части стеллажа, так и со стороны примыкания к острову. Приставные стеллажи не выстраиваются в линию, и расчет каждого стеллажа производится с замыкающей стойкой и опорой.»
     lead: "Складские системы SMART для промышленного склада и распределительного центра.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/IMAGE-2023-10-31-123248.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/IMAGE-2023-10-31-123255.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/IMAGE-2023-10-31-123259.jpg",
+      "/src/assets/images/IMAGE-2023-10-31-123248.jpg",
+      "/src/assets/images/IMAGE-2023-10-31-123255.jpg",
+      "/src/assets/images/IMAGE-2023-10-31-123259.jpg",
     ],
     specs: [
       { key: "Материал", value: "ST 37" },
@@ -496,9 +496,9 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Пристенные стеллажи",
     lead: "Самый распространённый вид торговых стеллажей: вдоль стен, для зонирования зала и в составе островных линий — в том числе для обхода колонн.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/2-6.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/3-7.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/4-7.jpg",
+      "/src/assets/images/2-6.jpg",
+      "/src/assets/images/3-7.jpg",
+      "/src/assets/images/4-7.jpg",
     ],
     specs: SPEC_RETAIL,
     features: [
@@ -519,9 +519,9 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Островные стеллажи",
     lead: "Двухсторонние стеллажи в центре торгового зала. Высота, как правило, не превышает 1850 мм, наиболее распространённая — 1650 мм.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/1-3.png",
-      "https://innotek.uz/wp-content/uploads/2023/10/2-3.png",
-      "https://innotek.uz/wp-content/uploads/2023/10/IMAGE-2023-10-31-122736.jpg",
+      "/src/assets/images/1-3.png",
+      "/src/assets/images/2-3.png",
+      "/src/assets/images/IMAGE-2023-10-31-122736.jpg",
     ],
     specs: SPEC_RETAIL,
     features: [
@@ -542,10 +542,10 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Офисные столы",
     lead: "Модели из каталога и изготовление мебели под заказ, если типовая не подходит.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/26.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/25.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/24.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/8.png",
+      "/src/assets/images/26.jpg",
+      "/src/assets/images/25.jpg",
+      "/src/assets/images/24.jpg",
+      "/src/assets/images/8.png",
     ],
     specs: [
       { key: "Материал", value: "ST 37 / ДСП / МДФ" },
@@ -573,9 +573,9 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Офисные стулья",
     lead: "Модели из каталога и изготовление мебели под заказ, если типовая не подходит.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/40.png",
-      "https://innotek.uz/wp-content/uploads/2023/10/37.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/27.jpg",
+      "/src/assets/images/40.png",
+      "/src/assets/images/37.jpg",
+      "/src/assets/images/27.jpg",
     ],
     specs: [
       { key: "Материал", value: "ST 37" },
@@ -603,9 +603,9 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Шкафы для офиса",
     lead: "Универсальные офисные шкафы для документов и ценных вещей. Некоторые модели можно использовать вместо сейфа. Офис, банк, отдел кадров, бухгалтерия, архив.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/1-8.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/2-10.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/4-12.jpg",
+      "/src/assets/images/1-8.jpg",
+      "/src/assets/images/2-10.jpg",
+      "/src/assets/images/4-12.jpg",
     ],
     specs: [{ key: "Материал", value: "ST 37" }, { key: "Сертификат", value: CERT }],
     features: [
@@ -626,9 +626,9 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Мебель для раздевалок",
     lead: "Полки для головных уборов и обуви, перекладина, двухсторонние крючки, вентиляция. Фитнес, школа, бассейн, офис, производство.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/2-11.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/7-8.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/8-10.jpg",
+      "/src/assets/images/2-11.jpg",
+      "/src/assets/images/7-8.jpg",
+      "/src/assets/images/8-10.jpg",
     ],
     specs: [
       { key: "Материал", value: "ST 37" },
@@ -653,9 +653,9 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Мебель для производства",
     lead: "Сварные тумбы и ящики, жёсткая конструкция. Слесарные верстаки для производств, гаражей и мастерских.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/34-1.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/32-1.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/31-1.jpg",
+      "/src/assets/images/34-1.jpg",
+      "/src/assets/images/32-1.jpg",
+      "/src/assets/images/31-1.jpg",
     ],
     specs: [{ key: "Материал", value: "ST 37" }, { key: "Сертификат", value: CERT }],
     features: [
@@ -676,9 +676,9 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Роликовые конвейеры",
     lead: "Для штучных грузов: опоки, прокат, ящики, доски, поддоны, тара, коробки. Груз движется по вращающимся роликам или дискам.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/3-14.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/7-10.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/20-5.jpg",
+      "/src/assets/images/3-14.jpg",
+      "/src/assets/images/7-10.jpg",
+      "/src/assets/images/20-5.jpg",
     ],
     specs: [
       { key: "Материал", value: "ST 37" },
@@ -699,9 +699,9 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Ленточные конвейеры",
     lead: "Для сыпучих и штучных грузов на короткие, средние и дальние расстояния: промышленность, склады, порты, перегрузка.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/1-11.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/4-2.png",
-      "https://innotek.uz/wp-content/uploads/2023/10/16-5.jpg",
+      "/src/assets/images/1-11.jpg",
+      "/src/assets/images/4-2.png",
+      "/src/assets/images/16-5.jpg",
     ],
     specs: [
       { key: "Материал", value: "ST 37" },
@@ -723,9 +723,9 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     h1: "Сборочные линии",
     lead: "Разборные модули: промышленные столы и транспортёры. Линия может комплектоваться PLC для пошаговой сборки.",
     images: [
-      "https://innotek.uz/wp-content/uploads/2023/10/1-12.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/6-12.jpg",
-      "https://innotek.uz/wp-content/uploads/2023/10/18-6.jpg",
+      "/src/assets/images/1-12.jpg",
+      "/src/assets/images/6-12.jpg",
+      "/src/assets/images/18-6.jpg",
     ],
     specs: [
       { key: "Материал", value: "ST 37" },

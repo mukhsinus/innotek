@@ -12,16 +12,16 @@ export const ABOUT = {
   ],
   /** Имена из файлов логотипов в about.md. Скриншоты экрана не берём. */
   clients: [
-    { src: "https://innotek.uz/wp-content/uploads/2022/11/pepsi.png", alt: "Pepsi" },
-    { src: "https://innotek.uz/wp-content/uploads/2022/11/mediapark.png", alt: "Mediapark" },
-    { src: "https://innotek.uz/wp-content/uploads/2022/11/korzinka.png", alt: "Korzinka" },
-    { src: "https://innotek.uz/wp-content/uploads/2022/11/imzo.png", alt: "IMZO" },
-    { src: "https://innotek.uz/wp-content/uploads/2022/11/artel.png", alt: "Artel" },
-    { src: "https://innotek.uz/wp-content/uploads/2022/11/akfa.png", alt: "AKFA" },
-    { src: "https://innotek.uz/wp-content/uploads/2024/05/nura.jpg", alt: "Nura" },
-    { src: "https://innotek.uz/wp-content/uploads/2024/05/evos-2987.jpeg", alt: "EVOS" },
-    { src: "https://innotek.uz/wp-content/uploads/2024/05/Uzauto-motors-logo.jpg", alt: "UzAuto Motors" },
-    { src: "https://innotek.uz/wp-content/uploads/2024/05/poliflex.png", alt: "Poliflex" },
+    { src: "/src/assets/images/pepsi.png", alt: "Pepsi" },
+    { src: "/src/assets/images/mediapark.png", alt: "Mediapark" },
+    { src: "/src/assets/images/korzinka.png", alt: "Korzinka" },
+    { src: "/src/assets/images/imzo.png", alt: "IMZO" },
+    { src: "/src/assets/images/artel.png", alt: "Artel" },
+    { src: "/src/assets/images/akfa.png", alt: "AKFA" },
+    { src: "/src/assets/images/nura.jpg", alt: "Nura" },
+    { src: "/src/assets/images/evos-2987.jpeg", alt: "EVOS" },
+    { src: "/src/assets/images/Uzauto-motors-logo.jpg", alt: "UzAuto Motors" },
+    { src: "/src/assets/images/poliflex.png", alt: "Poliflex" },
   ],
 } as const;
 
@@ -30,7 +30,18 @@ export const VIDEO = {
   description:
     "Реальные кейсы Innotek: как производятся и устанавливаются стеллажные системы и конвейерные решения.",
   h1: "Видеокейсы",
-  lead: "Реальные кейсы Innotek: смотрите, как производятся и устанавливаются наши стеллажные системы и конвейерные решения.",
+  lead: "Реальные кейсы Innotek: смотрите, как производятся и устанавливаются наши стеллажные системы и конвейерные решения на объектах в Узбекистане.",
+  channelUrl: "https://www.youtube.com/@innotek_invest",
+  videos: [
+    {
+      id: "0uidz0YLtxI",
+      title: "Монтаж набивных (Drive-in) стеллажей",
+      description: "Реализация проекта глубинных набивных стеллажей для максимальной плотности складского хранения поддонов.",
+      category: "Складские стеллажи",
+      embedUrl: "https://www.youtube-nocookie.com/embed/0uidz0YLtxI",
+      watchUrl: "https://youtube.com/shorts/0uidz0YLtxI",
+    },
+  ],
 } as const;
 
 export const CONTACTS = {

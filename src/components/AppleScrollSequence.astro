@@ -1,0 +1,394 @@
+---
+/**
+ * AppleScrollSequence.astro
+ * High-performance Apple AirPods-style scroll-linked canvas image sequence.
+ *
+ * Features:
+ * - Studio background gradient matching the 3D frame lighting exactly
+ * - Full-bleed seamless canvas rendering
+ * - Blueprint annotations synced to stages on scroll
+ */
+
+import SectionMeta from "./SectionMeta.astro";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+  index?: number;
+  total?: number;
+}
+
+const { lang, index = 2, total = 6 } = Astro.props;
+
+const texts = {
+  ru: {
+    kicker: "Blueprint Engineering",
+    title: "Инженерная сборка",
+    titleAccent: "в деталях",
+    lead: "Скролльте вниз, чтобы увидеть пошаговую сборку стеллажной системы Innotek — от несущей рамы до предельной нагрузки.",
+    stage1: {
+      tag: "ЭТАП 01",
+      title: "Несущие рамы ST 37",
+      desc: "Холоднокатаный профиль высокой прочности. Шаг перфорации 50 мм.",
+      ann1: { label: "ВЫСОТА (H)", val: "до 14 000 мм" },
+      ann2: { label: "МАТЕРИАЛ", val: "ST 37 · 2.5 мм" },
+    },
+    stage2: {
+      tag: "ЭТАП 02",
+      title: "Фиксация продольных балок",
+      desc: "8-зацепной клипсовый замок с защитой от выбивания вилами погрузчика.",
+      ann1: { label: "ДЛИНА (L)", val: "1800 – 3600 мм" },
+      ann2: { label: "ПОКРЫТИЕ", val: "RAL 2004 Orange" },
+    },
+    stage3: {
+      tag: "ЭТАП 03",
+      title: "Ярусное хранение паллет",
+      desc: "Полная готовность под евро (EUR) и финские (FIN) поддоны с нагрузкой до 4.5 тонн на ярус.",
+      ann1: { label: "НАГРУЗКА (Q)", val: "до 4 500 кг / ярус" },
+      ann2: { label: "СЕРТИФИКАТ", val: "ISO 9001:2015" },
+    },
+  },
+  uz: {
+    kicker: "Muhandislik Animatsiyasi",
+    title: "Muhandislik yig'ish",
+    titleAccent: "jarayoni",
+    lead: "Pastga aylantiring va Innotek stelaj tizimining bosqichma-bosqich yig'ilishini tomosha qiling.",
+    stage1: {
+      tag: "BOSQICH 01",
+      title: "ST 37 ko'taruvchi ramalar",
+      desc: "Yuqori mustahkamlikdagi sovuq prokat profili. 50 mm teshilish qadami.",
+      ann1: { label: "BALANDLIK (H)", val: "14 000 mm gacha" },
+      ann2: { label: "MATERIAL", val: "ST 37 · 2.5 mm" },
+    },
+    stage2: {
+      tag: "BOSQICH 02",
+      title: "Bo'ylama balkalarni mahkamlash",
+      desc: "Yuk ko'targich urilishidan himoyalangan 8-ilgakli qulflash tizimi.",
+      ann1: { label: "UZUNLIK (L)", val: "1800 – 3600 mm" },
+      ann2: { label: "QOPLAMA", val: "RAL 2004 Orange" },
+    },
+    stage3: {
+      tag: "BOSQICH 03",
+      title: "Palletalarni joylashtirish",
+      desc: "Yevro (EUR) va fin (FIN) poddonlari uchun 4.5 tonnagacha yuklama kafolati.",
+      ann1: { label: "YUKLAMA (Q)", val: "4 500 kg / yarusgacha" },
+      ann2: { label: "STANDART", val: "ISO 9001:2015" },
+    },
+  },
+}[lang];
+---
+
+<section
+  id="apple-sequence-container"
+  class="relative text-ink border-y border-line"
+  style="min-height: 350vh; background-color: #76797d;"
+>
+  <!-- Pinned Viewport with 60px Top Clearance matching the header -->
+  <div
+    id="apple-sequence-sticky"
+    class="sticky top-[60px] flex h-[calc(100vh-60px)] h-[calc(100dvh-60px)] w-full flex-col justify-between overflow-hidden"
+    style="background: #76797d; background: radial-gradient(ellipse 90% 75% at 50% 46%, #989da2 0%, #85898e 42%, #76797d 72%, #6f7276 100%);"
+  >
+    <!-- Background Canvas -->
+    <canvas
+      id="apple-sequence-canvas"
+      class="pointer-events-none absolute inset-0 z-0 object-contain"
+      style="width: 100%; height: 100%;"></canvas>
+
+    <!-- Header Section Info (Foreground Top) -->
+    <div class="site-wrap relative z-20 pt-6 pb-2 sm:pt-8">
+      <SectionMeta kicker={texts.kicker} index={index} total={total} />
+      <div>
+        <h2
+          class="font-display text-xl sm:text-3xl font-bold tracking-tight text-white drop-shadow-sm"
+        >
+          {texts.title}
+          <span class="t-stroke">{texts.titleAccent}</span>
+        </h2>
+        <p
+          class="mt-1 max-w-xl text-xs sm:text-sm text-ink-soft leading-relaxed drop-shadow-sm"
+        >
+          {texts.lead}
+        </p>
+      </div>
+    </div>
+
+    <!-- Center Floating Annotations Layer (Foreground Middle) -->
+    <div
+      class="site-wrap relative z-20 flex-1 flex items-center justify-between w-full pointer-events-none px-4 sm:px-8"
+    >
+      <!-- Stage 01 Annotations -->
+      <div
+        id="seq-stage-1"
+        class="seq-annotation-layer absolute inset-x-4 sm:inset-x-8 flex items-center justify-between transition-opacity duration-500 opacity-100"
+      >
+        <div
+          class="hidden sm:block rounded border border-cyan/40 bg-surface/90 p-3.5 backdrop-blur-md shadow-2xl"
+        >
+          <span
+            class="block font-mono text-[0.625rem] uppercase tracking-wider text-muted-on-ink"
+            >{texts.stage1.ann1.label}</span
+          >
+          <span class="font-mono text-sm font-bold text-cyan"
+            >{texts.stage1.ann1.val}</span
+          >
+        </div>
+        <div
+          class="hidden sm:block rounded border border-cyan/40 bg-surface/90 p-3.5 backdrop-blur-md shadow-2xl"
+        >
+          <span
+            class="block font-mono text-[0.625rem] uppercase tracking-wider text-muted-on-ink"
+            >{texts.stage1.ann2.label}</span
+          >
+          <span class="font-mono text-sm font-bold text-cyan"
+            >{texts.stage1.ann2.val}</span
+          >
+        </div>
+      </div>
+
+      <!-- Stage 02 Annotations -->
+      <div
+        id="seq-stage-2"
+        class="seq-annotation-layer absolute inset-x-4 sm:inset-x-8 flex items-center justify-between transition-opacity duration-500 opacity-0"
+      >
+        <div
+          class="hidden sm:block rounded border border-accent/40 bg-surface/90 p-3.5 backdrop-blur-md shadow-2xl"
+        >
+          <span
+            class="block font-mono text-[0.625rem] uppercase tracking-wider text-muted-on-ink"
+            >{texts.stage2.ann1.label}</span
+          >
+          <span class="font-mono text-sm font-bold text-accent"
+            >{texts.stage2.ann1.val}</span
+          >
+        </div>
+        <div
+          class="hidden sm:block rounded border border-accent/40 bg-surface/90 p-3.5 backdrop-blur-md shadow-2xl"
+        >
+          <span
+            class="block font-mono text-[0.625rem] uppercase tracking-wider text-muted-on-ink"
+            >{texts.stage2.ann2.label}</span
+          >
+          <span class="font-mono text-sm font-bold text-accent"
+            >{texts.stage2.ann2.val}</span
+          >
+        </div>
+      </div>
+
+      <!-- Stage 03 Annotations -->
+      <div
+        id="seq-stage-3"
+        class="seq-annotation-layer absolute inset-x-4 sm:inset-x-8 flex items-center justify-between transition-opacity duration-500 opacity-0"
+      >
+        <div
+          class="hidden sm:block rounded border border-cyan/40 bg-surface/90 p-3.5 backdrop-blur-md shadow-2xl"
+        >
+          <span
+            class="block font-mono text-[0.625rem] uppercase tracking-wider text-muted-on-ink"
+            >{texts.stage3.ann1.label}</span
+          >
+          <span class="font-mono text-sm font-bold text-cyan"
+            >{texts.stage3.ann1.val}</span
+          >
+        </div>
+        <div
+          class="hidden sm:block rounded border border-cyan/40 bg-surface/90 p-3.5 backdrop-blur-md shadow-2xl"
+        >
+          <span
+            class="block font-mono text-[0.625rem] uppercase tracking-wider text-muted-on-ink"
+            >{texts.stage3.ann2.label}</span
+          >
+          <span class="font-mono text-sm font-bold text-cyan"
+            >{texts.stage3.ann2.val}</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom spacer for balanced framing -->
+    <div class="site-wrap relative z-20 pb-6 pointer-events-none"></div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    var TOTAL_FRAMES = 300;
+    var images = [];
+    var currentFrameIndex = 0;
+    var isMobile = window.innerWidth < 768;
+
+    // All frames in public/ are .webp
+    function getFrameUrl(idx) {
+      var num = String(idx + 1).padStart(3, "0");
+      return isMobile
+        ? "/sequenceMobile/ezgif-frame-" + num + ".webp"
+        : "/sequnceDesktop/ezgif-frame-" + num + ".webp";
+    }
+
+    function initSequence() {
+      var container = document.getElementById("apple-sequence-container");
+      var canvas = document.getElementById("apple-sequence-canvas");
+
+      var stage1 = document.getElementById("seq-stage-1");
+      var stage2 = document.getElementById("seq-stage-2");
+      var stage3 = document.getElementById("seq-stage-3");
+
+      if (!container || !canvas) return;
+
+      var ctx = canvas.getContext("2d");
+
+      function resizeCanvas() {
+        if (!ctx) return;
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        var w =
+          window.innerWidth || document.documentElement.clientWidth || 1200;
+        var h = canvas.clientHeight || window.innerHeight - 60 || 800;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        renderFrame(currentFrameIndex);
+      }
+
+      // Draw image in comfortable, balanced scale matching the background
+      function renderFrame(index) {
+        currentFrameIndex = index;
+        var url = getFrameUrl(index);
+
+        if (!ctx) return;
+
+        var img = images[index];
+        if (!img) {
+          img = new Image();
+          img.src = url;
+          images[index] = img;
+        }
+
+        var doDraw = function (targetImg) {
+          if (!targetImg || !targetImg.naturalWidth) return;
+
+          // Seamless studio background matching frame gradient exactly
+          var grad = ctx.createRadialGradient(
+            canvas.width / 2,
+            canvas.height * 0.46,
+            10,
+            canvas.width / 2,
+            canvas.height * 0.46,
+            Math.max(canvas.width, canvas.height) * 0.65,
+          );
+          grad.addColorStop(0, "#989da2");
+          grad.addColorStop(0.42, "#85898e");
+          grad.addColorStop(0.72, "#76797d");
+          grad.addColorStop(1, "#6f7276");
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // Stretch frame to the full width of the viewport
+          var ratio = canvas.width / targetImg.naturalWidth;
+          var drawW = canvas.width;
+          var drawH = targetImg.naturalHeight * ratio;
+          var drawX = 0;
+          var drawY = (canvas.height - drawH) / 2;
+
+          ctx.drawImage(
+            targetImg,
+            0,
+            0,
+            targetImg.naturalWidth,
+            targetImg.naturalHeight,
+            drawX,
+            drawY,
+            drawW,
+            drawH,
+          );
+        };
+
+        if (img.complete && img.naturalWidth > 0) {
+          doDraw(img);
+        } else {
+          img.onload = function () {
+            if (currentFrameIndex === index) {
+              doDraw(img);
+            }
+          };
+          for (var offset = 1; offset < 30; offset++) {
+            if (
+              index - offset >= 0 &&
+              images[index - offset] &&
+              images[index - offset].complete &&
+              images[index - offset].naturalWidth > 0
+            ) {
+              doDraw(images[index - offset]);
+              break;
+            }
+          }
+        }
+      }
+
+      function updateHUD(frameIdx) {
+        var activeStage = 1;
+        if (frameIdx >= 196) {
+          activeStage = 3;
+        } else if (frameIdx >= 96) {
+          activeStage = 2;
+        }
+
+        if (stage1 && stage2 && stage3) {
+          stage1.style.opacity = activeStage === 1 ? "1" : "0";
+          stage2.style.opacity = activeStage === 2 ? "1" : "0";
+          stage3.style.opacity = activeStage === 3 ? "1" : "0";
+        }
+      }
+
+      var ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+
+        requestAnimationFrame(function () {
+          var rect = container.getBoundingClientRect();
+          var offsetTop = 60;
+          var scrollDist = rect.height - (window.innerHeight - offsetTop);
+
+          if (scrollDist > 0) {
+            var progress = (offsetTop - rect.top) / scrollDist;
+            var clamped = Math.max(0, Math.min(0.999, progress));
+            var frameIdx = Math.floor(clamped * TOTAL_FRAMES);
+
+            renderFrame(frameIdx);
+            updateHUD(frameIdx);
+          }
+
+          ticking = false;
+        });
+      }
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", resizeCanvas, { passive: true });
+
+      // Preload images into memory
+      for (var i = 0; i < TOTAL_FRAMES; i++) {
+        (function (idx) {
+          var img = new Image();
+          img.src = getFrameUrl(idx);
+          img.onload = function () {
+            if (idx === 0) {
+              resizeCanvas();
+            }
+          };
+          images[idx] = img;
+        })(i);
+      }
+
+      resizeCanvas();
+      onScroll();
+    }
+
+    if (
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    ) {
+      initSequence();
+    } else {
+      document.addEventListener("DOMContentLoaded", initSequence);
+    }
+  })();
+</script>

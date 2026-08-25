@@ -138,47 +138,112 @@ function initReveal() {
 }
 
 function initCounters() {
-  const nodes = document.querySelectorAll<HTMLElement>("[data-count]");
+  const nodes = document.querySelectorAll<HTMLElement>("[data-count], [data-count-range]");
   if (!nodes.length) return;
 
   const reduced = reducedMotion();
 
-  if (!reduced) {
-    nodes.forEach((el) => {
-      el.textContent = "0";
-    });
-  }
+  const easeOutQuart = (x: number): number => 1 - Math.pow(1 - x, 4);
 
-  const run = (el: HTMLElement) => {
+  const runSingle = (el: HTMLElement, delay: number = 0) => {
     const target = Number(el.dataset.count);
     if (!Number.isFinite(target)) return;
     if (reduced) {
       el.textContent = String(target);
       return;
     }
-    const start = performance.now();
-    const duration = 1000;
-    const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / duration);
-      const eased = 1 - (1 - p) ** 3;
-      el.textContent = String(Math.round(target * eased));
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
+
+    setTimeout(() => {
+      const start = performance.now();
+      const duration = 1400;
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - start) / duration);
+        const eased = easeOutQuart(p);
+        el.textContent = String(Math.round(target * eased));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, delay);
+  };
+
+  const runRange = (el: HTMLElement, delay: number = 0) => {
+    const raw = el.dataset.countRange || "";
+    const parts = raw.split(",").map((s) => parseFloat(s.trim()));
+    if (parts.length < 2 || isNaN(parts[0]) || isNaN(parts[1])) return;
+    const [minTarget, maxTarget] = parts;
+    const format = el.dataset.format || "{0}–{1}";
+
+    if (reduced) {
+      el.textContent = format
+        .replace("{0}", minTarget.toString().replace(".", ","))
+        .replace("{1}", maxTarget.toString().replace(".", ","));
+      return;
+    }
+
+    setTimeout(() => {
+      const start = performance.now();
+      const duration = 1500;
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - start) / duration);
+        const eased = easeOutQuart(p);
+        const currentMin = (minTarget * eased).toFixed(1).replace(".", ",");
+        const currentMax = Math.round(maxTarget * eased).toString();
+        el.textContent = format.replace("{0}", currentMin).replace("{1}", currentMax);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, delay);
   };
 
   const io = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
-        run(entry.target as HTMLElement);
-        io.unobserve(entry.target);
+        const target = entry.target as HTMLElement;
+        const idx = Array.from(nodes).indexOf(target);
+        const delay = Math.max(0, idx * 120);
+
+        if (target.dataset.countRange) {
+          runRange(target, delay);
+        } else {
+          runSingle(target, delay);
+        }
+        io.unobserve(target);
       }
     },
-    { threshold: 0.4 },
+    { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
   );
 
-  nodes.forEach((el) => io.observe(el));
+  nodes.forEach((el) => {
+    if (!reduced) {
+      if (el.dataset.countRange) {
+        el.textContent = (el.dataset.format || "{0}–{1}").replace("{0}", "0,0").replace("{1}", "0");
+      } else {
+        el.textContent = "0";
+      }
+    }
+    io.observe(el);
+  });
+}
+
+function initSpotlight() {
+  if (reducedMotion()) return;
+  if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+  const cards = document.querySelectorAll<HTMLElement>("[data-spotlight]");
+  if (!cards.length) return;
+
+  cards.forEach((card) => {
+    const onMove = (e: MouseEvent) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty("--mouse-x", `${x.toFixed(1)}px`);
+      card.style.setProperty("--mouse-y", `${y.toFixed(1)}px`);
+    };
+
+    card.addEventListener("mousemove", onMove, { passive: true });
+  });
 }
 
 function initParallax() {
@@ -298,11 +363,86 @@ function initNavFlyouts() {
   });
 }
 
-initHeader();
-initHeaderHide();
-initProgress();
-initMobileNav();
-initNavFlyouts();
-initReveal();
-initCounters();
-initParallax();
+function initAssemblySequence() {
+  const root = document.querySelector<HTMLElement>("[data-assembly-root]");
+  if (!root) return;
+
+  const frames = Array.from(root.querySelectorAll<HTMLElement>("[data-assembly-frame]"));
+  const buttons = Array.from(root.querySelectorAll<HTMLElement>("[data-assembly-btn]"));
+  const counter = document.getElementById("assembly-step-counter");
+  if (!frames.length || !buttons.length) return;
+
+  let activeIndex = 0;
+
+  const setActive = (idx: number) => {
+    activeIndex = Math.max(0, Math.min(frames.length - 1, idx));
+    
+    frames.forEach((frame, i) => {
+      const isActive = i === activeIndex;
+      frame.classList.toggle("is-active", isActive);
+      frame.classList.toggle("opacity-100", isActive);
+      frame.classList.toggle("opacity-0", !isActive);
+      frame.classList.toggle("pointer-events-none", !isActive);
+    });
+
+    buttons.forEach((btn, i) => {
+      const isActive = i === activeIndex;
+      btn.classList.toggle("border-accent", isActive);
+      btn.classList.toggle("bg-surface", isActive);
+      btn.classList.toggle("border-line", !isActive);
+      btn.classList.toggle("bg-transparent", !isActive);
+      btn.classList.toggle("opacity-60", !isActive);
+    });
+
+    if (counter) {
+      counter.textContent = String(activeIndex + 1).padStart(2, "0");
+    }
+  };
+
+  buttons.forEach((btn, idx) => {
+    btn.addEventListener("click", () => setActive(idx));
+  });
+
+  if (reducedMotion()) return;
+
+  // Scroll observer to advance stages smoothly as user scrolls through the assembly section
+  const onScroll = () => {
+    const rect = root.getBoundingClientRect();
+    const totalH = rect.height - window.innerHeight;
+    if (totalH <= 0) return;
+
+    const scrolled = -rect.top;
+    if (scrolled >= 0 && scrolled <= totalH) {
+      const progress = Math.min(0.99, Math.max(0, scrolled / totalH));
+      const targetIdx = Math.floor(progress * frames.length);
+      if (targetIdx !== activeIndex) {
+        setActive(targetIdx);
+      }
+    }
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+}
+
+function initAll() {
+  initHeader();
+  initHeaderHide();
+  initProgress();
+  initMobileNav();
+  initNavFlyouts();
+  initReveal();
+  initCounters();
+  initSpotlight();
+  initParallax();
+  initAssemblySequence();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initAll);
+} else {
+  initAll();
+}
+
+document.addEventListener("astro:page-load", initAll);
+
+

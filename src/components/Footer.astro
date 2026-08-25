@@ -14,26 +14,93 @@ const t = useT(lang);
 const year = new Date().getFullYear();
 const homeHref = hrefFor(lang, "/");
 const companyLinks = primaryNav.filter((i) => i.path !== "/catalog/");
+const isUz = lang === "uz";
+const address = isUz ? SITE.address.uz : SITE.address.ru;
+const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
 ---
 
-<footer class="footer-root border-t border-line bg-paper text-ink">
+<footer class="footer-root relative">
+  <!-- Subtle CAD background watermark -->
   <p class="footer-mark" aria-hidden="true">INNOTEK</p>
-  <div class="footer-inner site-wrap grid grid-cols-4 gap-x-8 gap-y-12 py-14 text-[0.8125rem] leading-6 lg:grid-cols-12 lg:py-16">
-    <div class="col-span-4 lg:col-span-3">
-      <a href={homeHref} class="inline-flex items-center gap-2.5" aria-label={SITE.name}>
-        <Logo class="h-7 w-7" />
-        <span class="text-xs font-semibold tracking-[0.16em]">INNOTEK</span>
-      </a>
+
+  <!-- Top Footer Grid -->
+  <div class="footer-inner site-wrap grid grid-cols-1 gap-12 py-14 lg:grid-cols-12 lg:gap-8 lg:py-16">
+    
+    <!-- 01: Brand, Tagline & Socials -->
+    <div class="lg:col-span-4 flex flex-col justify-between space-y-6">
+      <div class="space-y-4">
+        <a href={homeHref} class="inline-flex items-center gap-3 group" aria-label={SITE.name}>
+          <Logo class="h-8 w-8 transition-transform duration-300 group-hover:scale-105" />
+          <div class="flex flex-col">
+            <span class="text-sm font-bold tracking-[0.18em] text-ink" style="font-family: var(--font-display)">INNOTEK</span>
+            <span class="text-[9px] font-mono text-cyan tracking-wider">ENGINEERED IN UZBEKISTAN</span>
+          </div>
+        </a>
+        <p class="max-w-sm text-sm text-muted-on-ink leading-relaxed">
+          {
+            isUz
+              ? "Ombor, do'kon va sanoat korxonalari uchun zamonaviy stelaj va konveyer tizimlari ishlab chiqaruvchisi."
+              : "Производство складских, торговых стеллажей, металлической мебели и автоматизированных конвейерных систем."
+          }
+        </p>
+      </div>
+
+      <!-- Socials & Quote Action -->
+      <div class="space-y-4 pt-2">
+        <div class="flex items-center gap-2">
+          <!-- Telegram -->
+          <a
+            href={SITE.socials.telegram}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer-social-btn"
+            aria-label="Telegram"
+          >
+            <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+            </svg>
+          </a>
+          <!-- Instagram -->
+          <a
+            href={SITE.socials.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer-social-btn"
+            aria-label="Instagram"
+          >
+            <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <!-- Facebook -->
+          <a
+            href={SITE.socials.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer-social-btn"
+            aria-label="Facebook"
+          >
+            <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
     </div>
 
-    <div class="col-span-4 md:col-span-2 lg:col-span-3">
-      <p class="t-overline">{t("footer.products")}</p>
-      <ul class="mt-4 space-y-2 text-muted">
+    <!-- 02: Products Nav -->
+    <div class="lg:col-span-3">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-accent text-xs font-mono font-bold">01 //</span>
+        <p class="t-overline">{t("footer.products")}</p>
+      </div>
+      <ul class="space-y-2.5 text-[0.8125rem]">
         {
           catalogNav.map((item) => (
             <li>
-              <a class="hover:text-ink" href={hrefFor(lang, item.path)}>
-                {t(item.labelKey)}
+              <a class="footer-link group" href={hrefFor(lang, item.path)}>
+                <span class="footer-link-arrow">→</span>
+                <span>{t(item.labelKey)}</span>
               </a>
             </li>
           ))
@@ -41,34 +108,98 @@ const companyLinks = primaryNav.filter((i) => i.path !== "/catalog/");
       </ul>
     </div>
 
-    <div class="col-span-4 md:col-span-2 lg:col-span-3">
-      <p class="t-overline">{t("footer.company")}</p>
-      <ul class="mt-4 space-y-2 text-muted">
+    <!-- 03: Company Nav -->
+    <div class="lg:col-span-2">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-accent text-xs font-mono font-bold">02 //</span>
+        <p class="t-overline">{t("footer.company")}</p>
+      </div>
+      <ul class="space-y-2.5 text-[0.8125rem]">
         {
           companyLinks.map((item) => (
             <li>
-              <a class="hover:text-ink" href={hrefFor(lang, item.path)}>
-                {t(item.labelKey)}
+              <a class="footer-link group" href={hrefFor(lang, item.path)}>
+                <span class="footer-link-arrow">→</span>
+                <span>{t(item.labelKey)}</span>
               </a>
             </li>
           ))
         }
+        <li>
+          <a class="footer-link group" href={quoteHref}>
+            <span class="footer-link-arrow">→</span>
+            <span class="text-accent">{t("cta.quote")}</span>
+          </a>
+        </li>
       </ul>
     </div>
 
-    <div class="col-span-4 lg:col-span-3">
-      <p class="t-overline">{t("footer.contacts")}</p>
-      <ul class="mt-4 space-y-2">
-        <li>
-          <a class="hover:text-accent-ink" href={`tel:${SITE.phone.tel}`}>{SITE.phone.display}</a>
-        </li>
-        <li>
-          <a class="hover:text-accent-ink" href={`mailto:${SITE.email}`}>{SITE.email}</a>
-        </li>
-      </ul>
+    <!-- 04: Direct Contacts & Engineering Telemetry -->
+    <div class="lg:col-span-3 space-y-4">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-cyan text-xs font-mono font-bold">03 //</span>
+        <p class="t-overline">{t("footer.contacts")}</p>
+      </div>
+
+      <div class="space-y-3 text-[0.8125rem]">
+        <div>
+          <a
+            class="block text-base font-semibold text-ink transition-colors hover:text-accent font-display tracking-tight"
+            href={`tel:${SITE.phone.tel}`}
+          >
+            {SITE.phone.display}
+          </a>
+          <p class="text-xs text-muted-on-ink font-mono mt-0.5">
+            {SITE.hours.days}: {SITE.hours.weekdays}
+          </p>
+        </div>
+
+        <div>
+          <a
+            class="inline-block text-ink hover:text-accent transition-colors font-mono text-xs"
+            href={`mailto:${SITE.email}`}
+          >
+            {SITE.email}
+          </a>
+        </div>
+
+        <div class="pt-2">
+          <p class="text-xs text-muted-on-ink leading-relaxed">
+            {address}
+          </p>
+          <a
+            class="inline-flex items-center gap-1.5 mt-2 text-xs font-mono text-cyan hover:text-accent transition-colors"
+            href={SITE.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>[41.3300° N, 69.2501° E]</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="footer-inner border-t border-line">
-    <p class="site-wrap t-caption py-4 pb-10">© {year} {SITE.legalName}</p>
+
+  <!-- Bottom Bar with ISO Badge & Back to Top -->
+  <div class="footer-inner border-t border-line/80 bg-surface/40 backdrop-blur-sm">
+    <div class="site-wrap flex flex-col gap-4 py-5 sm:flex-row sm:items-center sm:justify-between text-xs text-muted-on-ink font-mono">
+      <p>© {year} {SITE.legalName} · All rights reserved.</p>
+      
+      <div class="hidden md:flex items-center gap-2 text-[11px] text-cyan/70">
+        <span class="inline-block h-1.5 w-1.5 rounded-full bg-cyan/60"></span>
+        <span>ISO 9001:2015 · CERTIFIED PRODUCTION</span>
+      </div>
+
+      <button
+        type="button"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        class="footer-back-top self-start sm:self-auto cursor-pointer"
+        aria-label="Scroll back to top"
+      >
+        <span>TOP</span>
+        <span aria-hidden="true">↑</span>
+      </button>
+    </div>
   </div>
 </footer>

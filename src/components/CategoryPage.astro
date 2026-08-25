@@ -37,7 +37,7 @@ const seoN = hasSeo ? n++ : 0;
 ---
 
 <article>
-  <header class="page-head bg-paper" data-reveal>
+  <header class="page-head bg-surface" data-reveal>
     <div class="site-wrap">
       <Breadcrumbs
         lang={lang}
@@ -63,11 +63,14 @@ const seoN = hasSeo ? n++ : 0;
               <a
                 href={hrefFor(lang, item.path)}
                 data-stagger
-                class:list={["group col-span-4 block", i === 0 ? "lg:col-span-8" : "lg:col-span-4"]}
+                data-spotlight
+                class:list={["group relative col-span-4 block bg-paper p-1", i === 0 ? "lg:col-span-8" : "lg:col-span-4"]}
               >
+                <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+                <span class="cad-cross cad-bl" aria-hidden="true">+</span>
                 <div
                   class:list={[
-                    "relative overflow-hidden bg-ink",
+                    "relative overflow-hidden bg-surface",
                     i === 0 ? "aspect-[16/10] lg:aspect-[16/9]" : "aspect-[4/5]",
                   ]}
                 >
@@ -83,7 +86,7 @@ const seoN = hasSeo ? n++ : 0;
                     →
                   </span>
                 </h2>
-                {item.excerpt ? <p class="mt-1.5 text-sm text-muted">{item.excerpt}</p> : <p class="mt-1.5 text-sm text-muted">{t("page.todo")}</p>}
+                {item.excerpt ? <p class="mt-1.5 text-sm text-muted-on-ink">{item.excerpt}</p> : <p class="mt-1.5 text-sm text-muted">{t("page.todo")}</p>}
               </a>
             ))}
           </div>
@@ -96,7 +99,7 @@ const seoN = hasSeo ? n++ : 0;
     !hasGrid && (
       <section class="bg-paper pb-0" data-reveal>
         <div class="site-wrap">
-          <div class="relative aspect-[16/9] overflow-hidden bg-ink lg:aspect-[16/7]">
+          <div class="relative aspect-[16/9] overflow-hidden bg-surface lg:aspect-[16/7]">
             <PhotoFrame
               src={category.image}
               class="absolute inset-0 h-full w-full object-cover"

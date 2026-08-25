@@ -1,5 +1,6 @@
 ---
 import "../styles/home.css";
+import AppleScrollSequence from "./AppleScrollSequence.astro";
 import SectionMeta from "./SectionMeta.astro";
 import { HOME, HOME_STATS } from "../data/home";
 import { SITE } from "../data/site";
@@ -16,15 +17,16 @@ const copy = HOME[lang];
 const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
 const catalogHref = hrefFor(lang, "/catalog/");
 const videoHref = hrefFor(lang, "/video/");
-const address = lang === "uz" ? SITE.address.uz : SITE.address.ru;
+const isUz = lang === "uz";
+const address = isUz ? SITE.address.uz : SITE.address.ru;
 const heroLines = copy.h1.split("\n");
 const marquee = copy.marquee.repeat(4);
 const pad = (n: number) => String(n).padStart(2, "0");
-const SECTIONS = 5;
+const SECTIONS = 6;
 ---
 
-<!-- 01 Hero -->
-<section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink text-paper">
+<!-- 01 Hero: static, confident, blueprint grid accent -->
+<section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-paper text-ink">
   <img
     src={copy.heroImage}
     alt=""
@@ -35,11 +37,20 @@ const SECTIONS = 5;
     fetchpriority="high"
     decoding="async"
   />
-  <div class="absolute inset-0 z-[1] bg-ink/25"></div>
-  <div class="absolute inset-0 z-[1] bg-gradient-to-t from-ink via-ink/50 to-transparent"></div>
+  <div class="absolute inset-0 z-[1] bg-paper/50"></div>
+  <div class="absolute inset-0 z-[1] bg-gradient-to-t from-paper via-paper/70 to-transparent"></div>
   <div class="home-noise" aria-hidden="true"></div>
   <div class="site-wrap relative z-10 pt-36 pb-20 lg:pb-24">
-    <p class="t-overline t-overline-on-dark mb-6">01 / {pad(SECTIONS)}</p>
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      <p class="t-overline">01 / {pad(SECTIONS)}</p>
+      <div class="telemetry-pill" aria-label="System status">
+        <span class="relative flex h-1.5 w-1.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan"></span>
+        </span>
+        <span>PRODUCTION // TASHKENT</span>
+      </div>
+    </div>
     <div class="max-w-5xl">
       <h1 class="t-display">
         {
@@ -50,10 +61,10 @@ const SECTIONS = 5;
           ))
         }
       </h1>
-      <p class="hero-lead t-lead t-lead-on-dark">{copy.heroLead}</p>
+      <p class="hero-lead t-lead">{copy.heroLead}</p>
       <div class="hero-actions mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
         <a class="btn-accent" href={quoteHref}>{t("cta.quote")}</a>
-        <a class="text-link text-link-on-dark" href={catalogHref}>
+        <a class="text-link" href={catalogHref}>
           {t("cta.catalog")}
           <span class="link-arrow" aria-hidden="true">→</span>
         </a>
@@ -66,53 +77,49 @@ const SECTIONS = 5;
   </div>
 </section>
 
-<!-- 02 Каталог -->
+<!-- 02 Apple-style Scroll-linked Canvas Assembly Sequence -->
+<AppleScrollSequence lang={lang} index={2} total={SECTIONS} />
+
+<!-- 03 Catalog: flat grid with hairline dividers -->
 <section id="catalog" class="section-y bg-paper" data-reveal>
   <div class="site-wrap">
-    <SectionMeta kicker={t("home.kickerCatalog")} index={2} total={SECTIONS} />
+    <SectionMeta kicker={t("home.kickerCatalog")} index={3} total={SECTIONS} />
     <h2 class="t-display">
       {copy.catalogHeading.before}
       <span class="t-stroke">{copy.catalogHeading.accent}</span>
     </h2>
     <p class="t-lead">{copy.catalogLead}</p>
-    <div class="site-grid mt-12 lg:mt-16">
+    <div class="mt-12 lg:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {
         copy.categories.map((cat, i) => (
           <a
             href={hrefFor(lang, cat.path)}
             data-stagger
+            data-spotlight
             style={`--stagger: ${i}`}
-            class:list={[
-              "group relative isolate flex min-h-52 flex-col justify-end overflow-hidden bg-ink p-5 text-paper lg:min-h-64 lg:p-6",
-              cat.featured
-                ? "col-span-4 lg:col-span-8 lg:min-h-[32rem]"
-                : cat.path === "/catalog/oborudovanie/" || cat.path === "/catalog/roliki/"
-                  ? "col-span-4 lg:col-span-6"
-                  : "col-span-4 lg:col-span-4",
-            ]}
+            class="group relative flex items-end overflow-hidden border-t border-line p-5 min-h-48 lg:min-h-56 transition-colors hover:bg-surface"
           >
-            <span class="bento-media" data-parallax>
+            <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+            <span class="cad-cross cad-bl" aria-hidden="true">+</span>
+            <div class="absolute inset-0 overflow-hidden">
               <img
                 src={cat.image}
                 alt=""
-                class="photo-grade"
-                width="800"
-                height="600"
+                class="photo-grade h-full w-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-500"
+                width="600"
+                height="400"
                 loading="lazy"
                 decoding="async"
               />
-            </span>
+            </div>
             <div class="photo-veil absolute inset-0 z-[1]"></div>
             <span class="bento-num">{pad(i + 1)}</span>
-            <h3
-              class:list={[
-                "bento-label relative z-[2] font-medium tracking-[-0.02em]",
-                cat.featured ? "text-2xl lg:text-4xl" : "text-lg lg:text-xl",
-              ]}
-            >
-              <span>{t(cat.labelKey)}</span>
-              <span class="bento-arrow" aria-hidden="true">→</span>
-            </h3>
+            <div class="relative z-[2] flex items-baseline gap-3">
+              <span class="text-lg font-medium tracking-[-0.02em]" style="font-family: var(--font-display)">{t(cat.labelKey)}</span>
+              <span class="link-arrow text-accent opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">→</span>
+            </div>
+            <!-- Orange left accent on hover -->
+            <span class="absolute left-0 top-0 bottom-0 w-[2px] bg-accent opacity-0 group-hover:opacity-100 transition-opacity"></span>
           </a>
         ))
       }
@@ -120,46 +127,53 @@ const SECTIONS = 5;
   </div>
 </section>
 
-<!-- 03 Производство -->
+<!-- 04 Production stats -->
 <section id="production" class="section-y bg-paper" data-reveal>
   <div class="site-wrap">
-    <SectionMeta kicker={t("home.kickerProduction")} index={3} total={SECTIONS} />
+    <SectionMeta kicker={t("home.kickerProduction")} index={4} total={SECTIONS} />
     <h2 class="t-display">
       {copy.productionHeading.before}
       <span class="t-stroke">{copy.productionHeading.accent}</span>
     </h2>
     <p class="t-lead">{copy.productionLead}</p>
     <div class="stats-row mt-16 lg:mt-24">
-      <div class="stat" data-stagger style="--stagger: 0">
-        <p class="stat-num"><span data-count={HOME_STATS.years}>{HOME_STATS.years}</span></p>
+      <div class="stat group" data-stagger data-spotlight style="--stagger: 0">
+        <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+        <p class="stat-num"><span data-count={HOME_STATS.years}>{HOME_STATS.years}</span><span class="text-accent text-2xl lg:text-3xl ml-1 font-mono font-light">+</span></p>
         <p class="stat-cap">{t("home.statYears")}</p>
       </div>
-      <div class="stat" data-stagger style="--stagger: 1">
+      <div class="stat group" data-stagger data-spotlight style="--stagger: 1">
+        <span class="cad-cross cad-tr" aria-hidden="true">+</span>
         <p class="stat-num"><span data-count={HOME_STATS.lines}>{HOME_STATS.lines}</span></p>
         <p class="stat-cap">{t("home.statLines")}</p>
       </div>
-      <div class="stat" data-stagger style="--stagger: 2">
-        <p class="stat-num stat-num-long">{HOME_STATS.thickness}</p>
+      <div class="stat group" data-stagger data-spotlight style="--stagger: 2">
+        <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+        <p class="stat-num stat-num-long">
+          <span data-count-range="0.2,6" data-format="{0}–{1}">{HOME_STATS.thickness}</span>
+          <span class="text-muted-on-ink text-xl lg:text-2xl ml-1.5 font-mono font-normal">мм</span>
+        </p>
         <p class="stat-cap">{t("home.statThickness")}</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 04 Кейсы -->
-<section id="cases" class="section-y bg-paper" data-reveal>
+<!-- 05 Cases -->
+<section id="cases" class="section-y bg-surface" data-reveal>
   <div class="site-wrap">
-    <SectionMeta kicker={t("home.kickerCases")} index={4} total={SECTIONS} />
+    <SectionMeta kicker={t("home.kickerCases")} index={5} total={SECTIONS} />
     <h2 class="t-display">
       {copy.casesHeading.before}
       <span class="t-stroke">{copy.casesHeading.accent}</span>
     </h2>
     <p class="t-lead">{copy.casesLead}</p>
-    <div class="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-6 lg:mt-16 lg:gap-8">
+    <div class="mt-12 grid grid-cols-1 gap-[1px] bg-line sm:grid-cols-3 lg:mt-16">
       {
         copy.cases.map((item, i) => (
-          <a href={videoHref} class="group block" data-stagger style={`--stagger: ${i}`}>
-            <div class="relative aspect-[4/5] overflow-hidden bg-ink">
+          <a href={videoHref} class="group relative block bg-paper" data-stagger data-spotlight style={`--stagger: ${i}`}>
+            <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+            <div class="relative aspect-[4/5] overflow-hidden">
               <img
                 src={item.image}
                 alt=""
@@ -169,12 +183,15 @@ const SECTIONS = 5;
                 loading="lazy"
                 decoding="async"
               />
-              <div class="absolute inset-0 bg-ink/20"></div>
+              <div class="absolute inset-0 bg-paper/30"></div>
+              <span class="absolute top-4 left-4 font-mono text-xs text-cyan tracking-wider">{pad(i + 1)}</span>
             </div>
-            <p class="mt-4 text-sm font-medium tracking-wide">
-              {t(item.labelKey)}
-              <span class="link-arrow" aria-hidden="true"> →</span>
-            </p>
+            <div class="p-5 border-t border-line">
+              <p class="text-sm font-medium tracking-wide">
+                {t(item.labelKey)}
+                <span class="link-arrow text-accent" aria-hidden="true"> →</span>
+              </p>
+            </div>
           </a>
         ))
       }
@@ -183,8 +200,8 @@ const SECTIONS = 5;
   </div>
 </section>
 
-<!-- 05 CTA -->
-<section id="quote" class="section-y relative isolate overflow-hidden bg-ink text-paper" data-reveal>
+<!-- 06 CTA -->
+<section id="quote" class="section-y relative isolate overflow-hidden bg-paper" data-reveal>
   <div class="cta-marquee" aria-hidden="true">
     <div class="cta-marquee-track">
       <span>{marquee}</span>
@@ -192,31 +209,100 @@ const SECTIONS = 5;
     </div>
   </div>
   <div class="home-noise" aria-hidden="true"></div>
+  
   <div class="cta-content site-wrap">
-    <SectionMeta kicker={t("home.kickerCta")} index={5} total={SECTIONS} tone="dark" />
-    <div class="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
-      <div class="max-w-3xl">
-        <h2 class="t-display">
-          {copy.ctaHeading.before}
-          <span class="t-stroke t-stroke-on-dark">{copy.ctaHeading.accent}</span>
-        </h2>
-        <p class="t-lead t-lead-on-dark">{copy.ctaLead}</p>
+    <div
+      data-spotlight
+      class="group relative rounded-xl border border-line bg-surface/70 backdrop-blur-md p-8 sm:p-12 lg:p-16 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.06)]"
+    >
+      <span class="cad-cross cad-tl" aria-hidden="true">+</span>
+      <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+      <span class="cad-cross cad-bl" aria-hidden="true">+</span>
+      <span class="cad-cross cad-br" aria-hidden="true">+</span>
+
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <SectionMeta kicker={t("home.kickerCta")} index={6} total={SECTIONS} />
+        <div class="telemetry-pill" aria-label="Status">
+          <span class="relative flex h-1.5 w-1.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan"></span>
+          </span>
+          <span>RAPID CAD SPECIFICATION // 24H</span>
+        </div>
       </div>
-      <a class="btn-accent shrink-0" href={quoteHref}>{t("cta.quote")}</a>
-    </div>
-    <div class="mt-20 flex flex-col gap-6 text-sm text-muted-on-ink sm:mt-28 sm:flex-row sm:flex-wrap sm:gap-x-16 sm:gap-y-4">
-      <p>{address}</p>
-      <a
-        class="text-paper underline decoration-accent decoration-1 underline-offset-4 transition-opacity hover:opacity-70"
-        href={SITE.mapsUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {t("cta.map")}
-      </a>
-      <a class="text-paper transition-colors hover:text-accent" href={`tel:${SITE.phone.tel}`}>
-        {SITE.phone.display}
-      </a>
+
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
+        <!-- Left details & value proposition -->
+        <div class="lg:col-span-7">
+          <h2 class="t-display">
+            {copy.ctaHeading.before}
+            <span class="t-stroke">{copy.ctaHeading.accent}</span>
+          </h2>
+          <p class="t-lead text-base lg:text-lg mt-4 max-w-xl text-muted-on-ink leading-relaxed">
+            {copy.ctaLead}
+          </p>
+        </div>
+
+        <!-- Right Action Hub Card -->
+        <div class="lg:col-span-5">
+          <div class="rounded-lg border border-line bg-paper p-6 sm:p-8 shadow-sm">
+            <p class="text-xs font-mono text-cyan tracking-wider uppercase mb-2">
+              [ {isUz ? "Bog'lanish va narx" : "Расчёт стоимости"} ]
+            </p>
+            <p class="text-lg font-semibold text-ink" style="font-family: var(--font-display)">
+              {isUz ? "Mutaxassis bilan bog'laning" : "Свяжитесь с инженером проекта"}
+            </p>
+            <p class="text-xs text-muted-on-ink mt-1 mb-6">
+              {isUz ? "Sizga mos konfiguratsiyani tanlashda yordam beramiz." : "Ответим на вопросы и подготовим коммерческое предложение."}
+            </p>
+
+            <div class="space-y-3">
+              <a
+                class="btn-accent w-full justify-center text-center shadow-md hover:shadow-accent/25 transition-all"
+                href={quoteHref}
+              >
+                <span>{t("cta.quote")}</span>
+                <span class="link-arrow" aria-hidden="true">→</span>
+              </a>
+
+              <a
+                class="btn-primary w-full justify-center text-center gap-2.5 hover:border-cyan hover:text-cyan transition-colors"
+                href={SITE.socials.telegram}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+                </svg>
+                <span>{isUz ? "Telegram orqali yozish" : "Написать в Telegram"}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Contacts Strip inside the card -->
+      <div class="mt-10 pt-8 border-t border-line/80 flex flex-col gap-4 text-xs font-mono text-muted-on-ink sm:flex-row sm:items-center sm:justify-between">
+        <p class="truncate max-w-md">{address}</p>
+        <div class="flex flex-wrap items-center gap-6">
+          <a
+            class="text-cyan hover:text-accent transition-colors inline-flex items-center gap-1"
+            href={SITE.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>[41.3300° N, 69.2501° E]</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a
+            class="text-ink font-semibold hover:text-accent transition-colors text-sm"
+            href={`tel:${SITE.phone.tel}`}
+          >
+            {SITE.phone.display}
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+

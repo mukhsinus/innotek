@@ -1,16 +1,13 @@
 /* -------------------------------------------------------------------------- */
-/* Главная: движение и тёплая палитра. Не подключать на других страницах.     */
+/* Home: Industrial precision. Scroll-driven assembly. Dark & confident.     */
 /* -------------------------------------------------------------------------- */
 
 .is-home {
-  --color-paper: #fafaf8;
-  --color-ink: #0e0f11;
-  --color-ink-soft: #17181c;
   --ease-home: cubic-bezier(0.16, 1, 0.3, 1);
-  background-color: #fafaf8;
 }
 
-/* 8. Полоса прогресса — под шапкой, 2px, оранжевая */
+/* ── Progress Bar ────────────────────────────────────────────────────── */
+
 .is-home .read-progress {
   display: block;
   position: absolute;
@@ -33,17 +30,14 @@
   will-change: transform;
 }
 
-/* 7. Шапка: прячется вниз, появляется вверх */
+/* ── Header: hide on scroll ──────────────────────────────────────────── */
+
 .is-home #site-header {
   transition:
     background-color 0.25s ease,
     border-color 0.25s ease,
     color 0.25s ease,
     transform 300ms var(--ease-home);
-}
-
-.is-home #site-header[data-overlay]:not([data-compact]):not([data-menu-open]):not([data-flyout-open]) {
-  background: linear-gradient(to bottom, rgb(14 15 17 / 0.45), rgb(14 15 17 / 0));
 }
 
 .is-home #site-header[data-hidden] {
@@ -54,27 +48,7 @@
   transform: none;
 }
 
-/* 11. CTA-кнопки: живой градиент и цветная тень */
-.is-home .btn-accent,
-.is-home .btn-on-dark {
-  background-color: transparent;
-  background-image: linear-gradient(180deg, #ff7a3d 0%, #f05a1a 100%);
-  background-size: 100% 220%;
-  background-position: 50% 0%;
-  box-shadow: 0 8px 24px rgb(255 107 44 / 0.25);
-  transition:
-    background-position 200ms var(--ease-home),
-    filter 200ms var(--ease-home),
-    box-shadow 200ms var(--ease-home),
-    transform 200ms var(--ease-home);
-}
-
-.is-home .btn-accent:hover,
-.is-home .btn-on-dark:hover {
-  background-position: 50% 100%;
-  filter: brightness(0.94);
-  box-shadow: 0 6px 18px rgb(255 107 44 / 0.32);
-}
+/* ── CTA Buttons ─────────────────────────────────────────────────────── */
 
 .is-home .btn-accent:active,
 .is-home .btn-on-dark:active,
@@ -83,7 +57,8 @@
   transform: scale(0.98);
 }
 
-/* 5. Стрелки в ссылках */
+/* ── Link Arrows ─────────────────────────────────────────────────────── */
+
 .is-home .link-arrow {
   display: inline-block;
   transition: transform 0.45s var(--ease-home);
@@ -93,17 +68,19 @@
   transform: translateX(4px);
 }
 
-/* 13. Контурное слово-акцент */
+/* ── Stroke Text ─────────────────────────────────────────────────────── */
+
 .is-home .t-stroke {
   color: transparent;
   -webkit-text-stroke: 1px var(--color-ink);
 }
 
 .is-home .t-stroke-on-dark {
-  -webkit-text-stroke-color: var(--color-paper);
+  -webkit-text-stroke-color: var(--color-ink);
 }
 
-/* Hero: вертикальная подпись и индикатор скролла */
+/* ── Hero ─────────────────────────────────────────────────────────────── */
+
 .is-home .hero-stick {
   position: absolute;
   right: 1.5rem;
@@ -117,7 +94,7 @@
   font-weight: 400;
   letter-spacing: 0.18em;
   line-height: 1;
-  color: var(--color-paper);
+  color: var(--color-muted-on-ink);
   opacity: 0.4;
   pointer-events: none;
 }
@@ -134,7 +111,7 @@
   display: block;
   width: 1px;
   height: 40px;
-  background: var(--color-paper);
+  background: var(--color-accent);
   transform-origin: top center;
   animation: home-scroll-pulse 2.8s ease-in-out infinite;
 }
@@ -169,7 +146,8 @@
   }
 }
 
-/* 1. Hero: построчный выезд */
+/* ── Hero: line-by-line reveal ───────────────────────────────────────── */
+
 .is-home .hero-line {
   display: block;
   overflow: hidden;
@@ -213,24 +191,16 @@
   }
 }
 
-/* 6. Кен-бёрнс hero */
+/* ── Hero photo ──────────────────────────────────────────────────────── */
+
 .is-home .hero-photo {
-  transform: scale(1);
+  transform: scale(1.02);
   transform-origin: center center;
-  animation: home-ken 20s ease-in-out infinite alternate;
-  will-change: transform;
+  filter: contrast(1.2) saturate(0.4) brightness(0.65);
 }
 
-@keyframes home-ken {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.06);
-  }
-}
+/* ── Scroll Reveal ───────────────────────────────────────────────────── */
 
-/* 2. Scroll-reveal */
 .is-home [data-reveal],
 .is-home [data-stagger] {
   opacity: 0;
@@ -250,7 +220,8 @@
   transform: none;
 }
 
-/* 4. Bento: подпись вверх + стрелка */
+/* ── Bento Card Interactions ─────────────────────────────────────────── */
+
 .is-home .bento-label {
   display: inline-flex;
   align-items: baseline;
@@ -284,29 +255,175 @@
 }
 
 .is-home .photo-veil {
-  background: linear-gradient(to top, rgb(14 15 17 / 0.72) 0%, rgb(14 15 17 / 0.12) 42%, transparent 68%);
+  background: linear-gradient(to top, rgb(255 255 255 / 0.92) 0%, rgb(255 255 255 / 0.25) 45%, transparent 70%);
 }
 
-/* 12. Noise на тёмных секциях */
+/* ── Blueprint Assembly Sequence ─────────────────────────────────────── */
+
+.assembly-section {
+  position: relative;
+  min-height: 300vh;
+}
+
+.assembly-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.assembly-canvas {
+  position: relative;
+  width: min(100%, 64rem);
+  aspect-ratio: 16 / 9;
+}
+
+.assembly-frame {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.assembly-frame.is-active {
+  opacity: 1;
+}
+
+.assembly-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: contrast(1.15) saturate(0.5) brightness(0.8);
+}
+
+.assembly-annotation {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--color-cyan);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.assembly-annotation.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.assembly-annotation::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--color-cyan);
+  opacity: 0.5;
+}
+
+.assembly-steps {
+  position: absolute;
+  bottom: 2rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.assembly-step {
+  text-align: center;
+  opacity: 0.3;
+  transition: opacity 0.4s ease;
+}
+
+.assembly-step.is-active {
+  opacity: 1;
+}
+
+.assembly-step-num {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  color: var(--color-cyan);
+  text-transform: uppercase;
+}
+
+.assembly-step-label {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-top: 0.25rem;
+}
+
+/* Mobile: simplified static frames */
+@media (max-width: 767px) {
+  .assembly-section {
+    min-height: auto;
+  }
+
+  .assembly-sticky {
+    position: relative;
+    height: auto;
+    flex-direction: column;
+    gap: 2rem;
+    padding-block: 3rem;
+  }
+
+  .assembly-frame {
+    position: relative;
+    opacity: 1;
+  }
+
+  .assembly-annotation {
+    opacity: 1;
+    transform: none;
+    position: relative;
+  }
+
+  .assembly-steps {
+    position: relative;
+    bottom: auto;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .assembly-step {
+    opacity: 1;
+  }
+}
+
+/* ── Noise Overlay ───────────────────────────────────────────────────── */
+
 .is-home .home-noise {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.03;
+  opacity: 0.025;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 180px 180px;
 }
 
-/* 9. Marquee в CTA */
+/* ── CTA Marquee ─────────────────────────────────────────────────────── */
+
 .is-home .cta-marquee {
   position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  opacity: 0.08;
+  opacity: 0.06;
   display: flex;
   align-items: center;
 }
@@ -314,12 +431,13 @@
 .is-home .cta-marquee-track {
   display: flex;
   white-space: nowrap;
+  font-family: var(--font-display);
   font-size: clamp(4.5rem, 14vw, 11rem);
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1;
   color: transparent;
-  -webkit-text-stroke: 1px var(--color-paper);
+  -webkit-text-stroke: 1px var(--color-line);
   animation: home-marquee 48s linear infinite;
 }
 
@@ -340,6 +458,8 @@
   position: relative;
   z-index: 2;
 }
+
+/* ── Reduced Motion ──────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
   .is-home .hero-line-inner,
@@ -384,6 +504,13 @@
   .is-home .cta-marquee {
     display: none;
   }
+
+  .assembly-frame,
+  .assembly-annotation {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 @media (scripting: none) {
@@ -391,5 +518,9 @@
   .is-home [data-stagger] {
     opacity: 1;
     transform: none;
+  }
+
+  .assembly-frame {
+    opacity: 1;
   }
 }

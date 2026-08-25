@@ -2,9 +2,10 @@
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import MobileFab from "../components/MobileFab.astro";
-import cyrillicFont from "@fontsource-variable/manrope/files/manrope-cyrillic-wght-normal.woff2?url";
-import latinExtFont from "@fontsource-variable/manrope/files/manrope-latin-ext-wght-normal.woff2?url";
-import latinFont from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url";
+import spaceLatinFont from "@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url";
+import interLatinFont from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import interCyrillicFont from "@fontsource-variable/inter/files/inter-cyrillic-wght-normal.woff2?url";
+import interLatinExtFont from "@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2?url";
 import monoCyrFont from "@fontsource/jetbrains-mono/files/jetbrains-mono-cyrillic-400-normal.woff2?url";
 import monoLatFont from "@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2?url";
 import JsonLd from "../components/JsonLd.astro";
@@ -49,11 +50,13 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim() || "";
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preload" href={latinFont} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={cyrillicFont} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#0F1214" />
+    <link rel="preload" href={spaceLatinFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interLatinFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interCyrillicFont} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={monoLatFont} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={monoCyrFont} as="font" type="font/woff2" crossorigin />
-    {lang === "uz" && <link rel="preload" href={latinExtFont} as="font" type="font/woff2" crossorigin />}
+    {lang === "uz" && <link rel="preload" href={interLatinExtFont} as="font" type="font/woff2" crossorigin />}
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical} />
     {
