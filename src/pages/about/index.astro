@@ -55,7 +55,14 @@ const TOTAL = 4;
           {
             ABOUT.clients.map((item) => (
               <li>
-                <img src={item.src} alt={item.alt} width="160" height="64" loading="lazy" decoding="async" />
+                <img
+                  src={item.src?.startsWith("/src/assets/images/") ? item.src.replace("/src/assets/images/", "/images/") : item.src}
+                  alt={item.alt}
+                  width="160"
+                  height="64"
+                  loading="lazy"
+                  decoding="async"
+                />
               </li>
             ))
           }

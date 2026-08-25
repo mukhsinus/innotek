@@ -16,12 +16,16 @@ const {
   loading = "lazy",
   fetchpriority,
 } = Astro.props;
+
+const cleanSrc = src?.startsWith("/src/assets/images/")
+  ? src.replace("/src/assets/images/", "/images/")
+  : src;
 ---
 
 {
-  src ? (
+  cleanSrc ? (
     <img
-      src={src}
+      src={cleanSrc}
       alt=""
       class:list={["photo-grade", className]}
       width={width}

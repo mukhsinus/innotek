@@ -33,7 +33,9 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
 /* Category images for mega menu thumbnails */
 const catImages: Record<string, string> = {};
 copy.categories.forEach((cat) => {
-  catImages[cat.path] = cat.image;
+  catImages[cat.path] = cat.image?.startsWith("/src/assets/images/")
+    ? cat.image.replace("/src/assets/images/", "/images/")
+    : cat.image;
 });
 ---
 
