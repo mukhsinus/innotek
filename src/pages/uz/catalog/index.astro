@@ -1,5 +1,6 @@
 ---
 import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import PhotoFrame from "../../../components/PhotoFrame.astro";
 import QuoteBand from "../../../components/QuoteBand.astro";
 import SectionMeta from "../../../components/SectionMeta.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
@@ -11,11 +12,10 @@ const t = useT(lang);
 const isUz = true;
 const copy = HOME[lang];
 const pad = (n: number) => String(n).padStart(2, "0");
-const img = (src: string) => (src?.startsWith("/src/assets/images/") ? src.replace("/src/assets/images/", "/images/") : src);
 const TOTAL = 3;
 ---
 
-<BaseLayout title="Katalog | Innotek" description="Stelajlar, savdo tizimlari, metall mebellar, konveyerlar va g'ildiraklar. Innotek ishlab chiqarishi, Toshkent.">
+<BaseLayout title={copy.title} description={copy.description}>
   <article>
     <header class="page-head bg-surface" data-reveal>
       <div class="site-wrap">
@@ -27,7 +27,7 @@ const TOTAL = 3;
           ]}
         />
         <SectionMeta kicker={t("nav.catalog")} index={1} total={TOTAL} />
-        <h1 class="t-display">Katalog</h1>
+        <h1 class="t-display">{copy.catalogHeading.accent}</h1>
         <p class="t-lead">{copy.catalogLead}</p>
       </div>
     </header>
@@ -36,7 +36,6 @@ const TOTAL = 3;
       <div class="site-wrap">
         <SectionMeta kicker={t("page.lineup")} index={2} total={TOTAL} />
         
-        <!-- 12-Column Responsive Bento Grid matching Homepage -->
         <div class="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-6 mt-8">
           {
             copy.categories.map((cat, i) => {
@@ -70,7 +69,6 @@ const TOTAL = 3;
                   <span class="cad-cross cad-bl" aria-hidden="true">+</span>
                   <span class="cad-cross cad-br" aria-hidden="true">+</span>
 
-                  <!-- Top index & arrow pill -->
                   <div class="relative z-10 flex items-center justify-between">
                     <span class="font-mono text-xs font-semibold text-cyan tracking-wider">
                       {pad(i + 1)} // {i === 0 ? "FLAGMAN" : "KATEGORIYA"}
@@ -80,23 +78,19 @@ const TOTAL = 3;
                     </span>
                   </div>
 
-                  <!-- Product Visual Container -->
                   <div class:list={[
                     "relative my-5 flex items-center justify-center overflow-hidden rounded-lg bg-paper/60 p-4 transition-all duration-500 group-hover:bg-paper",
                     heightClass,
                   ]}>
-                    <img
-                      src={img(cat.image)}
-                      alt={t(cat.labelKey)}
+                    <PhotoFrame
+                      src={cat.image}
                       class="h-full w-full object-contain filter contrast-[1.03] brightness-[0.98] transition-transform duration-500 group-hover:scale-105"
-                      width="600"
-                      height="400"
+                      width={600}
+                      height={400}
                       loading={i === 0 ? "eager" : "lazy"}
-                      decoding="async"
                     />
                   </div>
 
-                  <!-- Bottom Category Title -->
                   <div class="relative z-10 pt-1">
                     <h2 class:list={[
                       "font-display font-semibold tracking-tight text-ink group-hover:text-accent transition-colors",

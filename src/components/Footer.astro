@@ -96,7 +96,7 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
       </div>
       <ul class="space-y-2.5 text-[0.8125rem]">
         {
-          catalogNav.map((item) => (
+          catalogNav.slice(0, 6).map((item) => (
             <li>
               <a class="footer-link group" href={hrefFor(lang, item.path)}>
                 <span class="footer-link-arrow">→</span>

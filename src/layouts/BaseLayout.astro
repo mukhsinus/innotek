@@ -18,11 +18,12 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description?: string;
+  image?: string;
   overlayHeader?: boolean;
   home?: boolean;
 }
 
-const { title, description = "", overlayHeader = false, home = false } = Astro.props;
+const { title, description = "", image = "/images/cat_racks.jpg", overlayHeader = false, home = false } = Astro.props;
 const lang = (Astro.currentLocale ?? currentLangFromPath(Astro.url.pathname)) as Lang;
 const t = useT(lang);
 const htmlLang = lang === "uz" ? "uz" : "ru";
@@ -32,6 +33,7 @@ const ruPath = stripLocale(Astro.url.pathname);
 const hasUzPair = UZ_PATHS.has(ruPath);
 const ruUrl = new URL(ruPath, SITE.url).href;
 const uzUrl = new URL(ruPath === "/" ? "/uz/" : `/uz${ruPath}`, SITE.url).href;
+const ogImage = new URL(image.startsWith("/") ? image : `/${image}`, SITE.url).href;
 
 // Аналитика: подключаем только когда заданы публичные ID (шаг 7).
 const ymId = import.meta.env.PUBLIC_YM_ID?.trim() || "";
@@ -58,6 +60,23 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim() || "";
     <link rel="preload" href={monoCyrFont} as="font" type="font/woff2" crossorigin />
     {lang === "uz" && <link rel="preload" href={interLatinExtFont} as="font" type="font/woff2" crossorigin />}
     {description && <meta name="description" content={description} />}
+    
+    <!-- Open Graph / Social SEO -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={lang === "uz" ? "uz_UZ" : "ru_RU"} />
+    <meta property="og:locale:alternate" content={lang === "uz" ? "ru_RU" : "uz_UZ"} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImage} />
+
     <link rel="canonical" href={canonical} />
     {
       hasUzPair && (

@@ -1,5 +1,6 @@
 ---
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import PhotoFrame from "../../components/PhotoFrame.astro";
 import QuoteBand from "../../components/QuoteBand.astro";
 import SectionMeta from "../../components/SectionMeta.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -9,10 +10,9 @@ import { hrefFor, useT } from "../../i18n/utils";
 
 const lang = "ru" as const;
 const t = useT(lang);
-const isUz = lang === "uz";
+const isUz = false;
 const copy = HOME[lang];
 const pad = (n: number) => String(n).padStart(2, "0");
-const img = (src: string) => (src?.startsWith("/src/assets/images/") ? src.replace("/src/assets/images/", "/images/") : src);
 const TOTAL = 3;
 ---
 
@@ -86,14 +86,12 @@ const TOTAL = 3;
                     "relative my-5 flex items-center justify-center overflow-hidden rounded-lg bg-paper/60 p-4 transition-all duration-500 group-hover:bg-paper",
                     heightClass,
                   ]}>
-                    <img
-                      src={img(cat.image)}
-                      alt={t(cat.labelKey)}
+                    <PhotoFrame
+                      src={cat.image}
                       class="h-full w-full object-contain filter contrast-[1.03] brightness-[0.98] transition-transform duration-500 group-hover:scale-105"
-                      width="600"
-                      height="400"
+                      width={600}
+                      height={400}
                       loading={i === 0 ? "eager" : "lazy"}
-                      decoding="async"
                     />
                   </div>
 

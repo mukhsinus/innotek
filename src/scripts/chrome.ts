@@ -164,58 +164,68 @@ function initCounters() {
   const nodes = document.querySelectorAll<HTMLElement>("[data-count], [data-count-range]");
   if (!nodes.length) return;
 
-  const reduced = reducedMotion();
-
   const easeOutQuart = (x: number): number => 1 - Math.pow(1 - x, 4);
 
   const runSingle = (el: HTMLElement, delay: number = 0) => {
+    if (el.dataset.counted === "true") return;
+    el.dataset.counted = "true";
     const target = Number(el.dataset.count);
     if (!Number.isFinite(target)) return;
-    if (reduced) {
-      el.textContent = String(target);
-      return;
-    }
 
+    el.textContent = "0";
     setTimeout(() => {
       const start = performance.now();
-      const duration = 1400;
+      const duration = 1600;
       const tick = (now: number) => {
         const p = Math.min(1, (now - start) / duration);
         const eased = easeOutQuart(p);
-        el.textContent = String(Math.round(target * eased));
-        if (p < 1) requestAnimationFrame(tick);
+        const currentVal = Math.round(target * eased);
+        el.textContent = String(currentVal);
+        if (p < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          el.textContent = String(target);
+        }
       };
       requestAnimationFrame(tick);
     }, delay);
   };
 
   const runRange = (el: HTMLElement, delay: number = 0) => {
+    if (el.dataset.counted === "true") return;
+    el.dataset.counted = "true";
     const raw = el.dataset.countRange || "";
     const parts = raw.split(",").map((s) => parseFloat(s.trim()));
     if (parts.length < 2 || isNaN(parts[0]) || isNaN(parts[1])) return;
     const [minTarget, maxTarget] = parts;
     const format = el.dataset.format || "{0}–{1}";
 
-    if (reduced) {
-      el.textContent = format
-        .replace("{0}", minTarget.toString().replace(".", ","))
-        .replace("{1}", maxTarget.toString().replace(".", ","));
-      return;
-    }
-
     setTimeout(() => {
       const start = performance.now();
-      const duration = 1500;
+      const duration = 1600;
       const tick = (now: number) => {
         const p = Math.min(1, (now - start) / duration);
         const eased = easeOutQuart(p);
         const currentMin = (minTarget * eased).toFixed(1).replace(".", ",");
         const currentMax = Math.round(maxTarget * eased).toString();
         el.textContent = format.replace("{0}", currentMin).replace("{1}", currentMax);
-        if (p < 1) requestAnimationFrame(tick);
+        if (p < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          el.textContent = format.replace("{0}", minTarget.toString().replace(".", ",")).replace("{1}", maxTarget.toString());
+        }
       };
       requestAnimationFrame(tick);
     }, delay);
+  };
+
+  const trigger = (target: HTMLElement, idx: number) => {
+    const delay = Math.max(0, (idx % 4) * 120);
+    if (target.dataset.countRange) {
+      runRange(target, delay);
+    } else {
+      runSingle(target, delay);
+    }
   };
 
   const io = new IntersectionObserver(
@@ -224,28 +234,21 @@ function initCounters() {
         if (!entry.isIntersecting) continue;
         const target = entry.target as HTMLElement;
         const idx = Array.from(nodes).indexOf(target);
-        const delay = Math.max(0, idx * 120);
-
-        if (target.dataset.countRange) {
-          runRange(target, delay);
-        } else {
-          runSingle(target, delay);
-        }
+        trigger(target, idx);
         io.unobserve(target);
       }
     },
-    { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+    { threshold: 0.05, rootMargin: "50px 0px 50px 0px" },
   );
 
-  nodes.forEach((el) => {
-    if (!reduced) {
-      if (el.dataset.countRange) {
-        el.textContent = (el.dataset.format || "{0}–{1}").replace("{0}", "0,0").replace("{1}", "0");
-      } else {
-        el.textContent = "0";
-      }
+  nodes.forEach((el, i) => {
+    const rect = el.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight && rect.bottom > 0;
+    if (inView) {
+      trigger(el, i);
+    } else {
+      io.observe(el);
     }
-    io.observe(el);
   });
 }
 
@@ -279,11 +282,11 @@ function initParallax() {
   const max = 6;
 
   nodes.forEach((el) => {
-    const card = el.closest(".group") ?? el.parentElement;
+    const card = el.closest<HTMLElement>(".group") ?? (el.parentElement as HTMLElement | null);
     if (!card) return;
 
     const onMove = (e: MouseEvent) => {
-      const r = (card as HTMLElement).getBoundingClientRect();
+      const r = card.getBoundingClientRect();
       const x = ((e.clientX - r.left) / r.width - 0.5) * 2 * max;
       const y = ((e.clientY - r.top) / r.height - 0.5) * 2 * max;
       el.style.setProperty("--px", `${x.toFixed(2)}px`);

@@ -10,34 +10,72 @@ import { useT } from "../../i18n/utils";
 
 const lang = "ru" as const;
 const t = useT(lang);
-const TOTAL = 5;
+const TOTAL = 6;
 
 const STATS = [
-  { value: "5", label: "Автоматических линий", desc: "Профилирование, лазерная резка и гибка" },
-  { value: "0.2–6.0 мм", label: "Толщина стали", desc: "Конструкционная сталь ST 37" },
-  { value: "до 14 000 мм", label: "Высота рам", desc: "Индивидуальные типоразмеры под проект" },
-  { value: "до 4 500 кг", label: "Нагрузка на ярус", desc: "Сертифицировано по ISO 9001:2015" },
+  { value: "12", count: 12, hasPlus: false, label: "ГОДЫ ОПЫТА" },
+  { value: "2500+", count: 2500, hasPlus: true, label: "СЧАСТЛИВЫЙ КЛИЕНТ" },
+  { value: "500", count: 500, hasPlus: false, label: "ПАРТНЕРОВ И ПОСТАВЩИКОВ" },
+  { value: "40000", count: 40000, hasPlus: false, label: "ПРОИЗВОДСТВЕННЫХ ПЛОЩАДЕЙ (КВ.М)" },
 ];
 
 const PILLARS = [
   {
     num: "01",
     tag: "ПРОЕКТИРОВАНИЕ",
-    title: "Инженерный расчёт и моделирование",
-    desc: "Собственный конструкторский отдел рассчитывает распределение нагрузок, плотность хранения и сейсмоустойчивость при поддержке итальянских специалистов.",
+    title: "Инженерный расчёт и 3D CAD-моделирование",
+    desc: "Собственный конструкторский отдел рассчитывает распределение нагрузок, плотность хранения и сейсмоустойчивость до 9 баллов при технологической поддержке итальянских специалистов.",
   },
   {
     num: "02",
     tag: "ПРОИЗВОДСТВО",
     title: "Завод полного цикла в Ташкенте",
-    desc: "Автоматизированные линии проката, порошковой полимерной окраски и термообработки металла гарантируют стабильность геометрии и долговечность.",
+    desc: "Автоматизированные прокатные станы, станки лазерного раскроя ЧПУ и автоматическая электростатическая порошковая покраска гарантируют эталонную геометрию и защиту от коррозии.",
   },
   {
     num: "03",
     tag: "МОНТАЖ И СЕРВИС",
-    title: "Сборка по стандартам ГОСТ",
-    desc: "Квалифицированные монтажные бригады с допусками проводят сборку, переезд и ремонт стеллажных систем без остановки работы действующего склада.",
+    title: "Сборка по стандартам ГОСТ и СНиП",
+    desc: "Квалифицированные монтажные бригады с действующими удостоверениями проводят установку, юстировку, переезд и ремонт стеллажных систем без остановки работы склада.",
   },
+];
+
+const CAPABILITIES = [
+  {
+    num: "01",
+    title: "Автоматическое профилирование",
+    lead: "Прокатка несущих стоек и балок из рулонной стали",
+    desc: "Непрерывные прокатные станы формируют сложные многогибочные профили с шагом перфорации 50 мм под зацепные замки.",
+    image: "/images/srv_roll_forming.jpg",
+  },
+  {
+    num: "02",
+    title: "Лазерный раскрой ЧПУ",
+    lead: "Прецизионная резка листового металла до 25 мм",
+    desc: "Оптоволоконные лазерные комплексы обеспечивают идеальный край без термических деформаций и грата с точностью до 0.05 мм.",
+    image: "/images/srv_laser_cutting.jpg",
+  },
+  {
+    num: "03",
+    title: "Роботизированная сварка",
+    lead: "100% повторяемость и прочность сварочных швов",
+    desc: "6-осевые промышленные роботы-манипуляторы для серийной сварки зацепов, фланцев и платформенных модулей в среде Ar+CO2.",
+    image: "/images/srv_robotic_welding.jpg",
+  },
+  {
+    num: "04",
+    title: "Порошковая полимеризация",
+    lead: "Износостойкое защитное покрытие RAL",
+    desc: "Предварительная химобработка, электростатическое напыление и запекание при 200°C создают ударопрочный монолитный слой.",
+    image: "/images/srv_powder_coating.jpg",
+  },
+];
+
+const STANDARDS = [
+  { code: "ГОСТ 28766-90", title: "Стеллажи сборно-разборные", desc: "Расчёт допустимых нагрузок и деформаций элементов конструкций." },
+  { code: "ГОСТ 16140-77", title: "Стеллажи сборно-разборные. ТУ", desc: "Технические условия и методы статических испытаний балок и рам." },
+  { code: "ISO 9001:2015", title: "Система менеджмента качества", desc: "Международный контроль каждого производственного этапа." },
+  { code: "Сейсмика 9 баллов", title: "ШНК 2.01.03-19", desc: "Проектирование и анкеровка с учётом сейсмических зон Узбекистана." },
 ];
 ---
 
@@ -81,7 +119,7 @@ const PILLARS = [
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan"></span>
               </span>
-              <span>INNOTEK PLANT // TASHKENT</span>
+              <span>INNOTEK PLANT // TASHKENT INDUSTRIAL ZONE</span>
             </div>
           </div>
         </div>
@@ -127,22 +165,91 @@ const PILLARS = [
       </div>
     </section>
 
-    <!-- Engineering Stats -->
-    <section class="section-y bg-surface border-y border-line" data-reveal>
+    <!-- Production Capabilities Bento Grid -->
+    <section class="section-y bg-surface border-t border-line" data-reveal>
       <div class="site-wrap">
-        <SectionMeta kicker="ПРОИЗВОДСТВЕННЫЕ ПОКАЗАТЕЛИ" index={3} total={TOTAL} />
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
+        <SectionMeta kicker="ТЕХНОЛОГИЧЕСКАЯ БАЗА" index={3} total={TOTAL} />
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+          <div>
+            <h2 class="t-display mt-2">Оснащение завода</h2>
+            <p class="t-lead">Высокоточное оборудование европейского и азиатского производства для серийного выпуска.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {
+            CAPABILITIES.map((cap, i) => (
+              <div
+                data-stagger
+                style={`--stagger: ${i}`}
+                class="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-paper p-6 sm:p-8 transition-all duration-300 hover:border-accent/50 hover:shadow-lg"
+              >
+                <span class="cad-cross cad-tl" aria-hidden="true">+</span>
+                <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+                <span class="cad-cross cad-bl" aria-hidden="true">+</span>
+                <span class="cad-cross cad-br" aria-hidden="true">+</span>
+
+                <div class="flex items-center justify-between mb-4">
+                  <span class="font-mono text-xs font-semibold text-cyan tracking-wider">
+                    {cap.num} // ОБОРУДОВАНИЕ
+                  </span>
+                  <span class="text-xs font-mono text-muted">INNOTEK CNC</span>
+                </div>
+
+                <!-- Cap Image -->
+                <div class="relative my-4 aspect-[16/10] overflow-hidden rounded-lg bg-surface">
+                  <PhotoFrame
+                    src={cap.image}
+                    class="h-full w-full object-cover filter contrast-[1.02] brightness-[0.98] transition-transform duration-500 group-hover:scale-105"
+                    width={600}
+                    height={375}
+                    loading="lazy"
+                  />
+                </div>
+
+                <div class="mt-2">
+                  <h3 class="text-xl font-display font-semibold text-ink group-hover:text-accent transition-colors">
+                    {cap.title}
+                  </h3>
+                  <p class="text-xs font-mono text-cyan mt-1 font-medium">{cap.lead}</p>
+                  <p class="text-sm leading-relaxed text-muted-on-ink mt-3">
+                    {cap.desc}
+                  </p>
+                </div>
+
+                <span class="absolute left-0 top-0 bottom-0 w-[3px] bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Engineering Stats -->
+    <section class="section-y bg-paper border-t border-line" data-reveal>
+      <div class="site-wrap">
+        <SectionMeta kicker="ПОКАЗАТЕЛИ" index={4} total={TOTAL} />
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
           {
             STATS.map((stat, i) => (
-              <div class="border-l-2 border-accent pl-5" data-stagger style={`--stagger: ${i}`}>
-                <p class="text-3xl lg:text-4xl font-display font-bold text-ink tracking-tight">
-                  {stat.value}
+              <div
+                class="stat-card group relative flex flex-col items-center justify-center p-6 sm:p-8 rounded-xl border border-line bg-surface/90 text-center shadow-xs transition-all duration-300 hover:border-accent/50 hover:bg-surface hover:shadow-lg"
+                data-stagger
+                data-spotlight
+                style={`--stagger: ${i}`}
+              >
+                <!-- Red / Orange Accent CAD Corners -->
+                <span class="cad-cross cad-tl text-accent" aria-hidden="true">+</span>
+                <span class="cad-cross cad-tr text-accent" aria-hidden="true">+</span>
+                <span class="cad-cross cad-bl text-accent" aria-hidden="true">+</span>
+                <span class="cad-cross cad-br text-accent" aria-hidden="true">+</span>
+
+                <p class="text-3xl sm:text-4xl lg:text-[2.25rem] xl:text-[2.6rem] font-display font-bold text-ink tracking-tight leading-none">
+                  <span data-count={stat.count}>{stat.count}</span>
+                  {stat.hasPlus && <span class="text-accent ml-0.5 font-light">+</span>}
                 </p>
-                <p class="mt-2 text-sm font-semibold text-ink">
+                <p class="mt-3.5 text-xs font-mono font-bold tracking-wider text-muted-on-ink uppercase">
                   {stat.label}
-                </p>
-                <p class="mt-1 text-xs text-muted-on-ink">
-                  {stat.desc}
                 </p>
               </div>
             ))
@@ -151,17 +258,50 @@ const PILLARS = [
       </div>
     </section>
 
-    <!-- Clients Section -->
-    <section class="section-y bg-paper" data-reveal>
+    <!-- Standards and Quality Control -->
+    <section class="section-y bg-surface border-t border-line" data-reveal>
       <div class="site-wrap">
-        <SectionMeta kicker={t("page.clients")} index={4} total={TOTAL} />
-        <div class="mt-8 overflow-hidden rounded-xl border border-line">
+        <SectionMeta kicker="СТАНДАРТЫ И НАДЁЖНОСТЬ" index={5} total={TOTAL} />
+        <div class="max-w-3xl mb-10">
+          <h2 class="t-display mt-2">Сертифицированное качество</h2>
+          <p class="t-lead">Каждая партия продукции проходит обязательный входной контроль сырья и статические нагрузочные испытания.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {
+            STANDARDS.map((std, i) => (
+              <div
+                data-stagger
+                style={`--stagger: ${i}`}
+                class="rounded-xl border border-line bg-paper p-5 sm:p-6"
+              >
+                <span class="inline-block px-2.5 py-1 rounded text-xs font-mono font-semibold bg-cyan/10 text-cyan mb-3">
+                  {std.code}
+                </span>
+                <h4 class="font-display font-semibold text-ink text-base mb-1">{std.title}</h4>
+                <p class="text-xs leading-relaxed text-muted-on-ink">{std.desc}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section class="section-y bg-paper border-t border-line" data-reveal>
+      <div class="site-wrap">
+        <SectionMeta kicker={t("page.clients")} index={6} total={TOTAL} />
+        <div class="max-w-3xl mb-8">
+          <h2 class="t-display mt-2">Нам доверяют лидеры рынка</h2>
+          <p class="t-lead">Оборудование Innotek успешно работает на складах и производствах крупнейших компаний региона.</p>
+        </div>
+        <div class="overflow-hidden rounded-xl border border-line bg-surface">
           <ul class="client-logos">
             {
               ABOUT.clients.map((item) => (
                 <li>
                   <img
-                    src={item.src?.startsWith("/src/assets/images/") ? item.src.replace("/src/assets/images/", "/images/") : item.src}
+                    src={item.src}
                     alt={item.alt}
                     width="160"
                     height="64"
@@ -180,7 +320,7 @@ const PILLARS = [
     <RelatedLinks
       lang={lang}
       kicker={t("page.related")}
-      index={5}
+      index={6}
       total={TOTAL}
       items={[
         { path: "/services/proektirovanie/", label: t("service.design") },
@@ -191,6 +331,6 @@ const PILLARS = [
     />
 
     <!-- Quote Band -->
-    <QuoteBand lang={lang} index={5} total={TOTAL} />
+    <QuoteBand lang={lang} index={6} total={TOTAL} />
   </article>
 </BaseLayout>

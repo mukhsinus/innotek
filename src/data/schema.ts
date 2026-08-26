@@ -71,8 +71,17 @@ export function productLd(product: {
     name: product.h1,
     description: product.description,
     url: `${origin}${product.path}`,
-    ...(product.images.length > 0 && { image: product.images }),
-    category: product.categoryLabel,
+    ...(product.images.length > 0 && {
+      image: product.images.map((img) => {
+        let clean = img
+          .replace("/src/assets/images/", "/images/")
+          .replace("/imagesWebp/", "/images/");
+        if (!clean.startsWith("/images/")) {
+          clean = clean.startsWith("/") ? `/images${clean}` : `/images/${clean}`;
+        }
+        return `${origin}${clean}`;
+      }),
+    }),
     brand: { "@type": "Brand", name: SITE.name },
     manufacturer: { "@type": "Organization", name: SITE.name, url: `${origin}/` },
   };

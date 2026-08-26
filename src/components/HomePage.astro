@@ -23,7 +23,16 @@ const address = isUz ? SITE.address.uz : SITE.address.ru;
 const heroLines = copy.h1.split("\n");
 const pad = (n: number) => String(n).padStart(2, "0");
 const SECTIONS = 6;
-const img = (src: string) => (src?.startsWith("/src/assets/images/") ? src.replace("/src/assets/images/", "/images/") : src);
+const img = (src: string) => {
+  if (!src) return "";
+  let clean = src
+    .replace("/src/assets/images/", "/images/")
+    .replace("/imagesWebp/", "/images/");
+  if (!clean.startsWith("/images/")) {
+    clean = clean.startsWith("/") ? `/images${clean}` : `/images/${clean}`;
+  }
+  return clean;
+};
 ---
 
 <!-- 01 Hero: static, confident, blueprint grid accent -->
@@ -186,69 +195,85 @@ const img = (src: string) => (src?.startsWith("/src/assets/images/") ? src.repla
     </h2>
     <p class="t-lead">{copy.productionLead}</p>
 
-    <!-- 3 High-End Telemetry Stat Cards -->
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-12 lg:mt-16">
+    <!-- 4 High-End Telemetry Stat Cards -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mt-12 lg:mt-16">
       <!-- Card 1: Experience -->
-      <div class="stat-card group" data-stagger data-spotlight style="--stagger: 0">
-        <span class="cad-cross cad-tl" aria-hidden="true">+</span>
-        <span class="cad-cross cad-tr" aria-hidden="true">+</span>
-        <span class="cad-cross cad-bl" aria-hidden="true">+</span>
-        <span class="cad-cross cad-br" aria-hidden="true">+</span>
+      <div class="stat-card group flex flex-col justify-between p-6 sm:p-7" data-stagger data-spotlight style="--stagger: 0">
+        <span class="cad-cross cad-tl text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-tr text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-bl text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-br text-accent" aria-hidden="true">+</span>
 
-        <p class="text-xs font-mono text-cyan tracking-wider font-semibold mb-4">
-          01 // {isUz ? "TAJRIBA VA KO'LAM" : "ОПЫТ И МАСШТАБ"}
-        </p>
-        <p class="stat-num">
-          <span data-count={HOME_STATS.years}>{HOME_STATS.years}</span><span class="text-accent text-3xl lg:text-4xl ml-1 font-mono font-light">+</span>
-        </p>
-        <p class="text-base font-semibold text-ink mt-3" style="font-family: var(--font-display)">
-          {isUz ? "Yillik bozor tajribasi" : "Лет на рынке стеллажей"}
-        </p>
-        <p class="text-xs text-muted-on-ink mt-1.5 leading-relaxed">
-          {isUz ? "O'zbekiston va MDH bo'ylab yirik ombor hamda logistika komplekslarini loyihalash." : "Проектирование и оснащение складских комплексов по всему Узбекистану и СНГ."}
+        <div>
+          <p class="text-xs font-mono text-cyan tracking-wider font-semibold mb-3">
+            01 // {isUz ? "TAJRIBA" : "ОПЫТ"}
+          </p>
+          <p class="text-3xl sm:text-4xl lg:text-[2.25rem] xl:text-[2.6rem] font-display font-bold text-ink tracking-tight leading-none">
+            <span data-count={HOME_STATS.years}>{HOME_STATS.years}</span>
+          </p>
+        </div>
+        <p class="text-xs font-mono font-bold uppercase tracking-wider text-muted-on-ink mt-4 pt-2 border-t border-line/60">
+          {isUz ? "Yillik tajriba" : "Годы опыта"}
         </p>
       </div>
 
-      <!-- Card 2: Production Lines -->
-      <div class="stat-card group" data-stagger data-spotlight style="--stagger: 1">
-        <span class="cad-cross cad-tl" aria-hidden="true">+</span>
-        <span class="cad-cross cad-tr" aria-hidden="true">+</span>
-        <span class="cad-cross cad-bl" aria-hidden="true">+</span>
-        <span class="cad-cross cad-br" aria-hidden="true">+</span>
+      <!-- Card 2: Clients -->
+      <div class="stat-card group flex flex-col justify-between p-6 sm:p-7" data-stagger data-spotlight style="--stagger: 1">
+        <span class="cad-cross cad-tl text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-tr text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-bl text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-br text-accent" aria-hidden="true">+</span>
 
-        <p class="text-xs font-mono text-cyan tracking-wider font-semibold mb-4">
-          02 // {isUz ? "AVTOMATIZATSIYA" : "АВТОМАТИЗАЦИЯ"}
-        </p>
-        <p class="stat-num">
-          <span data-count={HOME_STATS.lines}>{HOME_STATS.lines}</span>
-        </p>
-        <p class="text-base font-semibold text-ink mt-3" style="font-family: var(--font-display)">
-          {isUz ? "Avtomatik ishlab chiqarish liniyalari" : "Автоматических прокатных линий"}
-        </p>
-        <p class="text-xs text-muted-on-ink mt-1.5 leading-relaxed">
-          {isUz ? "Geometriyani yuqori aniqlikdagi CNC nazorati bilan uzluksiz sovuq prokat davri." : "Непрерывный цикл профилирования с высокоточным ЧПУ-контролем геометрии стоек и балок."}
+        <div>
+          <p class="text-xs font-mono text-cyan tracking-wider font-semibold mb-3">
+            02 // {isUz ? "MIJOZLAR" : "КЛИЕНТЫ"}
+          </p>
+          <p class="text-3xl sm:text-4xl lg:text-[2.25rem] xl:text-[2.6rem] font-display font-bold text-ink tracking-tight leading-none whitespace-nowrap">
+            <span data-count={HOME_STATS.clients}>{HOME_STATS.clients}</span><span class="text-accent ml-0.5 font-light">+</span>
+          </p>
+        </div>
+        <p class="text-xs font-mono font-bold uppercase tracking-wider text-muted-on-ink mt-4 pt-2 border-t border-line/60">
+          {isUz ? "Mamnun mijozlar" : "Счастливый клиент"}
         </p>
       </div>
 
-      <!-- Card 3: Steel Thickness -->
-      <div class="stat-card group sm:col-span-2 lg:col-span-1" data-stagger data-spotlight style="--stagger: 2">
-        <span class="cad-cross cad-tl" aria-hidden="true">+</span>
-        <span class="cad-cross cad-tr" aria-hidden="true">+</span>
-        <span class="cad-cross cad-bl" aria-hidden="true">+</span>
-        <span class="cad-cross cad-br" aria-hidden="true">+</span>
+      <!-- Card 3: Partners -->
+      <div class="stat-card group flex flex-col justify-between p-6 sm:p-7" data-stagger data-spotlight style="--stagger: 2">
+        <span class="cad-cross cad-tl text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-tr text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-bl text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-br text-accent" aria-hidden="true">+</span>
 
-        <p class="text-xs font-mono text-cyan tracking-wider font-semibold mb-4">
-          03 // {isUz ? "PO'LAT STANDARTI" : "СТАНДАРТ СТАЛИ"}
+        <div>
+          <p class="text-xs font-mono text-cyan tracking-wider font-semibold mb-3">
+            03 // {isUz ? "HAMKORLAR" : "ПАРТНЕРЫ"}
+          </p>
+          <p class="text-3xl sm:text-4xl lg:text-[2.25rem] xl:text-[2.6rem] font-display font-bold text-ink tracking-tight leading-none">
+            <span data-count={HOME_STATS.partners}>{HOME_STATS.partners}</span>
+          </p>
+        </div>
+        <p class="text-xs font-mono font-bold uppercase tracking-wider text-muted-on-ink mt-4 pt-2 border-t border-line/60">
+          {isUz ? "Hamkorlar va yetkazib beruvchilar" : "Партнеров и поставщиков"}
         </p>
-        <p class="stat-num stat-num-long">
-          <span data-count-range="0.2,6" data-format="{0}–{1}">{HOME_STATS.thickness}</span>
-          <span class="text-muted-on-ink text-xl lg:text-2xl ml-1 font-mono font-normal">мм</span>
-        </p>
-        <p class="text-base font-semibold text-ink mt-3" style="font-family: var(--font-display)">
-          {isUz ? "Konstruksion po'lat qalinligi" : "Толщина конструкционной стали"}
-        </p>
-        <p class="text-xs text-muted-on-ink mt-1.5 leading-relaxed">
-          {isUz ? "Kukunli-polimer qoplamali GOST talablariga mos sovuq prokat po'lat." : "Холоднокатаная листовая сталь ГОСТ с антикоррозийной полимерно-порошковой окраской."}
+      </div>
+
+      <!-- Card 4: Production Area -->
+      <div class="stat-card group flex flex-col justify-between p-6 sm:p-7" data-stagger data-spotlight style="--stagger: 3">
+        <span class="cad-cross cad-tl text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-tr text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-bl text-accent" aria-hidden="true">+</span>
+        <span class="cad-cross cad-br text-accent" aria-hidden="true">+</span>
+
+        <div>
+          <p class="text-xs font-mono text-cyan tracking-wider font-semibold mb-3">
+            04 // {isUz ? "MAYDON" : "ПЛОЩАДЬ"}
+          </p>
+          <p class="text-3xl sm:text-4xl lg:text-[2.25rem] xl:text-[2.6rem] font-display font-bold text-ink tracking-tight leading-none">
+            <span data-count={HOME_STATS.area}>{HOME_STATS.area}</span>
+          </p>
+        </div>
+        <p class="text-xs font-mono font-bold uppercase tracking-wider text-muted-on-ink mt-4 pt-2 border-t border-line/60">
+          {isUz ? "Ishlab chiqarish maydoni (kv.m)" : "Производственных площадей (кв.м)"}
         </p>
       </div>
     </div>

@@ -10,34 +10,72 @@ import { useT } from "../../../i18n/utils";
 
 const lang = "uz" as const;
 const t = useT(lang);
-const TOTAL = 5;
+const TOTAL = 6;
 
 const STATS = [
-  { value: "5", label: "Avtomatlashtirilgan liniya", desc: "Profillash, lazerli kesish va bukish" },
-  { value: "0.2–6.0 mm", label: "Po'lat qalinligi", desc: "ST 37 konstruksion po'lati" },
-  { value: "14 000 mm gacha", label: "Rama balandligi", desc: "Loyiha bo'yicha individual o'lchamlar" },
-  { value: "4 500 kg gacha", label: "Yarus yuk ko'tarish", desc: "ISO 9001:2015 sertifikatlangan" },
+  { value: "12", count: 12, hasPlus: false, label: "YILLIK TAJRIBA" },
+  { value: "2500+", count: 2500, hasPlus: true, label: "MAMNUN MIJOZLAR" },
+  { value: "500", count: 500, hasPlus: false, label: "HAMKORLAR VA YETKAZIB BERUVCHILAR" },
+  { value: "40000", count: 40000, hasPlus: false, label: "ISHLAB CHIQARISH MAYDONI (KV.M)" },
 ];
 
 const PILLARS = [
   {
     num: "01",
     tag: "LOYIHALASH",
-    title: "Muhandislik hisob-kitobi va modellashtirish",
-    desc: "O'zimizning konstruktorlik bo'limimiz italiyalik mutaxassislar ko'magida yuk taqsimoti, saqlash zichligi va seysmik barqarorlikni hisoblab chiqadi.",
+    title: "Muhandislik hisob-kitobi va 3D CAD modellashtirish",
+    desc: "O'zimizning konstruktorlik bo'limimiz italiyalik mutaxassislar ko'magida yuk taqsimoti, saqlash zichligi va 9 ballik seysmik barqarorlikni hisoblab chiqadi.",
   },
   {
     num: "02",
     tag: "ISHLAB CHIQARISH",
     title: "Toshkentda to'liq siklli zavod",
-    desc: "Avtomatlashtirilgan prokat liniyalari, polimer kukunli bo'yash va metallga termik ishlov berish aniq geometriya va mustahkamlikni ta'minlaydi.",
+    desc: "Avtomatlashtirilgan prokat liniyalari, CNC lazerli bichish va polimer kukunli bo'yash aniq geometriya va zangga qarshi mustahkamlikni ta'minlaydi.",
   },
   {
     num: "03",
     tag: "O'RNATISH VA SERVIS",
-    title: "GOST standartlari bo'yicha yig'ish",
-    desc: "Malakali montaj brigadalari amaldagi ombor faoliyatini to'xtatmasdan qisqa muddatda stelaj tizimlarini o'rnatish va ta'mirlashni amalga oshiradi.",
+    title: "GOST va SNiP standartlari bo'yicha yig'ish",
+    desc: "Malakali montaj brigadalari amaldagi ombor faoliyatini to'xtatmasdan qisqa muddatda stelaj tizimlarini o'rnatish, tekislash va ta'mirlashni amalga oshiradi.",
   },
+];
+
+const CAPABILITIES = [
+  {
+    num: "01",
+    title: "Avtomatlashtirilgan profillash",
+    lead: "Rulon po'latdan ko'taruvchi ustun va balkalarni prokatlash",
+    desc: "Uzluksiz prokat stanlari 50 mm perforatsiya qadamiga ega murakkab qovurg'ali profillarni shakllantiradi.",
+    image: "/images/srv_roll_forming.jpg",
+  },
+  {
+    num: "02",
+    title: "CNC lazerli kesish",
+    lead: "25 mm gacha bo'lgan list metallni aniq bichish",
+    desc: "Tolali optik lazer komplekslari 0.05 mm aniqlik bilan metall qirralarini silliq va termik deformatsiyasiz kesadi.",
+    image: "/images/srv_laser_cutting.jpg",
+  },
+  {
+    num: "03",
+    title: "Robotlashtirilgan payvandlash",
+    lead: "100% payvand choklarining mustahkamligi va bir xilligi",
+    desc: "Ar+CO2 gaz muhitida qulflar, flaneslar va platforma bloklarini seriyali payvandlash uchun 6 o'qli robotlar.",
+    image: "/images/srv_robotic_welding.jpg",
+  },
+  {
+    num: "04",
+    title: "Kukunli polimerizatsiya",
+    lead: "Ishqalanishga chidamli himoya qatlami RAL",
+    desc: "Kimyoviy tozalash, elektrostatik purkash va 200°C pechda pishirish orqali yaxlit zarbga chidamli qatlam yaratiladi.",
+    image: "/images/srv_powder_coating.jpg",
+  },
+];
+
+const STANDARDS = [
+  { code: "GOST 28766-90", title: "Yig'ma-ajraluvchi stelajlar", desc: "Konstruktsiya elementlarining ruxsat etilgan yuklamalari hisobi." },
+  { code: "GOST 16140-77", title: "Stelajlar texnik shartlari", desc: "Balka va ramalarni statik sinovdan o'tkazish metodikasi." },
+  { code: "ISO 9001:2015", title: "Sifat menejmenti tizimi", desc: "Ishlab chiqarishning har bir bosqichida xalqaro sifat nazorati." },
+  { code: "9 ball seysmik", title: "ShNK 2.01.03-19", desc: "O'zbekiston seysmik hududlariga mos muhandislik ankerlash loyihasi." },
 ];
 ---
 
@@ -81,7 +119,7 @@ const PILLARS = [
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan"></span>
               </span>
-              <span>INNOTEK PLANT // TASHKENT</span>
+              <span>INNOTEK PLANT // TASHKENT INDUSTRIAL ZONE</span>
             </div>
           </div>
         </div>
@@ -127,22 +165,90 @@ const PILLARS = [
       </div>
     </section>
 
-    <!-- Engineering Stats -->
-    <section class="section-y bg-surface border-y border-line" data-reveal>
+    <!-- Production Capabilities Bento Grid -->
+    <section class="section-y bg-surface border-t border-line" data-reveal>
       <div class="site-wrap">
-        <SectionMeta kicker="ISHLAB CHIQARISH KO'RSATKICHLARI" index={3} total={TOTAL} />
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
+        <SectionMeta kicker="TEXNOLOGIK BAZA" index={3} total={TOTAL} />
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+          <div>
+            <h2 class="t-display mt-2">Zavod jihozlari</h2>
+            <p class="t-lead">Seriyali ishlab chiqarish uchun Yevropa va Osiyoning yuqori aniqlikdagi texnologiyalari.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {
+            CAPABILITIES.map((cap, i) => (
+              <div
+                data-stagger
+                style={`--stagger: ${i}`}
+                class="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-paper p-6 sm:p-8 transition-all duration-300 hover:border-accent/50 hover:shadow-lg"
+              >
+                <span class="cad-cross cad-tl" aria-hidden="true">+</span>
+                <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+                <span class="cad-cross cad-bl" aria-hidden="true">+</span>
+                <span class="cad-cross cad-br" aria-hidden="true">+</span>
+
+                <div class="flex items-center justify-between mb-4">
+                  <span class="font-mono text-xs font-semibold text-cyan tracking-wider">
+                    {cap.num} // USKUNA
+                  </span>
+                  <span class="text-xs font-mono text-muted">INNOTEK CNC</span>
+                </div>
+
+                <div class="relative my-4 aspect-[16/10] overflow-hidden rounded-lg bg-surface">
+                  <PhotoFrame
+                    src={cap.image}
+                    class="h-full w-full object-cover filter contrast-[1.02] brightness-[0.98] transition-transform duration-500 group-hover:scale-105"
+                    width={600}
+                    height={375}
+                    loading="lazy"
+                  />
+                </div>
+
+                <div class="mt-2">
+                  <h3 class="text-xl font-display font-semibold text-ink group-hover:text-accent transition-colors">
+                    {cap.title}
+                  </h3>
+                  <p class="text-xs font-mono text-cyan mt-1 font-medium">{cap.lead}</p>
+                  <p class="text-sm leading-relaxed text-muted-on-ink mt-3">
+                    {cap.desc}
+                  </p>
+                </div>
+
+                <span class="absolute left-0 top-0 bottom-0 w-[3px] bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Engineering Stats -->
+    <section class="section-y bg-paper border-t border-line" data-reveal>
+      <div class="site-wrap">
+        <SectionMeta kicker="KO'RSATKICHLAR" index={4} total={TOTAL} />
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
           {
             STATS.map((stat, i) => (
-              <div class="border-l-2 border-accent pl-5" data-stagger style={`--stagger: ${i}`}>
-                <p class="text-3xl lg:text-4xl font-display font-bold text-ink tracking-tight">
-                  {stat.value}
+              <div
+                class="stat-card group relative flex flex-col items-center justify-center p-6 sm:p-8 rounded-xl border border-line bg-surface/90 text-center shadow-xs transition-all duration-300 hover:border-accent/50 hover:bg-surface hover:shadow-lg"
+                data-stagger
+                data-spotlight
+                style={`--stagger: ${i}`}
+              >
+                <!-- Red / Orange Accent CAD Corners -->
+                <span class="cad-cross cad-tl text-accent" aria-hidden="true">+</span>
+                <span class="cad-cross cad-tr text-accent" aria-hidden="true">+</span>
+                <span class="cad-cross cad-bl text-accent" aria-hidden="true">+</span>
+                <span class="cad-cross cad-br text-accent" aria-hidden="true">+</span>
+
+                <p class="text-3xl sm:text-4xl lg:text-[2.25rem] xl:text-[2.6rem] font-display font-bold text-ink tracking-tight leading-none">
+                  <span data-count={stat.count}>{stat.count}</span>
+                  {stat.hasPlus && <span class="text-accent ml-0.5 font-light">+</span>}
                 </p>
-                <p class="mt-2 text-sm font-semibold text-ink">
+                <p class="mt-3.5 text-xs font-mono font-bold tracking-wider text-muted-on-ink uppercase">
                   {stat.label}
-                </p>
-                <p class="mt-1 text-xs text-muted-on-ink">
-                  {stat.desc}
                 </p>
               </div>
             ))
@@ -151,17 +257,50 @@ const PILLARS = [
       </div>
     </section>
 
-    <!-- Clients Section -->
-    <section class="section-y bg-paper" data-reveal>
+    <!-- Standards and Quality Control -->
+    <section class="section-y bg-surface border-t border-line" data-reveal>
       <div class="site-wrap">
-        <SectionMeta kicker={t("page.clients")} index={4} total={TOTAL} />
-        <div class="mt-8 overflow-hidden rounded-xl border border-line">
+        <SectionMeta kicker="STANDARTLAR VA ISHONCHLILIK" index={5} total={TOTAL} />
+        <div class="max-w-3xl mb-10">
+          <h2 class="t-display mt-2">Sertifikatlangan sifat</h2>
+          <p class="t-lead">Mahsulotlarning har bir partiyasi xomashyo tekshiruvidan va statik yuklama sinovlaridan o'tadi.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {
+            STANDARDS.map((std, i) => (
+              <div
+                data-stagger
+                style={`--stagger: ${i}`}
+                class="rounded-xl border border-line bg-paper p-5 sm:p-6"
+              >
+                <span class="inline-block px-2.5 py-1 rounded text-xs font-mono font-semibold bg-cyan/10 text-cyan mb-3">
+                  {std.code}
+                </span>
+                <h4 class="font-display font-semibold text-ink text-base mb-1">{std.title}</h4>
+                <p class="text-xs leading-relaxed text-muted-on-ink">{std.desc}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section class="section-y bg-paper border-t border-line" data-reveal>
+      <div class="site-wrap">
+        <SectionMeta kicker={t("page.clients")} index={6} total={TOTAL} />
+        <div class="max-w-3xl mb-8">
+          <h2 class="t-display mt-2">Bozor yetakchilari bizga ishonadi</h2>
+          <p class="t-lead">Innotek uskunalari mintaqaning eng yirik korxonalari omborlari va ishlab chiqarishlarida muvaffaqiyatli ishlamoqda.</p>
+        </div>
+        <div class="overflow-hidden rounded-xl border border-line bg-surface">
           <ul class="client-logos">
             {
               ABOUT.clients.map((item) => (
                 <li>
                   <img
-                    src={item.src?.startsWith("/src/assets/images/") ? item.src.replace("/src/assets/images/", "/images/") : item.src}
+                    src={item.src}
                     alt={item.alt}
                     width="160"
                     height="64"
@@ -180,7 +319,7 @@ const PILLARS = [
     <RelatedLinks
       lang={lang}
       kicker={t("page.related")}
-      index={5}
+      index={6}
       total={TOTAL}
       items={[
         { path: "/services/proektirovanie/", label: t("service.design") },
@@ -191,6 +330,6 @@ const PILLARS = [
     />
 
     <!-- Quote Band -->
-    <QuoteBand lang={lang} index={5} total={TOTAL} />
+    <QuoteBand lang={lang} index={6} total={TOTAL} />
   </article>
 </BaseLayout>

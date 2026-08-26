@@ -12,16 +12,16 @@ export const ABOUT = {
   ],
   /** Имена из файлов логотипов в about.md. Скриншоты экрана не берём. */
   clients: [
-    { src: "/src/assets/images/pepsi.png", alt: "Pepsi" },
-    { src: "/src/assets/images/mediapark.png", alt: "Mediapark" },
-    { src: "/src/assets/images/korzinka.png", alt: "Korzinka" },
-    { src: "/src/assets/images/imzo.png", alt: "IMZO" },
-    { src: "/src/assets/images/artel.png", alt: "Artel" },
-    { src: "/src/assets/images/akfa.png", alt: "AKFA" },
-    { src: "/src/assets/images/nura.jpg", alt: "Nura" },
-    { src: "/src/assets/images/evos-2987.jpeg", alt: "EVOS" },
-    { src: "/src/assets/images/Uzauto-motors-logo.jpg", alt: "UzAuto Motors" },
-    { src: "/src/assets/images/poliflex.png", alt: "Poliflex" },
+    { src: "/images/pepsi.png", alt: "Pepsi" },
+    { src: "/images/mediapark.png", alt: "Mediapark" },
+    { src: "/images/korzinka.png", alt: "Korzinka" },
+    { src: "/images/imzo.png", alt: "IMZO" },
+    { src: "/images/artel.png", alt: "Artel" },
+    { src: "/images/akfa.png", alt: "AKFA" },
+    { src: "/images/nura.jpg", alt: "Nura" },
+    { src: "/images/evos-2987.jpeg", alt: "EVOS" },
+    { src: "/images/Uzauto-motors-logo.jpg", alt: "UzAuto Motors" },
+    { src: "/images/poliflex.png", alt: "Poliflex" },
   ],
 } as const;
 

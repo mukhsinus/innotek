@@ -17,7 +17,25 @@ interface Props {
 const { lang, category } = Astro.props;
 const t = useT(lang);
 const pad = (n: number) => String(n).padStart(2, "0");
-const img = (src?: string) => (src?.startsWith("/src/assets/images/") ? src.replace("/src/assets/images/", "/images/") : (src ?? ""));
+const img = (src?: string) => {
+  if (!src) return "";
+  let clean = src
+    .replace("/src/assets/images/", "/images/")
+    .replace("/imagesWebp/", "/images/");
+  if (!clean.startsWith("/images/")) {
+    clean = clean.startsWith("/") ? `/images${clean}` : `/images/${clean}`;
+  }
+  if (clean.endsWith(".webp")) {
+    if (clean.includes("126081112") || clean.includes("23-300x200") || clean.includes("pris") || clean.includes("prs3") || clean.includes("photo_2023-09-27")) {
+      // keep actual webp file
+    } else if (clean.includes("rolik") || clean.includes("33") || clean.includes("kabel_3") || clean.includes("16-2")) {
+      clean = clean.replace(/\.webp$/, ".png");
+    } else {
+      clean = clean.replace(/\.webp$/, ".jpg");
+    }
+  }
+  return clean;
+};
 const hasGrid = category.products.length > 0;
 const hasDetails = Boolean(
   category.body?.length || category.aiBody?.length || category.specs?.length || category.features?.length,
@@ -88,14 +106,12 @@ const seoN = hasSeo ? n++ : 0;
 
                 <!-- Product Visual Container -->
                 <div class="relative my-5 flex items-center justify-center overflow-hidden rounded-lg bg-paper/60 p-4 h-52 sm:h-56 transition-all duration-500 group-hover:bg-paper">
-                  <img
-                    src={img(item.image)}
-                    alt={t(item.labelKey)}
+                  <PhotoFrame
+                    src={item.image}
                     class="h-full w-full object-contain filter contrast-[1.03] brightness-[0.98] transition-transform duration-500 group-hover:scale-105"
-                    width="600"
-                    height="400"
+                    width={600}
+                    height={400}
                     loading={i < 3 ? "eager" : "lazy"}
-                    decoding="async"
                   />
                 </div>
 
