@@ -36,7 +36,7 @@ const img = (src: string) => {
 ---
 
 <!-- 01 Hero: static, confident, blueprint grid accent -->
-<section class="relative isolate flex h-[100vh] min-h-[100vh] items-end overflow-hidden text-ink">
+<section class="relative isolate flex h-[100dvh] min-h-[100dvh] sm:h-[100vh] sm:min-h-[100vh] items-end overflow-hidden text-ink">
   <img
     src={img(copy.heroImage)}
     alt=""
@@ -47,7 +47,7 @@ const img = (src: string) => {
     fetchpriority="high"
     decoding="async"
   />
-  <div class="site-wrap relative z-10 pt-28 pb-14 lg:pb-16 w-full">
+  <div class="site-wrap relative z-10 px-6 sm:px-8 md:px-0 pt-24 pb-24 sm:pb-28 lg:pb-16">
     <div class="mb-6 flex flex-wrap items-center gap-3">
       <p class="t-overline">01 / {pad(SECTIONS)}</p>
       <div class="telemetry-pill" aria-label="System status">
@@ -105,22 +105,44 @@ const img = (src: string) => {
       </a>
     </div>
 
-    <!-- 12-Column Responsive Bento Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-6">
+    <!-- 12-Column Responsive Bento Grid (14 items distributed across 5 balanced dynamic rows: 2, 3, 2, 4, 3) -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-5">
       {
         copy.categories.map((cat, i) => {
           let spanClass = "col-span-12 md:col-span-6 lg:col-span-4";
-          let heightClass = "h-44 sm:h-48";
-          let titleSize = "text-xl sm:text-2xl";
+          let heightClass = "h-32 sm:h-36 lg:h-40";
+          let titleSize = "text-base sm:text-lg lg:text-xl";
 
           if (i === 0) {
-            spanClass = "col-span-12 lg:col-span-8";
-            heightClass = "h-56 sm:h-64 lg:h-72";
-            titleSize = "text-2xl sm:text-3xl";
+            // Row 1 (2 items: 8 + 4): Flagship rack
+            spanClass = "col-span-12 md:col-span-6 lg:col-span-8";
+            heightClass = "h-44 sm:h-52 lg:h-56";
+            titleSize = "text-xl sm:text-2xl";
           } else if (i === 1) {
+            // Row 1 (2 items: 8 + 4)
             spanClass = "col-span-12 md:col-span-6 lg:col-span-4";
+            heightClass = "h-44 sm:h-52 lg:h-56";
+            titleSize = "text-lg sm:text-xl";
+          } else if (i >= 2 && i <= 4) {
+            // Row 2 (3 items: 4 + 4 + 4)
+            spanClass = "col-span-12 md:col-span-6 lg:col-span-4";
+            heightClass = "h-32 sm:h-36 lg:h-40";
+            titleSize = "text-base sm:text-lg lg:text-xl";
           } else if (i === 5 || i === 6) {
+            // Row 3 (2 items: 6 + 6)
             spanClass = "col-span-12 md:col-span-6 lg:col-span-6";
+            heightClass = "h-36 sm:h-40 lg:h-44";
+            titleSize = "text-lg sm:text-xl";
+          } else if (i >= 7 && i <= 10) {
+            // Row 4 (4 items: 3 + 3 + 3 + 3)
+            spanClass = "col-span-12 md:col-span-6 lg:col-span-3";
+            heightClass = "h-28 sm:h-32 lg:h-36";
+            titleSize = "text-sm sm:text-base font-semibold";
+          } else {
+            // Row 5 (3 items: 4 + 4 + 4)
+            spanClass = "col-span-12 md:col-span-6 lg:col-span-4";
+            heightClass = "h-32 sm:h-36 lg:h-40";
+            titleSize = "text-base sm:text-lg lg:text-xl";
           }
 
           return (
@@ -130,7 +152,7 @@ const img = (src: string) => {
               data-spotlight
               style={`--stagger: ${i}`}
               class:list={[
-                "group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-surface/70 p-6 sm:p-7 transition-all duration-300 hover:border-accent/50 hover:bg-surface hover:shadow-lg",
+                "group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-surface/70 p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:border-accent/50 hover:bg-surface hover:shadow-md",
                 spanClass,
               ]}
             >
@@ -141,17 +163,17 @@ const img = (src: string) => {
 
               <!-- Top index & arrow pill -->
               <div class="relative z-10 flex items-center justify-between">
-                <span class="font-mono text-xs font-semibold text-cyan tracking-wider">
+                <span class="font-mono text-[11px] sm:text-xs font-semibold text-cyan tracking-wider">
                   {pad(i + 1)} // {i === 0 ? (isUz ? "FLAGMAN" : "ФЛАГМАН") : (isUz ? "KATEGORIYA" : "КАТЕГОРИЯ")}
                 </span>
-                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full border border-line bg-paper text-muted-on-ink group-hover:border-accent group-hover:text-accent group-hover:translate-x-1 transition-all duration-300 shadow-xs">
+                <span class="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-line bg-paper text-muted-on-ink group-hover:border-accent group-hover:text-accent group-hover:translate-x-1 transition-all duration-300 shadow-xs text-xs sm:text-sm">
                   →
                 </span>
               </div>
 
               <!-- Product Visual Container (Clean crisp image, no washout) -->
               <div class:list={[
-                "relative my-5 flex items-center justify-center overflow-hidden rounded-lg bg-paper/60 p-4 transition-all duration-500 group-hover:bg-paper",
+                "relative my-3 sm:my-4 flex items-center justify-center overflow-hidden rounded-lg bg-paper/60 p-3 sm:p-4 transition-all duration-500 group-hover:bg-paper",
                 heightClass,
               ]}>
                 <img
@@ -160,7 +182,7 @@ const img = (src: string) => {
                   class="h-full w-full object-contain filter contrast-[1.03] brightness-[0.98] transition-transform duration-500 group-hover:scale-105"
                   width="600"
                   height="400"
-                  loading="lazy"
+                  loading={i < 2 ? "eager" : "lazy"}
                   decoding="async"
                 />
               </div>
@@ -168,7 +190,7 @@ const img = (src: string) => {
               <!-- Bottom Category Title -->
               <div class="relative z-10 pt-1">
                 <h3 class:list={[
-                  "font-display font-semibold tracking-tight text-ink group-hover:text-accent transition-colors",
+                  "font-display font-semibold tracking-tight text-ink group-hover:text-accent transition-colors leading-snug",
                   titleSize,
                 ]}>
                   {t(cat.labelKey)}

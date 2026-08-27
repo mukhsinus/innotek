@@ -74,43 +74,50 @@ const texts = {
 
 <section class="assembly-wrap relative border-y border-line" id="assembly">
   <div
-    class="assembly-pin sticky top-0 h-screen w-full overflow-hidden bg-paper"
+    class="assembly-pin sticky top-0 h-[100dvh] min-h-[100dvh] w-full overflow-hidden bg-paper"
   >
-    <canvas id="rack-canvas" class="absolute inset-0 h-full w-full"></canvas>
-    <div class="rack-grid-overlay absolute inset-0 pointer-events-none"></div>
-
     <!-- Header Section Info (Top Left) -->
-    <div class="site-wrap relative z-20 pt-8">
+    <div class="assembly-head site-wrap relative z-20 pt-5 sm:pt-8 w-full shrink-0">
       <SectionMeta kicker={texts.kicker} index={index} total={total} />
     </div>
 
-    <!-- Scroll Content Steps (Middle Left) -->
-    <div
-      class="assembly-copy absolute top-1/2 left-[5vw] lg:left-[6vw] -translate-y-1/2 max-w-[380px] z-20 pointer-events-none"
-    >
-      {
-        texts.steps.map((step, i) => (
-          <div
-            class:list={["assembly-step", i === 0 && "active"]}
-            data-step={i}
-          >
-            <span class="step-index font-mono text-accent text-xs font-bold tracking-widest mb-3 block">
-              {step.index}
-            </span>
-            <h2 class="font-display font-semibold text-ink text-2xl sm:text-3xl lg:text-4xl leading-tight mb-3">
-              {step.title}
-            </h2>
-            <p class="text-muted-on-ink text-sm sm:text-base leading-relaxed">
-              {step.desc}
-            </p>
-          </div>
-        ))
-      }
+    <!-- 3D Canvas Box (Middle on mobile, Fullscreen on desktop) -->
+    <div class="assembly-canvas-box relative w-full flex-1">
+      <canvas id="rack-canvas" class="absolute inset-0 h-full w-full"></canvas>
+      <div class="rack-grid-overlay absolute inset-0 pointer-events-none"></div>
     </div>
 
-    <!-- Progress Rail (Right Edge) -->
+    <!-- Scroll Content Steps (Placed below 3D rack on mobile, overlaid on desktop left) -->
     <div
-      class="progress-rail hidden sm:block absolute right-[5vw] top-1/2 -translate-y-1/2 w-[2px] h-[180px] bg-line z-20 overflow-hidden rounded-full"
+      class="assembly-copy relative z-20 pointer-events-none w-full shrink-0"
+    >
+      <div class="site-wrap">
+        <div class="assembly-copy-inner relative min-h-[140px] max-w-[340px] lg:max-w-[380px]">
+          {
+            texts.steps.map((step, i) => (
+              <div
+                class:list={["assembly-step", i === 0 && "active"]}
+                data-step={i}
+              >
+                <span class="step-index font-mono text-accent text-xs font-bold tracking-widest mb-2 block">
+                  {step.index}
+                </span>
+                <h2 class="font-display font-semibold text-ink text-xl sm:text-2xl lg:text-3xl leading-tight mb-2">
+                  {step.title}
+                </h2>
+                <p class="text-muted-on-ink text-xs sm:text-sm leading-relaxed">
+                  {step.desc}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Rail (Right Edge - Desktop only) -->
+    <div
+      class="progress-rail hidden md:block absolute right-[5vw] top-1/2 -translate-y-1/2 w-[2px] h-[180px] bg-line z-20 overflow-hidden rounded-full"
     >
       <div
         class="progress-fill w-full bg-accent h-0 transition-all duration-75 ease-linear"
@@ -131,8 +138,16 @@ const texts = {
     position: sticky;
     top: 0;
     height: 100vh;
+    height: 100dvh;
     width: 100%;
     overflow: hidden;
+  }
+
+  .assembly-canvas-box {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 
   #rack-canvas {
@@ -140,6 +155,7 @@ const texts = {
     inset: 0;
     width: 100%;
     height: 100%;
+    display: block;
   }
 
   .rack-grid-overlay {
@@ -159,13 +175,25 @@ const texts = {
   }
 
   .assembly-copy {
-    min-height: 220px;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  .assembly-copy-inner {
+    margin-left: 0;
   }
 
   .assembly-step {
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
     opacity: 0;
     transition:
       opacity 0.5s ease,
@@ -180,46 +208,44 @@ const texts = {
     pointer-events: auto;
   }
 
-  .dim-label {
-    position: absolute;
-    font-family: var(--font-mono, monospace);
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: var(--color-cyan, #0284c7);
-    opacity: 0;
-    transition:
-      opacity 0.4s ease,
-      transform 0.4s ease;
-    transform: translateX(6px);
-    z-index: 20;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    pointer-events: none;
-    user-select: none;
-    background: var(--color-paper, #ffffff);
-    padding: 2px 8px;
-    border-radius: 4px;
-    border: 1px solid rgba(2, 132, 199, 0.2);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  }
-
-  .dim-label.show {
-    opacity: 0.95;
-    transform: translateX(0);
-  }
-
-  .dim-label .tick {
-    width: 14px;
-    height: 1px;
-    background: var(--color-cyan, #0284c7);
-  }
-
   @media (max-width: 820px) {
-    .assembly-copy {
-      max-width: 280px;
-      left: 20px;
+    .assembly-wrap {
+      height: 240vh;
     }
+
+    .assembly-pin {
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      min-height: 100dvh;
+      justify-content: space-between;
+    }
+
+    .assembly-canvas-box {
+      position: relative;
+      flex: 1 1 auto;
+      width: 100%;
+      min-height: 0;
+    }
+
+    .assembly-copy {
+      position: relative;
+      top: auto;
+      left: auto;
+      right: auto;
+      transform: none;
+      width: 100%;
+      padding-top: 0.5rem;
+      padding-bottom: 2rem;
+    }
+
+    .assembly-copy-inner {
+      min-height: 120px;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .progress-rail {
       display: none;
     }
@@ -262,16 +288,28 @@ const texts = {
         0.1,
         100,
       );
-      camera.position.set(0, 2.6, 11);
-      camera.lookAt(0, 2, 0);
+
+      function updateCamera(w, h) {
+        camera.aspect = w / h;
+        if (window.innerWidth < 820) {
+          camera.position.set(0, 2.2, 9.2);
+          camera.lookAt(0, 2.2, 0);
+        } else {
+          const aspect = w / h;
+          const dist = aspect < 1.4 ? 12.6 : 11.4;
+          camera.position.set(0, 2.3, dist);
+          camera.lookAt(0, 2.1, 0);
+        }
+        camera.updateProjectionMatrix();
+      }
 
       function resize() {
         if (!canvas) return;
-        const w = window.innerWidth,
-          h = window.innerHeight;
-        renderer.setSize(w, h);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
+        const rect = canvas.getBoundingClientRect();
+        const w = rect.width || window.innerWidth;
+        const h = rect.height || window.innerHeight;
+        renderer.setSize(w, h, false);
+        updateCamera(w, h);
       }
       resize();
       window.addEventListener("resize", resize);

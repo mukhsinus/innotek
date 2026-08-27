@@ -1,23 +1,18 @@
 ---
 interface Props {
   class?: string;
+  alt?: string;
 }
 
-const { class: className = "h-8 w-8" } = Astro.props;
+const { class: className = "h-8 w-8", alt = "Innotek" } = Astro.props;
 ---
 
-<!-- Марка: две стойки и три балки стеллажа. Оранжевая средняя балка — акцент бренда. -->
-<svg
-  class={className}
-  viewBox="0 0 32 32"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
-  aria-hidden="true"
-  focusable="false"
->
-  <rect x="4" y="3" width="3.2" height="26" rx="0.4" fill="currentColor"></rect>
-  <rect x="24.8" y="3" width="3.2" height="26" rx="0.4" fill="currentColor"></rect>
-  <rect x="4" y="7" width="24" height="3" fill="currentColor"></rect>
-  <rect x="4" y="14.5" width="24" height="3" fill="#FF6B1A"></rect>
-  <rect x="4" y="22" width="24" height="3" fill="currentColor"></rect>
-</svg>
+<img
+  src="/images/logo.png"
+  alt={alt}
+  class:list={["object-contain shrink-0", className]}
+  width="32"
+  height="32"
+  loading="eager"
+  decoding="async"
+/>

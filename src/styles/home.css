@@ -219,6 +219,20 @@
   transform: none;
 }
 
+@media (max-width: 767px) {
+  .is-home [data-reveal],
+  .is-home [data-stagger] {
+    transform: translateY(10px);
+    transition:
+      opacity 0.35s var(--ease-home),
+      transform 0.35s var(--ease-home);
+  }
+
+  .is-home [data-stagger] {
+    transition-delay: calc(min(var(--stagger, 0), 3) * 30ms);
+  }
+}
+
 /* ── Bento Card Interactions ─────────────────────────────────────────── */
 
 .is-home .bento-label {

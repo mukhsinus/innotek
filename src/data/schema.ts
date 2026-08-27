@@ -24,7 +24,7 @@ export function organizationLd() {
     name: SITE.name,
     legalName: SITE.legalName,
     url: `${origin}/`,
-    logo: `${origin}/favicon.svg`,
+    logo: `${origin}/images/logo.png`,
     email: SITE.email,
     telephone: SITE.phone.tel,
     address: postalAddress,

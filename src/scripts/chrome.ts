@@ -154,10 +154,18 @@ function initReveal() {
         io.unobserve(entry.target);
       }
     },
-    { threshold: 0.15 },
+    { threshold: 0, rootMargin: "120px 0px 120px 0px" },
   );
 
-  nodes.forEach((el) => io.observe(el));
+  nodes.forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight + 120 && rect.bottom > -120;
+    if (inView) {
+      show(el);
+    } else {
+      io.observe(el);
+    }
+  });
 }
 
 function initCounters() {
