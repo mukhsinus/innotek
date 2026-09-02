@@ -101,7 +101,7 @@
 
 .is-home .hero-scroll {
   position: absolute;
-  left: 1.5rem;
+  left: 1.25rem;
   bottom: 1.5rem;
   z-index: 12;
   pointer-events: none;
@@ -116,15 +116,31 @@
   animation: home-scroll-pulse 2.8s ease-in-out infinite;
 }
 
+@media (min-width: 640px) {
+  .is-home .hero-scroll {
+    left: 1.75rem;
+  }
+}
+
 @media (min-width: 768px) {
   .is-home .hero-stick {
-    right: max(3rem, calc((100vw - 85rem) / 2 + 3rem));
+    right: max(2.5rem, calc((100vw - 85rem) / 2));
     bottom: 2rem;
   }
 
   .is-home .hero-scroll {
-    left: max(3rem, calc((100vw - 85rem) / 2 + 3rem));
+    left: max(2.5rem, calc((100vw - 85rem) / 2));
     bottom: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .is-home .hero-stick {
+    right: max(3.25rem, calc((100vw - 85rem) / 2));
+  }
+
+  .is-home .hero-scroll {
+    left: max(3.25rem, calc((100vw - 85rem) / 2));
   }
 }
 
