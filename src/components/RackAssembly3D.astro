@@ -92,20 +92,20 @@ const texts = {
       class="assembly-copy relative z-20 pointer-events-none w-full shrink-0"
     >
       <div class="site-wrap">
-        <div class="assembly-copy-inner relative min-h-[140px] max-w-[340px] lg:max-w-[380px]">
+        <div class="assembly-copy-inner relative min-h-[140px] max-w-[340px] lg:max-w-[380px] 2xl:max-w-[440px]">
           {
             texts.steps.map((step, i) => (
               <div
                 class:list={["assembly-step", i === 0 && "active"]}
                 data-step={i}
               >
-                <span class="step-index font-mono text-accent text-xs font-bold tracking-widest mb-2 block">
+                <span class="step-index font-mono text-accent text-xs 2xl:text-sm font-bold tracking-widest mb-2 block">
                   {step.index}
                 </span>
-                <h2 class="font-display font-semibold text-ink text-xl sm:text-2xl lg:text-3xl leading-tight mb-2">
+                <h2 class="font-display font-semibold text-ink text-xl sm:text-2xl lg:text-3xl 2xl:text-4xl leading-tight mb-2">
                   {step.title}
                 </h2>
-                <p class="text-muted-on-ink text-xs sm:text-sm leading-relaxed">
+                <p class="text-muted-on-ink text-xs sm:text-sm 2xl:text-base leading-relaxed">
                   {step.desc}
                 </p>
               </div>
@@ -254,18 +254,15 @@ const texts = {
   }
 </style>
 
-<!-- Load Three.js library -->
-<script
-  is:inline
-  src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-></script>
+<!-- 3D Interactive Rack Script -->
+<script>
+  import * as THREE from "three";
 
-<script is:inline>
   (function () {
     function init3DRack() {
       const section = document.getElementById("assembly");
-      const canvas = document.getElementById("rack-canvas");
-      if (!section || !canvas || typeof THREE === "undefined") return;
+      const canvas = document.getElementById("rack-canvas") as HTMLCanvasElement | null;
+      if (!section || !canvas) return;
 
       // Check if already initialized on this canvas
       if (canvas.dataset.initialized === "true") return;
@@ -281,7 +278,7 @@ const texts = {
         antialias: true,
         alpha: true,
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(Math.max(window.devicePixelRatio || 1, 1), 2));
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(
@@ -291,18 +288,31 @@ const texts = {
         100,
       );
 
-      function updateCamera(w, h) {
+      function updateCamera(w: number, h: number) {
         camera.aspect = w / h;
         if (window.innerWidth < 820) {
           camera.position.set(0, 2.2, 9.2);
           camera.lookAt(0, 2.2, 0);
         } else {
           const aspect = w / h;
-          const dist = aspect < 1.4 ? 12.6 : 11.4;
+          const dist = aspect < 1.4 ? 12.6 : aspect > 2.2 ? 11.0 : 11.4;
           camera.position.set(0, 2.3, dist);
           camera.lookAt(0, 2.1, 0);
         }
         camera.updateProjectionMatrix();
+      }
+
+      // Scroll-driven progress
+      let targetProgress = 0;
+      let smoothProgress = 0;
+
+      function computeProgress() {
+        if (!section) return;
+        const rect = section.getBoundingClientRect();
+        const total = section.offsetHeight - window.innerHeight;
+        if (total <= 0) return;
+        const scrolled = -rect.top;
+        targetProgress = Math.min(1, Math.max(0, scrolled / total));
       }
 
       function resize() {
@@ -312,9 +322,12 @@ const texts = {
         const h = rect.height || window.innerHeight;
         renderer.setSize(w, h, false);
         updateCamera(w, h);
+        computeProgress();
       }
       resize();
       window.addEventListener("resize", resize);
+      window.addEventListener("scroll", computeProgress, { passive: true });
+      computeProgress();
 
       // Lighting
       scene.add(new THREE.HemisphereLight(0x99aabb, 0x111111, 0.7));
@@ -328,8 +341,8 @@ const texts = {
       // Blueprint floor grid
       const grid = new THREE.GridHelper(20, 40, 0x0284c7, 0xd0d5da);
       grid.position.y = -0.02;
-      grid.material.transparent = true;
-      grid.material.opacity = 0.28;
+      (grid.material as THREE.Material).transparent = true;
+      (grid.material as THREE.Material).opacity = 0.28;
       scene.add(grid);
 
       // ---------- MATERIALS ----------
@@ -367,7 +380,7 @@ const texts = {
         BAY_W = 2.6;
       const levelYs = [0.55, 1.9, 3.25];
 
-      function makeUpright(x) {
+      function makeUpright(x: number) {
         const g = new THREE.Group();
         const postGeo = new THREE.BoxGeometry(0.08, FRAME_H, 0.08);
         const p1 = new THREE.Mesh(postGeo, steelMat);
@@ -390,7 +403,7 @@ const texts = {
       const rightFrame = makeUpright(BAY_W / 2);
       rack.add(leftFrame, rightFrame);
 
-      const beams = [];
+      const beams: { front: THREE.Mesh; back: THREE.Mesh; startX: number }[] = [];
       levelYs.forEach((y) => {
         const beamGeo = new THREE.BoxGeometry(BAY_W - FRAME_W + 0.1, 0.14, 0.1);
         const front = new THREE.Mesh(beamGeo, accentMat);
@@ -401,7 +414,7 @@ const texts = {
         beams.push({ front, back, startX: 3.5 });
       });
 
-      const pallets = [];
+      const pallets: THREE.Group[] = [];
       levelYs.forEach((y) => {
         const p = new THREE.Group();
         const base = new THREE.Mesh(
@@ -423,9 +436,9 @@ const texts = {
       rack.position.y = 0;
       rack.rotation.y = -0.35;
 
-      // Initial unbuilt state
-      leftFrame.position.y = -FRAME_H - 0.5;
-      rightFrame.position.y = -FRAME_H - 0.5;
+      // Initial state: frames rise from ground level into position
+      leftFrame.position.y = -FRAME_H * 0.7;
+      rightFrame.position.y = -FRAME_H * 0.7;
       beams.forEach((b) => {
         b.front.position.x = b.startX;
         b.back.position.x = -b.startX;
@@ -435,24 +448,10 @@ const texts = {
         p.visible = false;
       });
 
-      // Scroll-driven progress
-      let targetProgress = 0,
-        smoothProgress = 0;
-
-      function computeProgress() {
-        const rect = section.getBoundingClientRect();
-        const total = section.offsetHeight - window.innerHeight;
-        if (total <= 0) return;
-        const scrolled = -rect.top;
-        targetProgress = Math.min(1, Math.max(0, scrolled / total));
-      }
-      window.addEventListener("scroll", computeProgress, { passive: true });
-      computeProgress();
-
       const steps = section.querySelectorAll(".assembly-step");
       const progressFill = document.getElementById("progress-fill");
 
-      function updateOverlay(p) {
+      function updateOverlay(p: number) {
         let stepIdx = 0;
         if (p < 0.28) stepIdx = 0;
         else if (p < 0.6) stepIdx = 1;
@@ -460,22 +459,22 @@ const texts = {
         else stepIdx = 3;
 
         steps.forEach((s) =>
-          s.classList.toggle("active", Number(s.dataset.step) === stepIdx),
+          s.classList.toggle("active", Number(s.getAttribute("data-step")) === stepIdx),
         );
 
         if (progressFill) progressFill.style.height = p * 100 + "%";
       }
 
-      function lerp(a, b, t) {
+      function lerp(a: number, b: number, t: number) {
         return a + (b - a) * t;
       }
 
-      function updateRack(p) {
+      function updateRack(p: number) {
         // Stage 1: frames rise 0 -> 0.28
         const frameT = Math.min(1, p / 0.28);
         const eased = 1 - Math.pow(1 - frameT, 3);
-        leftFrame.position.y = lerp(-FRAME_H - 0.5, 0, eased);
-        rightFrame.position.y = lerp(-FRAME_H - 0.5, 0, eased);
+        leftFrame.position.y = lerp(-FRAME_H * 0.7, 0, eased);
+        rightFrame.position.y = lerp(-FRAME_H * 0.7, 0, eased);
 
         // Stage 2: beams slide in, staggered per level, 0.24 -> 0.62
         beams.forEach((b, i) => {
@@ -493,6 +492,7 @@ const texts = {
           const end = start + 0.18;
           const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
           if (t > 0) pl.visible = true;
+          else pl.visible = false;
           const e = 1 - Math.pow(1 - t, 3);
           pl.position.y = lerp(3.5, 0, e);
         });

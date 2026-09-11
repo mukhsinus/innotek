@@ -124,23 +124,43 @@
 
 @media (min-width: 768px) {
   .is-home .hero-stick {
-    right: max(2.5rem, calc((100vw - 85rem) / 2));
+    right: max(2.5rem, calc((100vw - var(--max-width-site, 85rem)) / 2));
     bottom: 2rem;
   }
 
   .is-home .hero-scroll {
-    left: max(2.5rem, calc((100vw - 85rem) / 2));
+    left: max(2.5rem, calc((100vw - var(--max-width-site, 85rem)) / 2));
     bottom: 2rem;
   }
 }
 
 @media (min-width: 1280px) {
   .is-home .hero-stick {
-    right: max(3.25rem, calc((100vw - 85rem) / 2));
+    right: max(3.25rem, calc((100vw - var(--max-width-site, 85rem)) / 2));
   }
 
   .is-home .hero-scroll {
-    left: max(3.25rem, calc((100vw - 85rem) / 2));
+    left: max(3.25rem, calc((100vw - var(--max-width-site, 85rem)) / 2));
+  }
+}
+
+@media (min-width: 1536px) {
+  .is-home .hero-stick {
+    right: max(4rem, calc((100vw - var(--max-width-site, 96rem)) / 2));
+  }
+
+  .is-home .hero-scroll {
+    left: max(4rem, calc((100vw - var(--max-width-site, 96rem)) / 2));
+  }
+}
+
+@media (min-width: 1920px) {
+  .is-home .hero-stick {
+    right: max(5rem, calc((100vw - var(--max-width-site, 114rem)) / 2));
+  }
+
+  .is-home .hero-scroll {
+    left: max(5rem, calc((100vw - var(--max-width-site, 114rem)) / 2));
   }
 }
 

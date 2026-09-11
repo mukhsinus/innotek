@@ -36,17 +36,17 @@ const TOTAL = 3;
       <div class="site-wrap">
         <SectionMeta kicker={t("page.lineup")} index={2} total={TOTAL} />
         
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-6 mt-8">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-6 2xl:gap-7 mt-8">
           {
             copy.categories.map((cat, i) => {
               let spanClass = "col-span-12 md:col-span-6 lg:col-span-4";
-              let heightClass = "h-44 sm:h-48";
-              let titleSize = "text-xl sm:text-2xl";
+              let heightClass = "h-44 sm:h-48 2xl:h-56";
+              let titleSize = "text-xl sm:text-2xl 2xl:text-3xl";
 
               if (i === 0) {
                 spanClass = "col-span-12 lg:col-span-8";
-                heightClass = "h-56 sm:h-64 lg:h-72";
-                titleSize = "text-2xl sm:text-3xl";
+                heightClass = "h-56 sm:h-64 lg:h-72 2xl:h-80";
+                titleSize = "text-2xl sm:text-3xl 2xl:text-4xl";
               } else if (i === 1) {
                 spanClass = "col-span-12 md:col-span-6 lg:col-span-4";
               } else if (i === 5 || i === 6) {

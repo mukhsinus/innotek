@@ -11,6 +11,7 @@ import { SITE } from "../data/site";
 import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
 import { HOME } from "../data/home";
+import { SERVICES } from "../data/services";
 
 interface Props {
   lang: Lang;
@@ -48,12 +49,24 @@ copy.categories.forEach((cat) => {
   }
   catImages[cat.path] = clean;
 });
+
+/* Service images for mega menu thumbnails */
+const serviceImages: Record<string, string> = {};
+SERVICES.forEach((srv) => {
+  if (!srv.image) return;
+  let clean = srv.image
+    .replace("/src/assets/images/", "/images/")
+    .replace("/imagesWebp/", "/images/");
+  if (!clean.startsWith("/images/")) {
+    clean = clean.startsWith("/") ? `/images${clean}` : `/images/${clean}`;
+  }
+  serviceImages[srv.path] = clean;
+});
 ---
 
 <header
   id="site-header"
-  class="fixed top-0 right-0 left-0 z-50 h-16"
-  data-overlay={overlay ? "" : undefined}
+  class="fixed top-0 right-0 left-0 z-50 h-16 bg-white border-b border-line"
 >
   <div
     class="header-inner site-wrap flex h-full items-center justify-between gap-4"
@@ -115,27 +128,6 @@ copy.categories.forEach((cat) => {
                   </svg>
                 )}
               </a>
-
-              {item.path === "/services/" && (
-                <div
-                  id="nav-flyout-services"
-                  class="nav-flyout nav-flyout-sub"
-                  data-flyout-panel="services"
-                >
-                  <ul class="border-t border-line bg-surface py-3 text-ink">
-                    {servicesNav.map((child) => (
-                      <li>
-                        <a
-                          class="block px-4 py-2 text-sm text-muted-on-ink hover:text-accent"
-                          href={link(child)}
-                        >
-                          {t(child.labelKey)}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </li>
           ))
         }
@@ -171,110 +163,191 @@ copy.categories.forEach((cat) => {
     </div>
   </div>
 
-  <!-- Mega menu: catalog with thumbnails -->
+  <!-- Mega menu: catalog with thumbnails in original ratios, 7x2 grid, zero-scroll layout -->
   <div
     id="nav-flyout-catalog"
     class="nav-flyout nav-flyout-full shadow-2xl"
     data-flyout-panel="catalog"
   >
     <div
-      class="border-t border-b border-line bg-surface text-ink max-h-[calc(100vh-5rem)] overflow-y-auto"
+      class="border-t border-b border-line bg-surface text-ink lg:overflow-visible max-h-[calc(100vh-4.5rem)] overflow-y-auto"
     >
-      <div class="site-wrap py-5">
-        <div class="grid grid-cols-12 gap-x-6 gap-y-4">
+      <div class="site-wrap py-3.5 xl:py-4">
+        <!-- Top status strip -->
+        <div class="flex items-center justify-between pb-2 mb-3 border-b border-line/50">
+          <div class="flex items-center gap-2 font-mono text-xs text-muted-on-ink">
+            <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+            <span class="uppercase tracking-wider font-semibold">
+              {isUz ? "Mahsulotlar katalogi" : "Каталог продукции"}
+            </span>
+            <span class="text-cyan font-mono">// 14 {isUz ? "yo'nalish" : "направлений"}</span>
+          </div>
+          <a
+            href={hrefFor(lang, "/catalog/")}
+            class="text-xs font-semibold text-accent hover:underline inline-flex items-center gap-1"
+          >
+            <span>{isUz ? "Barcha mahsulotlar katalogi →" : "Все категории каталога →"}</span>
+          </a>
+        </div>
+
+        <!-- 7-column x 2-row clean grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2 xl:gap-2.5">
           {
             catalogNav.map((cat, idx) => {
               const hasChildren = Boolean(
                 cat.children && cat.children.length > 0,
               );
-              const accordionId = `cat-sub-${idx}`;
+              const colPos = idx % 7;
 
               return (
-                <div class="col-span-6 md:col-span-4 lg:col-span-3">
-                  {catImages[cat.path] && (
-                    <a
-                      href={link(cat)}
-                      class="group block mb-2"
-                      title={t(cat.labelKey)}
-                    >
-                      <div class="relative h-30 w-full overflow-hidden bg-paper/60 border border-line/30">
+                <div class="cat-card relative group">
+                  <a
+                    href={link(cat)}
+                    class="flex flex-col items-center justify-between h-full p-2 rounded-xl bg-paper/50 hover:bg-white hover:shadow-md border border-line/40 hover:border-accent/40 transition-all duration-200 text-center"
+                    title={t(cat.labelKey)}
+                  >
+                    <!-- Image Box with original ratio -->
+                    <div class="relative w-full h-20 xl:h-24 rounded-lg bg-surface/90 border border-line/30 flex items-center justify-center p-1.5 overflow-hidden group-hover:bg-paper/40 transition-colors">
+                      {catImages[cat.path] ? (
                         <img
                           src={catImages[cat.path]}
                           alt=""
-                          class="h-full w-full object-cover photo-grade group-hover:scale-105 transition-transform duration-300"
-                          width="240"
+                          class="max-h-full max-w-full object-contain photo-grade transition-transform duration-300 group-hover:scale-105"
+                          width="200"
                           height="120"
                           loading="lazy"
                           decoding="async"
                         />
-                      </div>
-                    </a>
-                  )}
+                      ) : (
+                        <div class="w-full h-full flex items-center justify-center text-muted font-mono text-[10px]">
+                          INNOTEK
+                        </div>
+                      )}
+                    </div>
 
-                  {hasChildren ? (
-                    <div>
-                      <button
-                        type="button"
-                        class="cat-accordion-btn flex items-center justify-between w-full text-left py-1 text-xs font-bold uppercase tracking-wider text-ink hover:text-accent transition-colors cursor-pointer group"
-                        aria-expanded="false"
-                        aria-controls={accordionId}
-                        data-cat-accordion-btn
-                      >
-                        <span>{t(cat.labelKey)}</span>
-                        <svg
-                          class="cat-chevron h-3.5 w-3.5 opacity-60 group-hover:opacity-100 group-hover:text-accent shrink-0 ml-1.5"
-                          viewBox="0 0 12 12"
-                          fill="none"
-                          aria-hidden="true"
+                    <!-- Category Title & Sub-count -->
+                    <div class="w-full mt-1.5 flex flex-col items-center justify-center min-h-[2.4rem]">
+                      <span class="text-[11px] xl:text-xs font-bold uppercase tracking-wider text-ink group-hover:text-accent transition-colors leading-tight line-clamp-2">
+                        {t(cat.labelKey)}
+                      </span>
+                      {hasChildren && (
+                        <span class="mt-0.5 text-[10px] font-mono text-muted-on-ink group-hover:text-accent transition-colors flex items-center gap-0.5">
+                          <span>{cat.children!.length} {isUz ? "tur" : "видов"}</span>
+                          <svg
+                            class="h-2.5 w-2.5 transform group-hover:translate-y-0.5 transition-transform opacity-60"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M2.5 4.5 6 8l3.5-3.5"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      )}
+                    </div>
+                  </a>
+
+                  <!-- Floating Popover Subcategories on Hover (zero screen height stretch) -->
+                  {hasChildren && (
+                    <div
+                      class:list={[
+                        "cat-popover pointer-events-none opacity-0 translate-y-1 group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 transition-all duration-200 absolute top-full z-50 pt-1.5 w-56 xl:w-60",
+                        colPos === 0
+                          ? "left-0"
+                          : colPos === 6
+                            ? "right-0"
+                            : "left-1/2 -translate-x-1/2",
+                      ]}
+                    >
+                      <div class="bg-white/98 backdrop-blur-xl rounded-xl border border-line shadow-2xl p-2 text-xs">
+                        <a
+                          href={link(cat)}
+                          class="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-paper font-semibold text-accent hover:underline mb-1"
                         >
-                          <path
-                            d="M2.5 4.5 6 8l3.5-3.5"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </button>
-
-                      <div id={accordionId} class="cat-accordion-content">
-                        <div>
-                          <ul class="pt-1.5 pb-1 space-y-1 text-xs text-muted">
-                            <li>
-                              <a
-                                class="text-accent hover:underline block py-0.5 font-medium"
-                                href={link(cat)}
-                              >
-                                {isUz
-                                  ? "Barcha mahsulotlar →"
-                                  : "Все товары категории →"}
-                              </a>
-                            </li>
-                            {cat.children!.map((child) => (
-                              <li>
-                                <a
-                                  class="hover:text-accent transition-colors block py-0.5"
-                                  href={link(child)}
-                                >
-                                  {t(child.labelKey)}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
+                          <span>{isUz ? "Barcha toifalar" : "Все товары категории"}</span>
+                          <span>→</span>
+                        </a>
+                        <div class="max-h-48 overflow-y-auto space-y-0.5 custom-scroll">
+                          {cat.children!.map((child) => (
+                            <a
+                              href={link(child)}
+                              class="block px-2.5 py-1.5 rounded-lg text-ink hover:text-accent hover:bg-paper transition-colors text-[11px] font-medium leading-tight text-left"
+                            >
+                              {t(child.labelKey)}
+                            </a>
+                          ))}
                         </div>
                       </div>
                     </div>
-                  ) : (
-                    <a
-                      href={link(cat)}
-                      class="flex items-center justify-between w-full py-1 text-xs font-bold uppercase tracking-wider text-ink hover:text-accent transition-colors"
-                    >
-                      <span>{t(cat.labelKey)}</span>
-                    </a>
                   )}
                 </div>
               );
             })
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mega menu: services with thumbnails -->
+  <div
+    id="nav-flyout-services"
+    class="nav-flyout nav-flyout-full shadow-2xl"
+    data-flyout-panel="services"
+  >
+    <div
+      class="border-t border-b border-line bg-surface text-ink max-h-[calc(100vh-4.5rem)] overflow-y-auto"
+    >
+      <div class="site-wrap py-3.5 xl:py-4">
+        <div class="flex items-center justify-between pb-2 mb-3 border-b border-line/50">
+          <div class="flex items-center gap-2 font-mono text-xs text-muted-on-ink">
+            <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+            <span class="uppercase tracking-wider font-semibold">
+              {isUz ? "Ishlab chiqarish va metallga ishlov berish" : "Производство и металлообработка"}
+            </span>
+            <span class="text-cyan font-mono">// 18 {isUz ? "yo'nalish" : "направлений"}</span>
+          </div>
+          <a
+            href={hrefFor(lang, "/services/")}
+            class="text-xs font-semibold text-accent hover:underline inline-flex items-center gap-1"
+          >
+            <span>{isUz ? "Barcha xizmatlar ro'yxati →" : "Все услуги компании →"}</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 xl:gap-2.5">
+          {
+            servicesNav.map((srv) => (
+              <div>
+                <a
+                  href={link(srv)}
+                  class="group flex flex-col items-center justify-between h-full p-2 rounded-xl bg-paper/50 hover:bg-white hover:shadow-md border border-line/40 hover:border-accent/40 transition-all duration-200 text-center"
+                  title={t(srv.labelKey)}
+                >
+                  {serviceImages[srv.path] && (
+                    <div class="relative h-20 xl:h-22 w-full overflow-hidden rounded-lg bg-surface/90 border border-line/30 mb-1.5 flex items-center justify-center p-1 group-hover:bg-paper/40 transition-colors">
+                      <img
+                        src={serviceImages[srv.path]}
+                        alt=""
+                        class="max-h-full max-w-full object-contain photo-grade group-hover:scale-105 transition-transform duration-300"
+                        width="200"
+                        height="120"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                  )}
+                  <span class="block text-[11px] xl:text-xs font-bold uppercase tracking-wider text-ink group-hover:text-accent transition-colors leading-tight line-clamp-2">
+                    {t(srv.labelKey)}
+                  </span>
+                </a>
+              </div>
+            ))
           }
         </div>
       </div>

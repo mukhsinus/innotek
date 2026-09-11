@@ -36,7 +36,7 @@ const img = (src: string) => {
 ---
 
 <!-- 01 Hero: static, confident, blueprint grid accent -->
-<section class="relative isolate flex h-[100dvh] min-h-[100dvh] sm:h-[100vh] sm:min-h-[100vh] items-end overflow-hidden text-ink">
+<section class="relative isolate flex h-[100dvh] min-h-[580px] max-h-[1080px] 2xl:max-h-[1200px] 3xl:max-h-[1350px] items-end overflow-hidden text-ink">
   <img
     src={img(copy.heroImage)}
     alt=""
@@ -47,7 +47,7 @@ const img = (src: string) => {
     fetchpriority="high"
     decoding="async"
   />
-  <div class="site-wrap relative z-10 pt-20 pb-20 sm:pb-24 lg:pb-14">
+  <div class="site-wrap relative z-10 pt-20 pb-20 sm:pb-24 lg:pb-14 2xl:pb-18">
     <div class="mb-6 flex flex-wrap items-center gap-3">
       <p class="t-overline">01 / {pad(SECTIONS)}</p>
       <div class="telemetry-pill" aria-label="System status">
@@ -58,7 +58,7 @@ const img = (src: string) => {
         <span>PRODUCTION // TASHKENT</span>
       </div>
     </div>
-    <div class="max-w-5xl">
+    <div class="max-w-5xl 2xl:max-w-6xl 3xl:max-w-7xl">
       <h1 class="t-display">
         {
           heroLines.map((line, i) => (
@@ -106,43 +106,43 @@ const img = (src: string) => {
     </div>
 
     <!-- 12-Column Responsive Bento Grid (14 items distributed across 5 balanced dynamic rows: 2, 3, 2, 4, 3) -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-5">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-5 2xl:gap-6 3xl:gap-7">
       {
         copy.categories.map((cat, i) => {
           let spanClass = "col-span-12 md:col-span-6 lg:col-span-4";
-          let heightClass = "h-32 sm:h-36 lg:h-40";
-          let titleSize = "text-base sm:text-lg lg:text-xl";
+          let heightClass = "h-32 sm:h-36 lg:h-40 2xl:h-48 3xl:h-52";
+          let titleSize = "text-base sm:text-lg lg:text-xl 2xl:text-2xl";
 
           if (i === 0) {
             // Row 1 (2 items: 8 + 4): Flagship rack
             spanClass = "col-span-12 md:col-span-6 lg:col-span-8";
-            heightClass = "h-44 sm:h-52 lg:h-56";
-            titleSize = "text-xl sm:text-2xl";
+            heightClass = "h-44 sm:h-52 lg:h-56 2xl:h-64 3xl:h-72";
+            titleSize = "text-xl sm:text-2xl 2xl:text-3xl";
           } else if (i === 1) {
             // Row 1 (2 items: 8 + 4)
             spanClass = "col-span-12 md:col-span-6 lg:col-span-4";
-            heightClass = "h-44 sm:h-52 lg:h-56";
-            titleSize = "text-lg sm:text-xl";
+            heightClass = "h-44 sm:h-52 lg:h-56 2xl:h-64 3xl:h-72";
+            titleSize = "text-lg sm:text-xl 2xl:text-2xl";
           } else if (i >= 2 && i <= 4) {
             // Row 2 (3 items: 4 + 4 + 4)
             spanClass = "col-span-12 md:col-span-6 lg:col-span-4";
-            heightClass = "h-32 sm:h-36 lg:h-40";
-            titleSize = "text-base sm:text-lg lg:text-xl";
+            heightClass = "h-32 sm:h-36 lg:h-40 2xl:h-48 3xl:h-52";
+            titleSize = "text-base sm:text-lg lg:text-xl 2xl:text-2xl";
           } else if (i === 5 || i === 6) {
             // Row 3 (2 items: 6 + 6)
             spanClass = "col-span-12 md:col-span-6 lg:col-span-6";
-            heightClass = "h-36 sm:h-40 lg:h-44";
-            titleSize = "text-lg sm:text-xl";
+            heightClass = "h-36 sm:h-40 lg:h-44 2xl:h-52 3xl:h-56";
+            titleSize = "text-lg sm:text-xl 2xl:text-2xl";
           } else if (i >= 7 && i <= 10) {
             // Row 4 (4 items: 3 + 3 + 3 + 3)
             spanClass = "col-span-12 md:col-span-6 lg:col-span-3";
-            heightClass = "h-28 sm:h-32 lg:h-36";
-            titleSize = "text-sm sm:text-base font-semibold";
+            heightClass = "h-28 sm:h-32 lg:h-36 2xl:h-44 3xl:h-48";
+            titleSize = "text-sm sm:text-base 2xl:text-lg font-semibold";
           } else {
             // Row 5 (3 items: 4 + 4 + 4)
             spanClass = "col-span-12 md:col-span-6 lg:col-span-4";
-            heightClass = "h-32 sm:h-36 lg:h-40";
-            titleSize = "text-base sm:text-lg lg:text-xl";
+            heightClass = "h-32 sm:h-36 lg:h-40 2xl:h-48 3xl:h-52";
+            titleSize = "text-base sm:text-lg lg:text-xl 2xl:text-2xl";
           }
 
           return (
@@ -218,9 +218,9 @@ const img = (src: string) => {
     <p class="t-lead">{copy.productionLead}</p>
 
     <!-- 4 High-End Telemetry Stat Cards -->
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mt-12 lg:mt-16">
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 2xl:gap-6 3xl:gap-7 mt-12 lg:mt-16">
       <!-- Card 1: Experience -->
-      <div class="stat-card group flex flex-col justify-between p-6 sm:p-7" data-stagger data-spotlight style="--stagger: 0">
+      <div class="stat-card group flex flex-col justify-between p-6 sm:p-7 2xl:p-8" data-stagger data-spotlight style="--stagger: 0">
         <span class="cad-cross cad-tl text-accent" aria-hidden="true">+</span>
         <span class="cad-cross cad-tr text-accent" aria-hidden="true">+</span>
         <span class="cad-cross cad-bl text-accent" aria-hidden="true">+</span>
@@ -329,12 +329,12 @@ const img = (src: string) => {
     <p class="t-lead">{copy.casesLead}</p>
 
     <!-- Modern Fresh Case Cards Grid -->
-    <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:mt-16">
+    <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:gap-8 mt-12 lg:mt-16">
       {
         copy.cases.map((item, i) => (
           <a
             href={videoHref}
-            class="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-paper p-6 sm:p-7 shadow-xs transition-all duration-300 hover:border-accent/50 hover:shadow-lg"
+            class="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-paper p-6 sm:p-7 2xl:p-8 shadow-xs transition-all duration-300 hover:border-accent/50 hover:shadow-lg"
             data-stagger
             data-spotlight
             style={`--stagger: ${i}`}
