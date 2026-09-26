@@ -12,6 +12,7 @@ import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
 import { HOME } from "../data/home";
 import { SERVICES } from "../data/services";
+import { photoSrc } from "../lib/image";
 
 interface Props {
   lang: Lang;
@@ -37,30 +38,17 @@ function link(item: NavLink) {
 const homeHref = hrefFor(lang, "/");
 const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
 
-/* Category images for mega menu thumbnails */
+/* Thumbnails stay unloaded until the flyout opens. 640px covers a retina card. */
 const catImages: Record<string, string> = {};
 copy.categories.forEach((cat) => {
-  if (!cat.image) return;
-  let clean = cat.image
-    .replace("/src/assets/images/", "/images/")
-    .replace("/imagesWebp/", "/images/");
-  if (!clean.startsWith("/images/")) {
-    clean = clean.startsWith("/") ? `/images${clean}` : `/images/${clean}`;
-  }
-  catImages[cat.path] = clean;
+  const src = photoSrc(cat.image, 640);
+  if (src) catImages[cat.path] = src;
 });
 
-/* Service images for mega menu thumbnails */
 const serviceImages: Record<string, string> = {};
 SERVICES.forEach((srv) => {
-  if (!srv.image) return;
-  let clean = srv.image
-    .replace("/src/assets/images/", "/images/")
-    .replace("/imagesWebp/", "/images/");
-  if (!clean.startsWith("/images/")) {
-    clean = clean.startsWith("/") ? `/images${clean}` : `/images/${clean}`;
-  }
-  serviceImages[srv.path] = clean;
+  const src = photoSrc(srv.image, 640);
+  if (src) serviceImages[srv.path] = src;
 });
 ---
 
@@ -84,15 +72,15 @@ SERVICES.forEach((srv) => {
     </a>
 
     <nav class="hidden lg:block" aria-label="Primary">
-      <ul class="flex items-center text-[0.8125rem] font-medium">
+      <ul class="flex items-center text-[0.9375rem] font-medium">
         {
           primaryNav.map((item) => (
             <li class:list={[item.path === "/services/" && "relative"]}>
               <a
                 href={link(item)}
                 class:list={[
-                  "inline-flex items-center gap-1 px-3 py-2 opacity-60 transition-opacity hover:opacity-100",
-                  isActive(item.path) && "opacity-100 text-accent",
+                  "inline-flex items-center gap-1 px-3 py-2 text-ink-soft transition-colors hover:text-accent",
+                  isActive(item.path) && "text-accent",
                 ]}
                 aria-current={isActive(item.path) ? "page" : undefined}
                 aria-haspopup={item.children ? "true" : undefined}
@@ -136,7 +124,7 @@ SERVICES.forEach((srv) => {
 
     <div class="flex items-center gap-3">
       <a
-        class="hidden text-[0.8125rem] font-medium tracking-wide opacity-60 hover:opacity-100 transition-opacity min-[1281px]:inline-flex"
+        class="hidden text-[0.9375rem] font-medium tracking-wide text-ink-soft transition-colors hover:text-accent min-[1281px]:inline-flex"
         href={`tel:${SITE.phone.tel}`}
       >
         {SITE.phone.display}
@@ -169,76 +157,58 @@ SERVICES.forEach((srv) => {
     class="nav-flyout nav-flyout-full shadow-2xl"
     data-flyout-panel="catalog"
   >
-    <div
-      class="border-t border-b border-line bg-surface text-ink lg:overflow-visible max-h-[calc(100vh-4.5rem)] overflow-y-auto"
-    >
-      <div class="site-wrap py-3.5 xl:py-4">
-        <!-- Top status strip -->
-        <div class="flex items-center justify-between pb-2 mb-3 border-b border-line/50">
-          <div class="flex items-center gap-2 font-mono text-xs text-muted-on-ink">
-            <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
-            <span class="uppercase tracking-wider font-semibold">
+    <div class="menu-panel">
+      <div class="site-wrap py-4 xl:py-5">
+        <div class="menu-kicker">
+          <div class="menu-kicker-label">
+            <span class="menu-kicker-dot"></span>
+            <span>
               {isUz ? "Mahsulotlar katalogi" : "Каталог продукции"}
             </span>
-            <span class="text-cyan font-mono">// 14 {isUz ? "yo'nalish" : "направлений"}</span>
+            <span class="menu-kicker-count">// 14 {isUz ? "yo'nalish" : "направлений"}</span>
           </div>
-          <a
-            href={hrefFor(lang, "/catalog/")}
-            class="text-xs font-semibold text-accent hover:underline inline-flex items-center gap-1"
-          >
+          <a href={hrefFor(lang, "/catalog/")} class="menu-kicker-link">
             <span>{isUz ? "Barcha mahsulotlar katalogi →" : "Все категории каталога →"}</span>
           </a>
         </div>
 
-        <!-- 7-column x 2-row clean grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-2 xl:gap-2.5">
+        <div class="grid grid-cols-7 gap-3">
           {
             catalogNav.map((cat, idx) => {
               const hasChildren = Boolean(
                 cat.children && cat.children.length > 0,
               );
               const colPos = idx % 7;
+              const opensUp = idx >= 7;
 
               return (
-                <div class="cat-card relative group">
+                <div class="menu-card group" style={`--i: ${idx}`}>
                   <a
                     href={link(cat)}
-                    class="flex flex-col items-center justify-between h-full p-2 rounded-xl bg-paper/50 hover:bg-white hover:shadow-md border border-line/40 hover:border-accent/40 transition-all duration-200 text-center"
+                    class="menu-tile"
                     title={t(cat.labelKey)}
                   >
-                    <!-- Image Box with original ratio -->
-                    <div class="relative w-full h-20 xl:h-24 rounded-lg bg-surface/90 border border-line/30 flex items-center justify-center p-1.5 overflow-hidden group-hover:bg-paper/40 transition-colors">
+                    <div class="menu-photo">
                       {catImages[cat.path] ? (
                         <img
-                          src={catImages[cat.path]}
+                          data-src={catImages[cat.path]}
                           alt=""
-                          class="max-h-full max-w-full object-contain photo-grade transition-transform duration-300 group-hover:scale-105"
-                          width="200"
-                          height="120"
-                          loading="lazy"
+                          class="menu-photo-img"
+                          width="320"
+                          height="220"
                           decoding="async"
                         />
                       ) : (
-                        <div class="w-full h-full flex items-center justify-center text-muted font-mono text-[10px]">
-                          INNOTEK
-                        </div>
+                        <div class="menu-photo-fallback">INNOTEK</div>
                       )}
                     </div>
 
-                    <!-- Category Title & Sub-count -->
-                    <div class="w-full mt-1.5 flex flex-col items-center justify-center min-h-[2.4rem]">
-                      <span class="text-[11px] xl:text-xs font-bold uppercase tracking-wider text-ink group-hover:text-accent transition-colors leading-tight line-clamp-2">
-                        {t(cat.labelKey)}
-                      </span>
+                    <div class="menu-copy">
+                      <span class="menu-title">{t(cat.labelKey)}</span>
                       {hasChildren && (
-                        <span class="mt-0.5 text-[10px] font-mono text-muted-on-ink group-hover:text-accent transition-colors flex items-center gap-0.5">
+                        <span class="menu-count">
                           <span>{cat.children!.length} {isUz ? "tur" : "видов"}</span>
-                          <svg
-                            class="h-2.5 w-2.5 transform group-hover:translate-y-0.5 transition-transform opacity-60"
-                            viewBox="0 0 12 12"
-                            fill="none"
-                            aria-hidden="true"
-                          >
+                          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
                             <path
                               d="M2.5 4.5 6 8l3.5-3.5"
                               stroke="currentColor"
@@ -252,32 +222,22 @@ SERVICES.forEach((srv) => {
                     </div>
                   </a>
 
-                  <!-- Floating Popover Subcategories on Hover (zero screen height stretch) -->
                   {hasChildren && (
                     <div
                       class:list={[
-                        "cat-popover pointer-events-none opacity-0 translate-y-1 group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 transition-all duration-200 absolute top-full z-50 pt-1.5 w-56 xl:w-60",
-                        colPos === 0
-                          ? "left-0"
-                          : colPos === 6
-                            ? "right-0"
-                            : "left-1/2 -translate-x-1/2",
+                        "menu-popover",
+                        colPos === 0 ? "is-start" : colPos === 6 ? "is-end" : "is-mid",
+                        opensUp && "is-up",
                       ]}
                     >
-                      <div class="bg-white/98 backdrop-blur-xl rounded-xl border border-line shadow-2xl p-2 text-xs">
-                        <a
-                          href={link(cat)}
-                          class="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-paper font-semibold text-accent hover:underline mb-1"
-                        >
+                      <div class="menu-popover-panel">
+                        <a href={link(cat)} class="menu-popover-all">
                           <span>{isUz ? "Barcha toifalar" : "Все товары категории"}</span>
-                          <span>→</span>
+                          <span aria-hidden="true">→</span>
                         </a>
-                        <div class="max-h-48 overflow-y-auto space-y-0.5 custom-scroll">
+                        <div class="menu-popover-list">
                           {cat.children!.map((child) => (
-                            <a
-                              href={link(child)}
-                              class="block px-2.5 py-1.5 rounded-lg text-ink hover:text-accent hover:bg-paper transition-colors text-[11px] font-medium leading-tight text-left"
-                            >
+                            <a href={link(child)} class="menu-popover-link">
                               {t(child.labelKey)}
                             </a>
                           ))}
@@ -300,51 +260,39 @@ SERVICES.forEach((srv) => {
     class="nav-flyout nav-flyout-full shadow-2xl"
     data-flyout-panel="services"
   >
-    <div
-      class="border-t border-b border-line bg-surface text-ink max-h-[calc(100vh-4.5rem)] overflow-y-auto"
-    >
-      <div class="site-wrap py-3.5 xl:py-4">
-        <div class="flex items-center justify-between pb-2 mb-3 border-b border-line/50">
-          <div class="flex items-center gap-2 font-mono text-xs text-muted-on-ink">
-            <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
-            <span class="uppercase tracking-wider font-semibold">
+    <div class="menu-panel menu-panel-scroll">
+      <div class="site-wrap py-4 xl:py-5">
+        <div class="menu-kicker">
+          <div class="menu-kicker-label">
+            <span class="menu-kicker-dot"></span>
+            <span>
               {isUz ? "Ishlab chiqarish va metallga ishlov berish" : "Производство и металлообработка"}
             </span>
-            <span class="text-cyan font-mono">// 18 {isUz ? "yo'nalish" : "направлений"}</span>
+            <span class="menu-kicker-count">// 18 {isUz ? "yo'nalish" : "направлений"}</span>
           </div>
-          <a
-            href={hrefFor(lang, "/services/")}
-            class="text-xs font-semibold text-accent hover:underline inline-flex items-center gap-1"
-          >
+          <a href={hrefFor(lang, "/services/")} class="menu-kicker-link">
             <span>{isUz ? "Barcha xizmatlar ro'yxati →" : "Все услуги компании →"}</span>
           </a>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 xl:gap-2.5">
+        <div class="grid grid-cols-6 gap-3">
           {
-            servicesNav.map((srv) => (
-              <div>
-                <a
-                  href={link(srv)}
-                  class="group flex flex-col items-center justify-between h-full p-2 rounded-xl bg-paper/50 hover:bg-white hover:shadow-md border border-line/40 hover:border-accent/40 transition-all duration-200 text-center"
-                  title={t(srv.labelKey)}
-                >
+            servicesNav.map((srv, idx) => (
+              <div class="menu-card" style={`--i: ${idx}`}>
+                <a href={link(srv)} class="menu-tile" title={t(srv.labelKey)}>
                   {serviceImages[srv.path] && (
-                    <div class="relative h-20 xl:h-22 w-full overflow-hidden rounded-lg bg-surface/90 border border-line/30 mb-1.5 flex items-center justify-center p-1 group-hover:bg-paper/40 transition-colors">
+                    <div class="menu-photo">
                       <img
-                        src={serviceImages[srv.path]}
+                        data-src={serviceImages[srv.path]}
                         alt=""
-                        class="max-h-full max-w-full object-contain photo-grade group-hover:scale-105 transition-transform duration-300"
-                        width="200"
-                        height="120"
-                        loading="lazy"
+                        class="menu-photo-img"
+                        width="320"
+                        height="220"
                         decoding="async"
                       />
                     </div>
                   )}
-                  <span class="block text-[11px] xl:text-xs font-bold uppercase tracking-wider text-ink group-hover:text-accent transition-colors leading-tight line-clamp-2">
-                    {t(srv.labelKey)}
-                  </span>
+                  <span class="menu-title">{t(srv.labelKey)}</span>
                 </a>
               </div>
             ))
@@ -424,7 +372,7 @@ SERVICES.forEach((srv) => {
                 <div class="px-3.5 pb-3 pt-1 border-t border-line/40 space-y-2">
                   <!-- Direct link to category/service hub page -->
                   <a
-                    class="flex items-center justify-between rounded-lg bg-surface px-3 py-2 text-xs font-semibold text-accent shadow-xs border border-line hover:bg-paper transition-colors"
+                    class="flex items-center justify-between rounded-lg bg-surface px-3 py-3 text-base font-semibold text-accent shadow-xs border border-line hover:bg-paper transition-colors"
                     href={link(item)}
                   >
                     <span>
@@ -447,11 +395,11 @@ SERVICES.forEach((srv) => {
                         if (!hasSubChildren) {
                           return (
                             <a
-                              class="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-ink hover:bg-paper hover:text-accent transition-colors"
+                              class="flex items-center justify-between rounded-lg px-3 py-3 text-base font-medium text-ink hover:bg-paper hover:text-accent transition-colors"
                               href={link(cat)}
                             >
                               <span>{t(cat.labelKey)}</span>
-                              <span class="text-[10px] text-muted-on-ink">→</span>
+                              <span class="text-sm text-muted-on-ink">→</span>
                             </a>
                           );
                         }
@@ -460,7 +408,7 @@ SERVICES.forEach((srv) => {
                           <div class="rounded-lg bg-surface/80 border border-line/50 overflow-hidden">
                             <button
                               type="button"
-                              class="mobile-sub-trigger flex w-full items-center justify-between px-3 py-2.5 text-left text-xs font-semibold text-ink hover:text-accent transition-colors cursor-pointer"
+                              class="mobile-sub-trigger flex w-full items-center justify-between px-3 py-3 text-left text-base font-semibold text-ink hover:text-accent transition-colors cursor-pointer"
                               aria-expanded="false"
                               aria-controls={subAccordionId}
                               data-mob-accordion-btn
@@ -485,14 +433,14 @@ SERVICES.forEach((srv) => {
                             <div id={subAccordionId} class="mobile-acc-content">
                               <div class="pl-4 pr-3 py-2 space-y-1.5 border-t border-line/30 bg-paper/40">
                                 <a
-                                  class="block py-0.5 text-xs font-semibold text-accent hover:underline"
+                                  class="block py-2 text-base font-semibold text-accent hover:underline"
                                   href={link(cat)}
                                 >
                                   {isUz ? "Bo'limga o'tish →" : "Все товары категории →"}
                                 </a>
                                 {cat.children!.map((child) => (
                                   <a
-                                    class="block py-0.5 text-xs text-muted-on-ink hover:text-accent transition-colors"
+                                    class="block py-2 text-base leading-snug text-ink hover:text-accent transition-colors"
                                     href={link(child)}
                                   >
                                     {t(child.labelKey)}
@@ -508,11 +456,11 @@ SERVICES.forEach((srv) => {
                     <div class="space-y-1 pt-1">
                       {servicesNav.map((child) => (
                         <a
-                          class="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-ink hover:bg-paper hover:text-accent transition-colors"
+                          class="flex items-center justify-between rounded-lg px-3 py-3 text-base font-medium text-ink hover:bg-paper hover:text-accent transition-colors"
                           href={link(child)}
                         >
                           <span>{t(child.labelKey)}</span>
-                          <span class="text-[10px] text-muted-on-ink">→</span>
+                          <span class="text-sm text-muted-on-ink">→</span>
                         </a>
                       ))}
                     </div>

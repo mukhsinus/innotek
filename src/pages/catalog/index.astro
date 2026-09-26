@@ -62,7 +62,7 @@ const TOTAL = 3;
                   data-spotlight
                   style={`--stagger: ${i}`}
                   class:list={[
-                    "group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-surface/70 p-6 sm:p-7 transition-all duration-300 hover:border-accent/50 hover:bg-surface hover:shadow-lg",
+                    "group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-white p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-[0_18px_40px_-18px_rgba(255,107,26,0.45)]",
                     spanClass,
                   ]}
                 >
@@ -83,12 +83,12 @@ const TOTAL = 3;
 
                   <!-- Product Visual Container -->
                   <div class:list={[
-                    "relative my-5 flex items-center justify-center overflow-hidden rounded-lg bg-paper/60 p-4 transition-all duration-500 group-hover:bg-paper",
+                    "relative my-5 flex items-center justify-center overflow-hidden rounded-lg bg-white p-1 transition-all duration-500",
                     heightClass,
                   ]}>
                     <PhotoFrame
                       src={cat.image}
-                      class="h-full w-full object-contain filter contrast-[1.03] brightness-[0.98] transition-transform duration-500 group-hover:scale-105"
+                      class="h-full w-full object-contain transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
                       width={600}
                       height={400}
                       loading={i === 0 ? "eager" : "lazy"}

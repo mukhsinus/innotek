@@ -7,6 +7,7 @@ import { HOME, HOME_STATS } from "../data/home";
 import { SITE } from "../data/site";
 import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
+import { photoSrc } from "../lib/image";
 
 interface Props {
   lang: Lang;
@@ -23,22 +24,13 @@ const address = isUz ? SITE.address.uz : SITE.address.ru;
 const heroLines = copy.h1.split("\n");
 const pad = (n: number) => String(n).padStart(2, "0");
 const SECTIONS = 6;
-const img = (src: string) => {
-  if (!src) return "";
-  let clean = src
-    .replace("/src/assets/images/", "/images/")
-    .replace("/imagesWebp/", "/images/");
-  if (!clean.startsWith("/images/")) {
-    clean = clean.startsWith("/") ? `/images${clean}` : `/images/${clean}`;
-  }
-  return clean;
-};
+const img = (src: string, width = 960) => photoSrc(src, width) ?? "";
 ---
 
 <!-- 01 Hero: static, confident, blueprint grid accent -->
 <section class="relative isolate flex h-[100dvh] min-h-[580px] max-h-[1080px] 2xl:max-h-[1200px] 3xl:max-h-[1350px] items-end overflow-hidden text-ink">
   <img
-    src={img(copy.heroImage)}
+    src={img(copy.heroImage, 1600)}
     alt=""
     class="hero-photo absolute inset-0 h-full w-full object-cover"
     width="1600"
@@ -152,7 +144,7 @@ const img = (src: string) => {
               data-spotlight
               style={`--stagger: ${i}`}
               class:list={[
-                "group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-surface/70 p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:border-accent/50 hover:bg-surface hover:shadow-md",
+                "group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-white p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:border-accent hover:shadow-[0_18px_40px_-18px_rgba(255,107,26,0.45)]",
                 spanClass,
               ]}
             >
@@ -173,13 +165,13 @@ const img = (src: string) => {
 
               <!-- Product Visual Container (Clean crisp image, no washout) -->
               <div class:list={[
-                "relative my-3 sm:my-4 flex items-center justify-center overflow-hidden rounded-lg bg-paper/60 p-3 sm:p-4 transition-all duration-500 group-hover:bg-paper",
+                "relative my-3 sm:my-4 flex items-center justify-center overflow-hidden rounded-lg bg-white p-1 transition-all duration-500",
                 heightClass,
               ]}>
                 <img
                   src={img(cat.image)}
                   alt={t(cat.labelKey)}
-                  class="h-full w-full object-contain filter contrast-[1.03] brightness-[0.98] transition-transform duration-500 group-hover:scale-105"
+                  class="h-full w-full object-contain transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
                   width="600"
                   height="400"
                   loading={i < 2 ? "eager" : "lazy"}
@@ -355,11 +347,11 @@ const img = (src: string) => {
             </div>
 
             <!-- Product Visual Container -->
-            <div class="relative my-5 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg bg-surface/60 p-4 transition-all duration-500 group-hover:bg-surface">
+            <div class="relative my-5 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg bg-white p-1 transition-all duration-500">
               <img
                 src={img(item.image)}
                 alt={t(item.labelKey)}
-                class="h-full w-full object-contain filter contrast-[1.03] brightness-[0.98] transition-transform duration-500 group-hover:scale-106"
+                class="h-full w-full object-contain transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
                 width="600"
                 height="450"
                 loading="lazy"

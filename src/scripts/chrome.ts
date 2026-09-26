@@ -336,7 +336,14 @@ function initNavFlyouts() {
     if (id) header.removeAttribute("data-hidden");
 
     panels.forEach((panel, key) => {
-      panel.classList.toggle("is-open", key === id);
+      const open = key === id;
+      panel.classList.toggle("is-open", open);
+      if (!open) return;
+      panel.querySelectorAll<HTMLImageElement>("img[data-src]").forEach((img) => {
+        if (img.getAttribute("src")) return;
+        const src = img.dataset.src;
+        if (src) img.src = src;
+      });
     });
 
     triggers.forEach((trigger) => {
