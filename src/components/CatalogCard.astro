@@ -1,0 +1,60 @@
+---
+import PhotoFrame from "./PhotoFrame.astro";
+
+interface Props {
+  href: string;
+  image?: string;
+  title: string;
+  index?: number;
+  kicker?: string;
+  excerpt?: string;
+  loading?: "eager" | "lazy";
+  heading?: "h2" | "h3" | "p";
+}
+
+const {
+  href,
+  image,
+  title,
+  index,
+  kicker,
+  excerpt,
+  loading = "lazy",
+  heading = "h3",
+} = Astro.props;
+
+const Title = heading;
+const label = index != null ? String(index).padStart(2, "0") : "";
+---
+
+<a
+  href={href}
+  class="catalog-card group"
+  data-stagger
+  style={index != null ? `--stagger: ${index - 1}` : undefined}
+>
+  <div class="catalog-card-media">
+    <PhotoFrame
+      src={image}
+      class="catalog-card-img"
+      width={960}
+      height={720}
+      loading={loading}
+    />
+    {
+      label && (
+        <span class="catalog-card-index" aria-hidden="true">
+          {label}
+          {kicker ? <span class="catalog-card-kicker">{kicker}</span> : null}
+        </span>
+      )
+    }
+  </div>
+  <div class="catalog-card-foot">
+    <div class="catalog-card-row">
+      <Title class="catalog-card-title">{title}</Title>
+      <span class="catalog-card-arrow" aria-hidden="true">→</span>
+    </div>
+    {excerpt ? <p class="catalog-card-excerpt">{excerpt}</p> : null}
+  </div>
+</a>
