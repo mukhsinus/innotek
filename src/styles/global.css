@@ -1394,6 +1394,57 @@
   transform: translateY(-2px);
 }
 
+.social-dock {
+  position: fixed;
+  right: 1rem;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.social-dock-btn {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  color: #fff;
+  box-shadow: 0 10px 24px rgb(15 18 20 / 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.social-dock-btn svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.social-dock-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgb(15 18 20 / 0.22);
+}
+
+.social-dock-btn:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+.social-dock-tg {
+  background: #229ed9;
+}
+
+.social-dock-ig {
+  background: radial-gradient(circle at 30% 110%, #feda75 0%, #fa7e1e 28%, #d62976 58%, #962fbf 82%, #4f5bd5 100%);
+}
+
+@media (min-width: 768px) {
+  .social-dock {
+    right: 1.35rem;
+    bottom: max(1.35rem, env(safe-area-inset-bottom));
+  }
+}
+
 .footer-link {
   display: inline-flex;
   align-items: center;
