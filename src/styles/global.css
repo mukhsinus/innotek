@@ -12,11 +12,11 @@
 /* -------------------------------------------------------------------------- */
 
 @theme {
-  /* Surface hierarchy (clean light theme) */
-  --color-paper: #FFFFFF;
-  --color-surface: #F6F8FA;
-  --color-fog: #ECEFF2;
-  --color-line: #E2E6EA;
+  /* Surface hierarchy: warm concrete aisle, sheets lifted off the ground */
+  --color-paper: #F7F4EE;
+  --color-surface: #E8E2D6;
+  --color-fog: #DDD6C8;
+  --color-line: #D3CBBC;
 
   /* Text hierarchy (dark ink on light surfaces) */
   --color-ink: #0F1214;
@@ -141,7 +141,8 @@
   }
 
   body {
-    @apply bg-paper font-sans text-ink antialiased;
+    @apply font-sans text-ink antialiased;
+    background: transparent;
     font-feature-settings: "kern" on;
     font-weight: 400;
   }
@@ -161,7 +162,7 @@
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--color-paper);
+    background: #e3ddd2;
   }
   ::-webkit-scrollbar-thumb {
     background: var(--color-line);
@@ -169,6 +170,56 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-muted);
+  }
+}
+
+/* Warehouse aisle. Paired verticals are the two flanges of a rack upright. */
+:root {
+  --aisle-light: radial-gradient(ellipse 120% 34rem at 50% -10rem, rgb(255 250 242 / 0.95), transparent 70%);
+  --aisle-bays: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 7.15rem,
+    rgb(72 48 24 / 0.16) 7.15rem,
+    rgb(72 48 24 / 0.16) calc(7.15rem + 1px),
+    transparent calc(7.15rem + 1px),
+    transparent calc(7.15rem + 0.65rem),
+    rgb(72 48 24 / 0.09) calc(7.15rem + 0.65rem),
+    rgb(72 48 24 / 0.09) calc(7.15rem + 0.65rem + 1px)
+  );
+  --aisle-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.32 0 0 0 0 0.24 0 0 0 0 0.14 0 0 0 0.28 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+html,
+.bg-paper,
+.bg-surface,
+.footer-root {
+  background-image: var(--aisle-light), var(--aisle-bays), var(--aisle-grain);
+  background-attachment: scroll;
+}
+
+html {
+  background-color: #e4d9c8;
+}
+
+.bg-paper {
+  background-color: #f3eee6;
+}
+
+.bg-surface {
+  background-color: #e3d5c2;
+}
+
+.footer-root {
+  background-color: #ddd1be;
+}
+
+@media (min-width: 1024px) {
+  html,
+  .bg-paper,
+  .bg-surface,
+  .footer-root {
+    background-attachment: fixed;
   }
 }
 
@@ -1135,11 +1186,12 @@
   }
 }
 
-/* Header is always solid white */
+/* Header stays a solid sheet so the aisle ground does not show through the nav. */
 #site-header {
   color: var(--color-ink);
-  background: var(--color-paper, #FFFFFF);
+  background: rgb(247 244 238 / 0.96);
   border-bottom: 1px solid var(--color-line);
+  backdrop-filter: blur(14px);
 }
 
 .lang-switch {
@@ -1168,7 +1220,7 @@
   min-width: 0;
   padding: 2.25rem 2rem;
   border: 1px solid var(--color-line);
-  background: rgba(246, 248, 250, 0.75);
+  background: rgb(247 244 238 / 0.88);
   backdrop-filter: blur(8px);
   border-radius: 0.75rem;
   transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;

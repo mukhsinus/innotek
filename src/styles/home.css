@@ -95,8 +95,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgb(8 10 12 / 0.52) 0%, rgb(8 10 12 / 0.06) 32%, rgb(8 10 12 / 0.28) 62%, rgb(8 10 12 / 0.78) 100%),
-    linear-gradient(90deg, rgb(8 10 12 / 0.42) 0%, rgb(8 10 12 / 0.06) 42%, transparent 68%);
+    linear-gradient(180deg, rgb(8 10 12 / 0.58) 0%, rgb(8 10 12 / 0.16) 28%, rgb(8 10 12 / 0.5) 54%, rgb(8 10 12 / 0.84) 100%),
+    linear-gradient(90deg, rgb(8 10 12 / 0.5) 0%, rgb(8 10 12 / 0.16) 48%, transparent 72%);
 }
 
 .is-home .hero-copy {
@@ -107,14 +107,30 @@
 }
 
 .is-home .hero-kicker {
-  margin: 0 0 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 1rem;
+  padding: 0.42rem 0.75rem 0.42rem 0.55rem;
+  background: rgb(8 10 12 / 0.72);
+  border: 1px solid rgb(255 255 255 / 0.22);
+  color: #fff;
   font-family: var(--font-sans);
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
-  line-height: 1.35;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
   text-transform: uppercase;
-  color: var(--color-accent);
+}
+
+.is-home .hero-kicker::before {
+  content: "";
+  flex: none;
+  width: 0.42rem;
+  height: 0.42rem;
+  background: var(--color-accent);
 }
 
 .is-home .hero-title {
