@@ -256,10 +256,8 @@ const texts = {
 
 <!-- 3D Interactive Rack Script -->
 <script>
-  import * as THREE from "three";
-
   (function () {
-    function init3DRack() {
+    function init3DRack(THREE: typeof import("three")) {
       const section = document.getElementById("assembly");
       const canvas = document.getElementById("rack-canvas") as HTMLCanvasElement | null;
       if (!section || !canvas) return;
@@ -278,7 +276,7 @@ const texts = {
         antialias: true,
         alpha: true,
       });
-      renderer.setPixelRatio(Math.min(Math.max(window.devicePixelRatio || 1, 1), 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(
@@ -502,7 +500,7 @@ const texts = {
         rack.rotation.y = angle;
       }
 
-      let isRunning = true;
+      let isRunning = false;
       function animate() {
         if (!isRunning) return;
         requestAnimationFrame(animate);
@@ -513,14 +511,50 @@ const texts = {
         updateOverlay(smoothProgress);
         renderer.render(scene, camera);
       }
-      animate();
+
+      const watch = new IntersectionObserver(
+        ([entry]) => {
+          const visible = Boolean(entry?.isIntersecting);
+          if (visible && !isRunning) {
+            isRunning = true;
+            animate();
+          } else if (!visible) {
+            isRunning = false;
+          }
+        },
+        { rootMargin: "120px 0px" },
+      );
+      watch.observe(section);
+    }
+
+    function boot() {
+      const section = document.getElementById("assembly");
+      if (!section || section.dataset.boot === "1") return;
+      const start = () => {
+        if (section.dataset.boot === "1") return;
+        section.dataset.boot = "1";
+        import("three").then((THREE) => init3DRack(THREE));
+      };
+      if (!("IntersectionObserver" in window)) {
+        start();
+        return;
+      }
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          io.disconnect();
+          start();
+        },
+        { rootMargin: "120px 0px" },
+      );
+      io.observe(section);
     }
 
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", init3DRack);
+      document.addEventListener("DOMContentLoaded", boot);
     } else {
-      init3DRack();
+      boot();
     }
-    document.addEventListener("astro:page-load", init3DRack);
+    document.addEventListener("astro:page-load", boot);
   })();
 </script>

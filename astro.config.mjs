@@ -1,6 +1,11 @@
 // @ts-check
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
+import { netlifyImagesDev } from "./image-dev.mjs";
+
+const root = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Статическая генерация, русский без префикса, узбекский — /uz/.
@@ -19,6 +24,6 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [netlifyImagesDev(path.join(root, "public")), tailwindcss()],
   },
 });

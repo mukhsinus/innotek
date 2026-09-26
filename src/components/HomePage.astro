@@ -8,6 +8,7 @@ import { HOME, HOME_STATS } from "../data/home";
 import { SITE } from "../data/site";
 import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
+import { photoSrc } from "../lib/image";
 
 interface Props {
   lang: Lang;
@@ -24,22 +25,13 @@ const address = isUz ? SITE.address.uz : SITE.address.ru;
 const heroLines = copy.h1.split("\n");
 const pad = (n: number) => String(n).padStart(2, "0");
 const SECTIONS = 6;
-const img = (src: string) => {
-  if (!src) return "";
-  let clean = src
-    .replace("/src/assets/images/", "/images/")
-    .replace("/imagesWebp/", "/images/");
-  if (!clean.startsWith("/images/")) {
-    clean = clean.startsWith("/") ? `/images${clean}` : `/images/${clean}`;
-  }
-  return clean;
-};
+const img = (src: string, width = 960) => photoSrc(src, width) ?? "";
 ---
 
 <!-- 01 Hero: static, confident, blueprint grid accent -->
 <section class="relative isolate flex h-[100dvh] min-h-[580px] max-h-[1080px] 2xl:max-h-[1200px] 3xl:max-h-[1350px] items-end overflow-hidden text-ink">
   <img
-    src={img(copy.heroImage)}
+    src={img(copy.heroImage, 1600)}
     alt=""
     class="hero-photo absolute inset-0 h-full w-full object-cover"
     width="1600"
