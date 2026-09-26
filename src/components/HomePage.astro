@@ -7,7 +7,7 @@ import SectionMeta from "./SectionMeta.astro";
 import { HOME, HOME_STATS } from "../data/home";
 import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
-import { photoSrc } from "../lib/image";
+import { photoSrc, photoSrcWebp, photoSrcFallback } from "../lib/image";
 
 interface Props {
   lang: Lang;
@@ -25,21 +25,27 @@ const SECTIONS = 6;
 const heroKicker = isUz
   ? `Toshkentda ishlab chiqarish · ${HOME_STATS.years} yil`
   : `Производство в Ташкенте · ${HOME_STATS.years} лет`;
-const img = (src: string, width = 960) => photoSrc(src, width) ?? "";
+const heroWebp = photoSrcWebp(copy.heroImage, 2000);
+const heroFallback = photoSrcFallback(copy.heroImage, 2000) || heroWebp;
 ---
 
 <!-- 01 Hero: full-bleed photograph, type set on the dark lower field -->
 <section class="hero" aria-labelledby="hero-title">
-  <img
-    src={img(copy.heroImage, 2000)}
-    alt=""
-    class="hero-photo"
-    width="2000"
-    height="1500"
-    loading="eager"
-    fetchpriority="high"
-    decoding="async"
-  />
+  <picture style="display: contents;">
+    {heroWebp && heroWebp !== heroFallback && (
+      <source srcset={heroWebp} type="image/webp" />
+    )}
+    <img
+      src={heroFallback}
+      alt=""
+      class="hero-photo"
+      width="2000"
+      height="1500"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </picture>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="site-wrap hero-copy">
     <p class="hero-kicker">{heroKicker}</p>

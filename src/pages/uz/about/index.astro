@@ -7,6 +7,7 @@ import SectionMeta from "../../../components/SectionMeta.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { ABOUT } from "../../../data/company";
 import { useT } from "../../../i18n/utils";
+import { webpPath } from "../../../lib/image";
 
 const lang = "uz" as const;
 const t = useT(lang);
@@ -297,18 +298,26 @@ const STANDARDS = [
         <div class="overflow-hidden rounded-xl border border-line bg-surface">
           <ul class="client-logos">
             {
-              ABOUT.clients.map((item) => (
-                <li>
-                  <img
-                    src={item.src}
-                    alt={item.alt}
-                    width="160"
-                    height="64"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </li>
-              ))
+              ABOUT.clients.map((item) => {
+                const webp = webpPath(item.src);
+                return (
+                  <li>
+                    <picture style="display: contents;">
+                      {webp && webp !== item.src && (
+                        <source srcset={webp} type="image/webp" />
+                      )}
+                      <img
+                        src={item.src}
+                        alt={item.alt}
+                        width="160"
+                        height="64"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </picture>
+                  </li>
+                );
+              })
             }
           </ul>
         </div>

@@ -7,12 +7,15 @@ interface Props {
 const { class: className = "h-8 w-8", alt = "Innotek" } = Astro.props;
 ---
 
-<img
-  src="/images/logo.png"
-  alt={alt}
-  class:list={["object-contain shrink-0", className]}
-  width="32"
-  height="32"
-  loading="eager"
-  decoding="async"
-/>
+<picture style="display: contents;">
+  <source srcset="/images/logo.webp" type="image/webp" />
+  <img
+    src="/images/logo.png"
+    alt={alt}
+    class:list={["object-contain shrink-0", className]}
+    width="32"
+    height="32"
+    loading="eager"
+    decoding="async"
+  />
+</picture>

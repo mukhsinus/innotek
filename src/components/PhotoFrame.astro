@@ -1,5 +1,5 @@
 ---
-import { photoSrc } from "../lib/image";
+import { photoSrcWebp, photoSrcFallback } from "../lib/image";
 
 interface Props {
   src?: string;
@@ -19,24 +19,37 @@ const {
   fetchpriority,
 } = Astro.props;
 
-const cleanSrc = photoSrc(src, Math.min(1600, Math.round(width * 2)));
+const targetWidth = Math.min(1600, Math.round(width * 2));
+const webpSrc = photoSrcWebp(src, targetWidth);
+const fallbackSrc = photoSrcFallback(src, targetWidth) || webpSrc;
 ---
 
 {
-  cleanSrc ? (
-    <img
-      src={cleanSrc}
-      alt=""
-      class:list={["photo-grade", className]}
-      width={width}
-      height={height}
-      loading={loading}
-      decoding="async"
-      fetchpriority={fetchpriority}
-    />
+  fallbackSrc ? (
+    <picture class="photo-frame-picture">
+      {webpSrc && webpSrc !== fallbackSrc && (
+        <source srcset={webpSrc} type="image/webp" />
+      )}
+      <img
+        src={fallbackSrc}
+        alt=""
+        class:list={["photo-grade", className]}
+        width={width}
+        height={height}
+        loading={loading}
+        decoding="async"
+        fetchpriority={fetchpriority}
+      />
+    </picture>
   ) : (
     <div class:list={["photo-placeholder", className]} aria-hidden="true">
       <span>INNOTEK</span>
     </div>
   )
 }
+
+<style>
+  .photo-frame-picture {
+    display: contents;
+  }
+</style>

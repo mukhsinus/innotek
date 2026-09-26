@@ -757,6 +757,9 @@ html {
 
 .menu-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   opacity: 0;
   transform: translateY(14px);
   transition:
@@ -784,7 +787,9 @@ html {
   flex-direction: column;
   align-items: center;
   gap: 0.55rem;
+  width: 100%;
   height: 100%;
+  flex: 1;
   padding: 0.5rem 0.5rem 0.75rem;
   border-radius: 0.95rem;
   border: 1px solid #f0e3d8;
@@ -810,6 +815,7 @@ html {
   justify-content: center;
   width: 100%;
   height: 7.75rem;
+  flex-shrink: 0;
   overflow: hidden;
   border-radius: 0.7rem;
   background: #fff;
@@ -836,12 +842,90 @@ html {
   color: var(--color-muted);
 }
 
+/* Services hover header: larger cards, 2 rows visible, scroll for row 3 */
+#nav-flyout-services .menu-panel-scroll {
+  max-height: min(calc(100vh - 4.75rem), 546px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 107, 26, 0.45) transparent;
+}
+
+#nav-flyout-services .menu-panel-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+#nav-flyout-services .menu-panel-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#nav-flyout-services .menu-panel-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 26, 0.35);
+  border-radius: 999px;
+}
+
+#nav-flyout-services .menu-panel-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+#nav-flyout-services .menu-tile {
+  padding: 0.75rem 0.75rem 0.95rem;
+  gap: 0.65rem;
+  border-radius: 1.05rem;
+  border: 1px solid #f0e3d8;
+  box-shadow: 0 10px 26px -16px rgba(194, 65, 12, 0.35);
+}
+
+#nav-flyout-services .menu-photo {
+  width: 100%;
+  height: 10.25rem;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  background: #fff;
+}
+
+#nav-flyout-services .menu-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  padding: 0;
+}
+
+#nav-flyout-services .menu-copy {
+  justify-content: center;
+  min-height: 2.85rem;
+  padding-inline: 0.15rem;
+}
+
+#nav-flyout-services .menu-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+@media (min-width: 1536px) {
+  #nav-flyout-services .menu-panel-scroll {
+    max-height: min(calc(100vh - 5.5rem), 625px);
+  }
+
+  #nav-flyout-services .menu-photo {
+    height: 11.5rem;
+  }
+
+  #nav-flyout-services .menu-title {
+    font-size: 1.025rem;
+  }
+}
+
 .menu-copy {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  min-height: 3.6rem;
+  flex: 1;
+  min-height: 4.25rem;
   padding-inline: 0.15rem;
 }
 
@@ -869,7 +953,7 @@ html {
   display: inline-flex;
   align-items: center;
   gap: 0.2rem;
-  margin-top: 0.35rem;
+  margin-top: auto;
   padding: 0.12rem 0.55rem 0.16rem;
   border-radius: 999px;
   background: rgba(255, 107, 26, 0.12);
@@ -1765,7 +1849,7 @@ html {
   overflow: hidden;
   border: 1px solid var(--color-line);
   border-radius: 1.125rem;
-  background: var(--color-paper);
+  background: #ffffff;
   color: inherit;
   text-decoration: none;
   box-shadow: 0 1px 2px rgb(15 18 20 / 0.04);
@@ -1784,7 +1868,7 @@ html {
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: var(--color-paper);
+  background: #ffffff;
 }
 
 .catalog-card-media .catalog-card-img,
@@ -1892,7 +1976,7 @@ html {
   margin-top: 0.05rem;
   border: 1px solid var(--color-line);
   border-radius: 999px;
-  background: var(--color-paper);
+  background: #ffffff;
   color: var(--color-ink-soft);
   font-size: 0.95rem;
   line-height: 1;

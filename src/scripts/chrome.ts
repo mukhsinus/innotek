@@ -339,6 +339,11 @@ function initNavFlyouts() {
       const open = key === id;
       panel.classList.toggle("is-open", open);
       if (!open) return;
+      panel.querySelectorAll<HTMLSourceElement>("source[data-srcset]").forEach((source) => {
+        if (source.srcset) return;
+        const srcset = source.dataset.srcset;
+        if (srcset) source.srcset = srcset;
+      });
       panel.querySelectorAll<HTMLImageElement>("img[data-src]").forEach((img) => {
         if (img.getAttribute("src")) return;
         const src = img.dataset.src;

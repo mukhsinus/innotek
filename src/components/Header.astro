@@ -12,7 +12,7 @@ import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
 import { HOME } from "../data/home";
 import { SERVICES } from "../data/services";
-import { photoSrc } from "../lib/image";
+import { photoSrcWebp, photoSrcFallback } from "../lib/image";
 
 interface Props {
   lang: Lang;
@@ -38,17 +38,24 @@ function link(item: NavLink) {
 const homeHref = hrefFor(lang, "/");
 const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
 
+interface MenuPhotoData {
+  webp?: string;
+  fallback: string;
+}
+
 /* Thumbnails stay unloaded until the flyout opens. 640px covers a retina card. */
-const catImages: Record<string, string> = {};
+const catImages: Record<string, MenuPhotoData> = {};
 copy.categories.forEach((cat) => {
-  const src = photoSrc(cat.image, 640);
-  if (src) catImages[cat.path] = src;
+  const webp = photoSrcWebp(cat.image, 640);
+  const fallback = photoSrcFallback(cat.image, 640) || webp;
+  if (fallback) catImages[cat.path] = { webp, fallback };
 });
 
-const serviceImages: Record<string, string> = {};
+const serviceImages: Record<string, MenuPhotoData> = {};
 SERVICES.forEach((srv) => {
-  const src = photoSrc(srv.image, 640);
-  if (src) serviceImages[srv.path] = src;
+  const webp = photoSrcWebp(srv.image, 640);
+  const fallback = photoSrcFallback(srv.image, 640) || webp;
+  if (fallback) serviceImages[srv.path] = { webp, fallback };
 });
 ---
 
@@ -159,19 +166,6 @@ SERVICES.forEach((srv) => {
   >
     <div class="menu-panel">
       <div class="site-wrap py-4 xl:py-5">
-        <div class="menu-kicker">
-          <div class="menu-kicker-label">
-            <span class="menu-kicker-dot"></span>
-            <span>
-              {isUz ? "Mahsulotlar katalogi" : "Каталог продукции"}
-            </span>
-            <span class="menu-kicker-count">// 14 {isUz ? "yo'nalish" : "направлений"}</span>
-          </div>
-          <a href={hrefFor(lang, "/catalog/")} class="menu-kicker-link">
-            <span>{isUz ? "Barcha mahsulotlar katalogi →" : "Все категории каталога →"}</span>
-          </a>
-        </div>
-
         <div class="grid grid-cols-7 gap-3">
           {
             catalogNav.map((cat, idx) => {
@@ -190,14 +184,19 @@ SERVICES.forEach((srv) => {
                   >
                     <div class="menu-photo">
                       {catImages[cat.path] ? (
-                        <img
-                          data-src={catImages[cat.path]}
-                          alt=""
-                          class="menu-photo-img"
-                          width="320"
-                          height="220"
-                          decoding="async"
-                        />
+                        <picture style="display: contents;">
+                          {catImages[cat.path].webp && catImages[cat.path].webp !== catImages[cat.path].fallback && (
+                            <source data-srcset={catImages[cat.path].webp} type="image/webp" />
+                          )}
+                          <img
+                            data-src={catImages[cat.path].fallback}
+                            alt=""
+                            class="menu-photo-img"
+                            width="320"
+                            height="220"
+                            decoding="async"
+                          />
+                        </picture>
                       ) : (
                         <div class="menu-photo-fallback">INNOTEK</div>
                       )}
@@ -262,37 +261,31 @@ SERVICES.forEach((srv) => {
   >
     <div class="menu-panel menu-panel-scroll">
       <div class="site-wrap py-4 xl:py-5">
-        <div class="menu-kicker">
-          <div class="menu-kicker-label">
-            <span class="menu-kicker-dot"></span>
-            <span>
-              {isUz ? "Ishlab chiqarish va metallga ishlov berish" : "Производство и металлообработка"}
-            </span>
-            <span class="menu-kicker-count">// 18 {isUz ? "yo'nalish" : "направлений"}</span>
-          </div>
-          <a href={hrefFor(lang, "/services/")} class="menu-kicker-link">
-            <span>{isUz ? "Barcha xizmatlar ro'yxati →" : "Все услуги компании →"}</span>
-          </a>
-        </div>
-
-        <div class="grid grid-cols-6 gap-3">
+        <div class="grid grid-cols-6 gap-3.5 xl:gap-4">
           {
             servicesNav.map((srv, idx) => (
               <div class="menu-card" style={`--i: ${idx}`}>
                 <a href={link(srv)} class="menu-tile" title={t(srv.labelKey)}>
                   {serviceImages[srv.path] && (
                     <div class="menu-photo">
-                      <img
-                        data-src={serviceImages[srv.path]}
-                        alt=""
-                        class="menu-photo-img"
-                        width="320"
-                        height="220"
-                        decoding="async"
-                      />
+                      <picture style="display: contents;">
+                        {serviceImages[srv.path].webp && serviceImages[srv.path].webp !== serviceImages[srv.path].fallback && (
+                          <source data-srcset={serviceImages[srv.path].webp} type="image/webp" />
+                        )}
+                        <img
+                          data-src={serviceImages[srv.path].fallback}
+                          alt=""
+                          class="menu-photo-img"
+                          width="320"
+                          height="220"
+                          decoding="async"
+                        />
+                      </picture>
                     </div>
                   )}
-                  <span class="menu-title">{t(srv.labelKey)}</span>
+                  <div class="menu-copy">
+                    <span class="menu-title">{t(srv.labelKey)}</span>
+                  </div>
                 </a>
               </div>
             ))

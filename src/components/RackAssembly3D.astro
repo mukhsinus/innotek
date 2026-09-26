@@ -1,6 +1,7 @@
 ---
 import SectionMeta from "./SectionMeta.astro";
 import type { Lang } from "../i18n/ui";
+import { hrefFor } from "../i18n/utils";
 
 interface Props {
   lang: Lang;
@@ -9,121 +10,177 @@ interface Props {
 }
 
 const { lang, index = 2, total = 6 } = Astro.props;
-
 const isUz = lang === "uz";
+const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
+const catalogHref = hrefFor(lang, "/catalog/stellazhi/");
 
 const texts = {
   ru: {
-    kicker: "Инженерная 3D-сборка",
-    steps: [
-      {
-        index: "01 / СТОЙКИ",
-        title: "Рама выходит на позицию",
-        desc: "Вертикальные стойки с перфорацией — основа конструкции, рассчитанная на нагрузку до 5000 кг на секцию.",
-      },
-      {
-        index: "02 / БАЛКИ",
-        title: "Балки фиксируются по ярусам",
-        desc: "Горизонтальные балки крепятся защёлками — регулировка высоты яруса без сварки и болтов.",
-      },
-      {
-        index: "03 / НАСТИЛ",
-        title: "Паллеты занимают места",
-        desc: "Каждый ярус рассчитывается индивидуально под тип груза — от паллет до мелкой номенклатуры.",
-      },
-      {
-        index: "04 / ГОТОВО",
-        title: "Система готова к работе",
-        desc: "От расчёта до монтажа на объекте — под ключ, с гарантией на конструкцию.",
-      },
+    kicker: "3D-ОБЗОР КОНСТРУКЦИИ",
+    titleBefore: "Стеллажные системы",
+    titleAccent: "Innotek",
+    lead: "Проектирование и изготовление усиленных паллетных стеллажей. Точный статический расчёт нагрузок (FEM) по стандартам ГОСТ и европейским нормам FEM 10.2.02.",
+    badgeStatus: "3D МОДЕЛЬ // 360° ВРАЩЕНИЕ",
+    specs: [
+      { val: "до 4 500 кг", label: "Нагрузка на ярус", sub: "Расчёт по ГОСТ" },
+      { val: "до 12 м", label: "Высота секций", sub: "Шаг перфорации 50 мм" },
+      { val: "S355 / ST37", label: "Марка стали", sub: "Холоднокатаный профиль" },
+      { val: "RAL 2004", label: "Полимерное покрытие", sub: "Ударопрочный слой" },
     ],
-    dimH: "H 2400 мм",
-    dimW: "L 900 мм",
-    dimLoad: "до 1500 кг/ярус",
+    controls: {
+      rotate: "360°",
+      iso: "Изометрия",
+      front: "Фасад",
+      top: "Сверху",
+      dragHint: "Зажмите и вращайте модель (360°)",
+      catalog: "Все стеллажи",
+      quote: "Рассчитать стеллажи",
+    },
   },
   uz: {
-    kicker: "Muhandislik 3D-yig'ish",
-    steps: [
-      {
-        index: "01 / USTUNLAR",
-        title: "Rama o'rniga joylashadi",
-        desc: "Perforatsiyali vertikal ustunlar — har bir seksiyaga 5000 kg gacha yuk ko'tarishga mo'ljallangan konstruksiya asosi.",
-      },
-      {
-        index: "02 / BALKALAR",
-        title: "Balkalar qavatlar bo'ylab mahkamlanadi",
-        desc: "Gorizontal balkalar qulflar bilan o'rnatiladi — payvandlash va murvatlarsiz balandlikni sozlash.",
-      },
-      {
-        index: "03 / YUKLASH",
-        title: "Palletalar o'z o'rnini egallaydi",
-        desc: "Har bir yarus yuk turiga mos ravishda alohida hisoblanadi — yevropalletlardan tortib mayda mahsulotlargacha.",
-      },
-      {
-        index: "04 / TAYYOR",
-        title: "Tizim ishga tayyor",
-        desc: "Hisob-kitobdan tortib obyektda montajgacha — to'liq tayyor holda, kafolat bilan.",
-      },
+    kicker: "3D KONSTRUKTSIYA SHARHI",
+    titleBefore: "Innotek ombor",
+    titleAccent: "stellajlari",
+    lead: "Kuchaytirilgan palletli stellaj tizimlarini loyihalash va ishlab chiqarish. GOST va FEM 10.2.02 standartlari bo'yicha mustahkamlik hisob-kitoblari (FEM).",
+    badgeStatus: "3D MODEL // 360° AYLANTIRISH",
+    specs: [
+      { val: "4 500 kg gacha", label: "Yarus yuk ko'tarish", sub: "GOST hisobi" },
+      { val: "12 m gacha", label: "Konstruktsiya balandligi", sub: "50 mm perforatsiya" },
+      { val: "S355 / ST37", label: "Po'lat markasi", sub: "Sovuq prokat profili" },
+      { val: "RAL 2004", label: "Polimer qoplama", sub: "Zarbga chidamli qatlam" },
     ],
-    dimH: "H 2400 mm",
-    dimW: "L 900 mm",
-    dimLoad: "1500 kg/yarusgacha",
+    controls: {
+      rotate: "360°",
+      iso: "Izometriya",
+      front: "Fasad",
+      top: "Tepadan",
+      dragHint: "Modelni ushlab aylantiring (360°)",
+      catalog: "Barcha stellajlar",
+      quote: "Stellajlarni hisoblash",
+    },
   },
 }[lang];
 ---
 
-<section class="assembly-wrap relative border-y border-line" id="assembly">
-  <div
-    class="assembly-pin sticky top-0 h-[100dvh] min-h-[100dvh] w-full overflow-hidden bg-paper"
-  >
-    <!-- Header Section Info (Top Left) -->
-    <div class="assembly-head site-wrap relative z-20 pt-16 sm:pt-20 lg:pt-20 shrink-0">
-      <SectionMeta kicker={texts.kicker} index={index} total={total} />
-    </div>
+<section class="section-y bg-paper border-b border-line relative overflow-hidden" id="assembly" data-reveal>
+  <div class="site-wrap">
+    <SectionMeta kicker={texts.kicker} index={index} total={total} />
 
-    <!-- 3D Canvas Box (Middle on mobile, Fullscreen on desktop) -->
-    <div class="assembly-canvas-box relative w-full flex-1">
-      <canvas id="rack-canvas" class="absolute inset-0 h-full w-full"></canvas>
-      <div class="rack-grid-overlay absolute inset-0 pointer-events-none"></div>
-    </div>
+    <div class="mt-8 lg:mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <!-- Left Column: Editorial Information & Technical Specs -->
+      <div class="lg:col-span-5 flex flex-col justify-center">
+        <h2 class="t-display mb-4 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-ink leading-tight">
+          {texts.titleBefore}{" "}
+          <span class="t-stroke">{texts.titleAccent}</span>
+        </h2>
+        <p class="t-lead text-muted-on-ink mb-8 leading-relaxed text-sm sm:text-base">
+          {texts.lead}
+        </p>
 
-    <!-- Scroll Content Steps (Placed below 3D rack on mobile, overlaid on desktop left) -->
-    <div
-      class="assembly-copy relative z-20 pointer-events-none w-full shrink-0"
-    >
-      <div class="site-wrap">
-        <div class="assembly-copy-inner relative min-h-[140px] max-w-[340px] lg:max-w-[380px] 2xl:max-w-[440px]">
+        <!-- 4 Telemetry Spec Cards -->
+        <div class="grid grid-cols-2 gap-3 sm:gap-3.5 mb-8">
           {
-            texts.steps.map((step, i) => (
-              <div
-                class:list={["assembly-step", i === 0 && "active"]}
-                data-step={i}
-              >
-                <span class="step-index font-mono text-accent text-xs 2xl:text-sm font-bold tracking-widest mb-2 block">
-                  {step.index}
+            texts.specs.map((spec) => (
+              <div class="p-3.5 sm:p-4 rounded-xl border border-line bg-white/80 backdrop-blur-xs hover:border-accent/40 transition-colors shadow-2xs">
+                <span class="font-display font-bold text-ink text-lg sm:text-xl block leading-tight">
+                  {spec.val}
                 </span>
-                <h2 class="font-display font-semibold text-ink text-xl sm:text-2xl lg:text-3xl 2xl:text-4xl leading-tight mb-2">
-                  {step.title}
-                </h2>
-                <p class="text-muted-on-ink text-xs sm:text-sm 2xl:text-base leading-relaxed">
-                  {step.desc}
-                </p>
+                <span class="text-xs font-semibold text-accent block mt-0.5">
+                  {spec.label}
+                </span>
+                <span class="text-[0.6875rem] font-mono text-muted-on-ink block mt-1">
+                  // {spec.sub}
+                </span>
               </div>
             ))
           }
         </div>
-      </div>
-    </div>
 
-    <!-- Progress Rail (Right Edge - Desktop only) -->
-    <div class="site-wrap pointer-events-none absolute inset-0 hidden md:flex items-center justify-end z-20">
-      <div
-        class="progress-rail w-[2px] h-[180px] bg-line overflow-hidden rounded-full"
-      >
-        <div
-          class="progress-fill w-full bg-accent h-0 transition-all duration-75 ease-linear"
-          id="progress-fill"
-        >
+        <!-- Call to Action Buttons -->
+        <div class="flex flex-wrap items-center gap-3">
+          <a class="btn-accent" href={quoteHref}>
+            <span>{texts.controls.quote}</span>
+            <span class="link-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="btn-secondary" href={catalogHref}>
+            <span>{texts.controls.catalog}</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive 3D CAD Viewport -->
+      <div class="lg:col-span-7">
+        <div class="rack-viewport relative rounded-2xl border border-line bg-white shadow-xl overflow-hidden flex flex-col">
+          <!-- Viewport Header Status Bar -->
+          <div class="flex items-center justify-between px-4 py-3 border-b border-line bg-surface/50 text-xs font-mono text-muted-on-ink select-none">
+            <div class="flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="font-semibold text-ink uppercase tracking-wider">{texts.badgeStatus}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-[0.6875rem] text-accent font-bold">CAD // PALLET RACK</span>
+              <span class="text-line hidden sm:inline">|</span>
+              <span class="text-[0.6875rem] hidden sm:inline">ISO 3D VIEW</span>
+            </div>
+          </div>
+
+          <!-- 3D Canvas Area with Corner Crosshairs & Controls -->
+          <div
+            id="rack-canvas-container"
+            class="relative w-full aspect-[4/3] sm:aspect-[16/11] lg:aspect-[16/11] cursor-grab active:cursor-grabbing select-none overflow-hidden"
+          >
+            <canvas id="rack-canvas" class="w-full h-full block"></canvas>
+
+            <!-- CAD Blueprint Crosshairs -->
+            <span class="cad-cross cad-tl" aria-hidden="true">+</span>
+            <span class="cad-cross cad-tr" aria-hidden="true">+</span>
+            <span class="cad-cross cad-bl" aria-hidden="true">+</span>
+            <span class="cad-cross cad-br" aria-hidden="true">+</span>
+
+            <!-- Subtle CAD Grid Overlay -->
+            <div class="rack-grid-overlay absolute inset-0 pointer-events-none opacity-30"></div>
+
+            <!-- Drag Hint Pill (Floating in Canvas bottom-left) -->
+            <div class="absolute bottom-3 left-3 pointer-events-none z-10 hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-sm border border-line text-[0.6875rem] font-mono text-muted-on-ink shadow-2xs">
+              <svg class="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M2 12h20M7 7l10 10M17 7L7 17"></path>
+              </svg>
+              <span>{texts.controls.dragHint}</span>
+            </div>
+
+            <!-- Bottom-right HUD Angle Buttons -->
+            <div class="absolute bottom-3 right-3 z-10 flex items-center gap-1 bg-white/95 backdrop-blur-sm p-1 rounded-lg border border-line shadow-xs">
+              <button
+                type="button"
+                id="btn-rotate-toggle"
+                class="px-2 py-1 text-[0.6875rem] font-mono rounded bg-accent text-white font-semibold hover:bg-accent-hover transition-colors cursor-pointer"
+                title="Toggle rotation"
+              >
+                {texts.controls.rotate}
+              </button>
+              <button
+                type="button"
+                data-cam-angle="iso"
+                class="cam-angle-btn active px-2 py-1 text-[0.6875rem] font-mono rounded text-ink transition-colors cursor-pointer"
+              >
+                {texts.controls.iso}
+              </button>
+              <button
+                type="button"
+                data-cam-angle="front"
+                class="cam-angle-btn px-2 py-1 text-[0.6875rem] font-mono rounded text-ink transition-colors cursor-pointer"
+              >
+                {texts.controls.front}
+              </button>
+              <button
+                type="button"
+                data-cam-angle="top"
+                class="cam-angle-btn px-2 py-1 text-[0.6875rem] font-mono rounded text-ink transition-colors cursor-pointer"
+              >
+                {texts.controls.top}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -131,126 +188,21 @@ const texts = {
 </section>
 
 <style>
-  .assembly-wrap {
-    position: relative;
-    height: 380vh;
-  }
-
-  .assembly-pin {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    height: 100dvh;
-    width: 100%;
-    overflow: hidden;
-  }
-
-  .assembly-canvas-box {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  #rack-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
   .rack-grid-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
     background-image:
-      linear-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(2, 132, 199, 0.05) 1px, transparent 1px);
-    background-size: 56px 56px;
+      linear-gradient(rgba(2, 132, 199, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(2, 132, 199, 0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
 
-  :global([color-scheme="dark"]) .rack-grid-overlay {
-    background-image:
-      linear-gradient(rgba(94, 200, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(94, 200, 255, 0.04) 1px, transparent 1px);
+  .cam-angle-btn:hover {
+    background: var(--color-surface);
   }
 
-  .assembly-copy {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
-    width: 100%;
-    pointer-events: none;
-    z-index: 20;
-  }
-
-  .assembly-copy-inner {
-    margin-left: 0;
-  }
-
-  .assembly-step {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    opacity: 0;
-    transition:
-      opacity 0.5s ease,
-      transform 0.5s ease;
-    transform: translateY(14px);
-    pointer-events: none;
-  }
-
-  .assembly-step.active {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-
-  @media (max-width: 820px) {
-    .assembly-wrap {
-      height: 240vh;
-    }
-
-    .assembly-pin {
-      display: flex;
-      flex-direction: column;
-      height: 100dvh;
-      min-height: 100dvh;
-      justify-content: space-between;
-    }
-
-    .assembly-canvas-box {
-      position: relative;
-      flex: 1 1 auto;
-      width: 100%;
-      min-height: 0;
-    }
-
-    .assembly-copy {
-      position: relative;
-      top: auto;
-      left: auto;
-      right: auto;
-      transform: none;
-      width: 100%;
-      padding-top: 0.5rem;
-      padding-bottom: 3.5rem;
-    }
-
-    .assembly-copy-inner {
-      min-height: 120px;
-      max-width: 100%;
-      margin-left: 0;
-      margin-right: 0;
-    }
-
-    .progress-rail {
-      display: none;
-    }
+  .cam-angle-btn.active {
+    background: var(--color-paper);
+    font-weight: 600;
+    color: var(--color-accent);
   }
 </style>
 
@@ -258,296 +210,826 @@ const texts = {
 <script>
   (function () {
     function init3DRack(THREE: typeof import("three")) {
-      const section = document.getElementById("assembly");
+      const container = document.getElementById("rack-canvas-container");
       const canvas = document.getElementById("rack-canvas") as HTMLCanvasElement | null;
-      if (!section || !canvas) return;
+      if (!container || !canvas) return;
 
-      // Check if already initialized on this canvas
       if (canvas.dataset.initialized === "true") return;
       canvas.dataset.initialized = "true";
 
-      const reducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      // ---------- SCENE SETUP ----------
+      // ---------- RENDERER & SCENE ----------
       const renderer = new THREE.WebGLRenderer({
         canvas,
         antialias: true,
         alpha: true,
+        powerPreference: "high-performance",
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.16;
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(
-        38,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        100,
-      );
+      const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
 
-      function updateCamera(w: number, h: number) {
-        camera.aspect = w / h;
-        if (window.innerWidth < 820) {
-          camera.position.set(0, 2.2, 9.2);
-          camera.lookAt(0, 2.2, 0);
-        } else {
-          const aspect = w / h;
-          const dist = aspect < 1.4 ? 12.6 : aspect > 2.2 ? 11.0 : 11.4;
-          camera.position.set(0, 2.3, dist);
-          camera.lookAt(0, 2.1, 0);
-        }
-        camera.updateProjectionMatrix();
-      }
+      // Camera preset angles
+      const angles = {
+        iso: { x: 5.4, y: 3.4, z: 5.6 },
+        front: { x: 0, y: 2.2, z: 7.8 },
+        top: { x: 3.8, y: 6.2, z: 4.8 },
+      };
 
-      // Scroll-driven progress
-      let targetProgress = 0;
-      let smoothProgress = 0;
-
-      function computeProgress() {
-        if (!section) return;
-        const rect = section.getBoundingClientRect();
-        const total = section.offsetHeight - window.innerHeight;
-        if (total <= 0) return;
-        const scrolled = -rect.top;
-        targetProgress = Math.min(1, Math.max(0, scrolled / total));
-      }
+      let targetCamPos = new THREE.Vector3(angles.iso.x, angles.iso.y, angles.iso.z);
+      const lookTarget = new THREE.Vector3(0, 1.65, 0);
+      camera.position.copy(targetCamPos);
+      camera.lookAt(lookTarget);
 
       function resize() {
-        if (!canvas) return;
-        const rect = canvas.getBoundingClientRect();
-        const w = rect.width || window.innerWidth;
-        const h = rect.height || window.innerHeight;
+        if (!container || !canvas) return;
+        const rect = container.getBoundingClientRect();
+        const w = rect.width;
+        const h = rect.height;
+        if (w === 0 || h === 0) return;
         renderer.setSize(w, h, false);
-        updateCamera(w, h);
-        computeProgress();
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
       }
       resize();
       window.addEventListener("resize", resize);
-      window.addEventListener("scroll", computeProgress, { passive: true });
-      computeProgress();
 
-      // Lighting
-      scene.add(new THREE.HemisphereLight(0x99aabb, 0x111111, 0.7));
-      const key = new THREE.DirectionalLight(0xffffff, 1.2);
-      key.position.set(5, 8, 6);
-      scene.add(key);
-      const rim = new THREE.PointLight(0xff6b1a, 1.4, 20);
-      rim.position.set(-4, 3, -3);
-      scene.add(rim);
+      // ---------- LIGHTING ----------
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x94a3b8, 0.78));
 
-      // Blueprint floor grid
-      const grid = new THREE.GridHelper(20, 40, 0x0284c7, 0xd0d5da);
-      grid.position.y = -0.02;
+      const keyLight = new THREE.DirectionalLight(0xfff6ec, 1.45);
+      keyLight.position.set(6, 9.5, 6.5);
+      scene.add(keyLight);
+
+      const fillLight = new THREE.DirectionalLight(0xdbeafe, 0.85);
+      fillLight.position.set(-6, 5, -4);
+      scene.add(fillLight);
+
+      // Cool industrial rim kicker highlighting steel uprights and beams
+      const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.35);
+      rimLight.position.set(-4, 4.5, -5.5);
+      scene.add(rimLight);
+
+      // Warm accent point light for warehouse depth
+      const warmAccent = new THREE.PointLight(0xff8a3d, 0.9, 14);
+      warmAccent.position.set(-2, 2.5, 3.5);
+      scene.add(warmAccent);
+
+      // ---------- PROCEDURAL CANVASES (Zero Asset Downloads) ----------
+      function makeCanvasTexture(w: number, h: number, draw: (ctx: CanvasRenderingContext2D) => void) {
+        const c = document.createElement("canvas");
+        c.width = w;
+        c.height = h;
+        const ctx = c.getContext("2d");
+        if (ctx) draw(ctx);
+        const tex = new THREE.CanvasTexture(c);
+        tex.colorSpace = THREE.SRGBColorSpace;
+        return tex;
+      }
+
+      // 1. Perforated Upright Post Texture (Teardrop slots & 50mm pitch marks)
+      const uprightTex = makeCanvasTexture(64, 256, (ctx) => {
+        ctx.fillStyle = "#1e2c3a";
+        ctx.fillRect(0, 0, 64, 256);
+        ctx.fillStyle = "#253748";
+        ctx.fillRect(8, 0, 48, 256);
+
+        ctx.fillStyle = "#090f15";
+        for (let y = 10; y < 256; y += 24) {
+          [20, 44].forEach((x) => {
+            ctx.beginPath();
+            ctx.roundRect(x - 4, y, 8, 14, 4);
+            ctx.fill();
+          });
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.18)";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(4, y + 7);
+          ctx.lineTo(10, y + 7);
+          ctx.stroke();
+        }
+      });
+      uprightTex.wrapS = THREE.RepeatWrapping;
+      uprightTex.wrapT = THREE.RepeatWrapping;
+      uprightTex.repeat.set(1, 14);
+
+      // 3. Safety Column Corner Protector (Yellow/Black Hazard Stripes)
+      const cautionTex = makeCanvasTexture(128, 128, (ctx) => {
+        ctx.fillStyle = "#fbbf24";
+        ctx.fillRect(0, 0, 128, 128);
+        ctx.fillStyle = "#0f172a";
+        ctx.beginPath();
+        for (let i = -128; i < 256; i += 32) {
+          ctx.moveTo(i, 0);
+          ctx.lineTo(i + 16, 0);
+          ctx.lineTo(i + 16 + 128, 128);
+          ctx.lineTo(i + 128, 128);
+          ctx.closePath();
+        }
+        ctx.fill();
+      });
+      cautionTex.wrapS = THREE.RepeatWrapping;
+      cautionTex.wrapT = THREE.RepeatWrapping;
+      cautionTex.repeat.set(1, 2);
+
+      // 4. Warehouse Shipping Carton Texture (Sealing tape + Barcode + Fragile stamp)
+      const cardboardTex = makeCanvasTexture(256, 256, (ctx) => {
+        ctx.fillStyle = "#bf9567";
+        ctx.fillRect(0, 0, 256, 256);
+
+        // Sealing tape
+        ctx.fillStyle = "#a87e4f";
+        ctx.fillRect(116, 0, 24, 256);
+
+        // Shipping label
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(18, 40, 96, 68);
+        ctx.strokeStyle = "#cbd5e1";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(18, 40, 96, 68);
+
+        // Barcode lines
+        ctx.fillStyle = "#0f172a";
+        let bx = 24;
+        while (bx < 106) {
+          const bw = (bx % 5 === 0) ? 3 : 1.5;
+          ctx.fillRect(bx, 46, bw, 24);
+          bx += bw + ((bx % 3 === 0) ? 3 : 1.5);
+        }
+
+        // Label text lines
+        ctx.fillStyle = "#64748b";
+        ctx.fillRect(24, 76, 50, 3);
+        ctx.fillRect(24, 83, 75, 2.5);
+        ctx.fillRect(24, 89, 62, 2.5);
+        ctx.fillRect(24, 95, 48, 2.5);
+
+        // Up orientation arrows (↑ ↑)
+        ctx.fillStyle = "#0f172a";
+        [32, 50].forEach((ax) => {
+          ctx.beginPath();
+          ctx.moveTo(ax, 130);
+          ctx.lineTo(ax - 5, 138);
+          ctx.lineTo(ax - 2, 138);
+          ctx.lineTo(ax - 2, 152);
+          ctx.lineTo(ax + 2, 152);
+          ctx.lineTo(ax + 2, 138);
+          ctx.lineTo(ax + 5, 138);
+          ctx.closePath();
+          ctx.fill();
+        });
+
+        // Fragile stamp
+        ctx.strokeStyle = "#dc2626";
+        ctx.lineWidth = 1.8;
+        ctx.strokeRect(148, 140, 85, 30);
+        ctx.fillStyle = "#dc2626";
+        ctx.font = "bold 9px sans-serif";
+        ctx.fillText("FRAGILE", 168, 155);
+        ctx.font = "7px sans-serif";
+        ctx.fillText("HANDLE WITH CARE", 152, 164);
+      });
+
+      // 5. Beam Capacity Load Rating Decal
+      const beamDecalTex = makeCanvasTexture(256, 48, (ctx) => {
+        ctx.fillStyle = "#facc15";
+        ctx.fillRect(0, 0, 256, 48);
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(2, 2, 252, 44);
+
+        ctx.fillStyle = "#000000";
+        ctx.font = "bold 13px sans-serif";
+        ctx.fillText("MAX LOAD: 4500 KG", 14, 22);
+        ctx.font = "bold 9px monospace";
+        ctx.fillText("INNOTEK // RACKING SYSTEMS", 14, 36);
+        ctx.fillRect(195, 8, 48, 32);
+        ctx.fillStyle = "#facc15";
+        ctx.font = "bold 10px sans-serif";
+        ctx.fillText("FEM", 204, 22);
+        ctx.fillText("10.2", 204, 34);
+      });
+
+      // 6. EPAL Brand Stencil for Pallets
+      const epalTex = makeCanvasTexture(128, 64, (ctx) => {
+        ctx.fillStyle = "#cda06c";
+        ctx.fillRect(0, 0, 128, 64);
+        ctx.strokeStyle = "#4a2f14";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.ellipse(64, 32, 48, 22, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = "#4a2f14";
+        ctx.font = "bold 16px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("EPAL", 64, 32);
+      });
+
+      // 7. Hazard Diamond for Chemical Drums
+      const hazardTex = makeCanvasTexture(128, 128, (ctx) => {
+        ctx.fillStyle = "#0284c7";
+        ctx.fillRect(0, 0, 128, 128);
+
+        ctx.save();
+        ctx.translate(64, 64);
+        ctx.rotate(Math.PI / 4);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(-28, -28, 56, 56);
+        ctx.strokeStyle = "#dc2626";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(-28, -28, 56, 56);
+        ctx.restore();
+
+        ctx.fillStyle = "#dc2626";
+        ctx.font = "bold 16px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("FLAME", 64, 58);
+        ctx.fillStyle = "#000000";
+        ctx.font = "bold 14px sans-serif";
+        ctx.fillText("3", 64, 78);
+      });
+
+      // 8. Galvanized Wire Mesh Shelf Decking
+      const wireMeshTex = makeCanvasTexture(128, 128, (ctx) => {
+        ctx.clearRect(0, 0, 128, 128);
+        ctx.strokeStyle = "#94a3b8";
+        ctx.lineWidth = 2.5;
+        for (let i = 0; i <= 128; i += 16) {
+          ctx.beginPath();
+          ctx.moveTo(i, 0);
+          ctx.lineTo(i, 128);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(0, i);
+          ctx.lineTo(128, i);
+          ctx.stroke();
+        }
+      });
+      wireMeshTex.wrapS = THREE.RepeatWrapping;
+      wireMeshTex.wrapT = THREE.RepeatWrapping;
+      wireMeshTex.repeat.set(12, 6);
+
+      // ---------- GROUND SETUP ----------
+      // Ground grid
+      const grid = new THREE.GridHelper(10, 20, 0x0284c7, 0xe2e8f0);
+      grid.position.y = 0;
       (grid.material as THREE.Material).transparent = true;
-      (grid.material as THREE.Material).opacity = 0.28;
+      (grid.material as THREE.Material).opacity = 0.22;
       scene.add(grid);
 
       // ---------- MATERIALS ----------
-      const steelMat = new THREE.MeshStandardMaterial({
-        color: 0x9aa2a8,
-        metalness: 0.6,
+      const colMat = new THREE.MeshStandardMaterial({
+        color: 0x1e2c3a,
+        metalness: 0.76,
         roughness: 0.35,
       });
-      const steelDarkMat = new THREE.MeshStandardMaterial({
-        color: 0x5c646b,
-        metalness: 0.6,
-        roughness: 0.4,
+      const uprightMat = new THREE.MeshStandardMaterial({
+        map: uprightTex,
+        metalness: 0.72,
+        roughness: 0.38,
       });
-      const accentMat = new THREE.MeshStandardMaterial({
-        color: 0xff6b1a,
-        metalness: 0.3,
-        roughness: 0.4,
+      const cautionMat = new THREE.MeshStandardMaterial({
+        map: cautionTex,
+        roughness: 0.42,
+        metalness: 0.1,
       });
-      const palletMat = new THREE.MeshStandardMaterial({
-        color: 0xc98a4b,
-        roughness: 0.8,
+      const colGalvMat = new THREE.MeshStandardMaterial({
+        color: 0x94a3b8,
+        metalness: 0.88,
+        roughness: 0.3,
+      });
+      const footMat = new THREE.MeshStandardMaterial({
+        color: 0x334155,
+        metalness: 0.8,
+        roughness: 0.35,
+      });
+      const boltMat = new THREE.MeshStandardMaterial({
+        color: 0xe2e8f0,
+        metalness: 0.95,
+        roughness: 0.18,
+      });
+      const orangeBeamMat = new THREE.MeshStandardMaterial({
+        color: 0xf55c0a,
+        metalness: 0.22,
+        roughness: 0.32,
+      });
+      const beamDecalMat = new THREE.MeshStandardMaterial({
+        map: beamDecalTex,
+        roughness: 0.38,
+      });
+      const pinMat = new THREE.MeshStandardMaterial({
+        color: 0xfacc15,
+        metalness: 0.7,
+        roughness: 0.28,
+      });
+      const wireMeshMat = new THREE.MeshStandardMaterial({
+        map: wireMeshTex,
+        transparent: true,
+        opacity: 0.88,
+        metalness: 0.85,
+        roughness: 0.28,
+      });
+      const palletWoodMat = new THREE.MeshStandardMaterial({
+        color: 0xcda06c,
+        roughness: 0.86,
+        metalness: 0.04,
+      });
+      const palletBrandMat = new THREE.MeshStandardMaterial({
+        map: epalTex,
+        roughness: 0.86,
+        metalness: 0.04,
+      });
+      const crateWoodMat = new THREE.MeshStandardMaterial({
+        color: 0x9a6b38,
+        roughness: 0.88,
         metalness: 0.05,
       });
-      const boxMat = new THREE.MeshStandardMaterial({
-        color: 0x4a5259,
-        roughness: 0.7,
+      const metalCornerMat = new THREE.MeshStandardMaterial({
+        color: 0x1e293b,
+        metalness: 0.82,
+        roughness: 0.3,
+      });
+      const shrinkWrapMat = new THREE.MeshStandardMaterial({
+        color: 0xf8fafc,
+        transparent: true,
+        opacity: 0.48,
+        roughness: 0.12,
+        metalness: 0.22,
+      });
+      const boxCardboardMat = new THREE.MeshStandardMaterial({
+        map: cardboardTex,
+        roughness: 0.82,
+        metalness: 0.04,
+      });
+      const drumMat = new THREE.MeshStandardMaterial({
+        map: hazardTex,
+        metalness: 0.8,
+        roughness: 0.25,
+      });
+      const drumDarkMat = new THREE.MeshStandardMaterial({
+        color: 0x1e293b,
+        metalness: 0.82,
+        roughness: 0.28,
+      });
+      const toteBlueMat = new THREE.MeshStandardMaterial({
+        color: 0x1d4ed8,
+        roughness: 0.42,
+        metalness: 0.1,
+      });
+      const toteGrayMat = new THREE.MeshStandardMaterial({
+        color: 0x64748b,
+        roughness: 0.42,
+        metalness: 0.1,
+      });
+      const labelMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        roughness: 0.4,
+      });
+      const orangeLabelMat = new THREE.MeshStandardMaterial({
+        color: 0xff6b1a,
+        roughness: 0.4,
       });
 
-      // ---------- RACK GROUP ----------
+      // ---------- DETAILED PALLET RACK BUILD ----------
       const rack = new THREE.Group();
       scene.add(rack);
 
-      const FRAME_H = 4.4,
-        FRAME_W = 0.9,
-        BAY_W = 2.6;
-      const levelYs = [0.55, 1.9, 3.25];
+      const RACK_H = 3.6;
+      const RACK_D = 1.05;
+      const BAY_W = 2.15;
+      const LEVELS = [0.45, 1.55, 2.65];
 
-      function makeUpright(x: number) {
-        const g = new THREE.Group();
-        const postGeo = new THREE.BoxGeometry(0.08, FRAME_H, 0.08);
-        const p1 = new THREE.Mesh(postGeo, steelMat);
-        p1.position.set(-FRAME_W / 2, FRAME_H / 2, 0);
-        const p2 = new THREE.Mesh(postGeo, steelMat);
-        p2.position.set(FRAME_W / 2, FRAME_H / 2, 0);
-        g.add(p1, p2);
-        for (let i = 0; i < 4; i++) {
-          const braceGeo = new THREE.BoxGeometry(0.035, 1.15, 0.035);
-          const b = new THREE.Mesh(braceGeo, steelDarkMat);
-          b.position.set(0, 0.55 + i * 1.05, 0);
-          b.rotation.z = i % 2 === 0 ? 0.62 : -0.62;
-          g.add(b);
+      // Multi-material for posts: front/back show perforation holes
+      const postMaterials = [colMat, colMat, colMat, colMat, uprightMat, uprightMat];
+
+      // 1. Upright Frame Generator (Tower with footplates, perforated columns, crash guards, and Z-bracing)
+      function buildUprightFrame(xPos: number) {
+        const frame = new THREE.Group();
+        const postGeo = new THREE.BoxGeometry(0.09, RACK_H, 0.09);
+
+        // Front & Rear Perforated Posts
+        const pFront = new THREE.Mesh(postGeo, postMaterials);
+        pFront.position.set(0, RACK_H / 2, RACK_D / 2);
+        const pRear = new THREE.Mesh(postGeo, postMaterials);
+        pRear.position.set(0, RACK_H / 2, -RACK_D / 2);
+        frame.add(pFront, pRear);
+
+        // Heavy-duty footplates at base
+        const footGeo = new THREE.BoxGeometry(0.18, 0.015, 0.18);
+        const boltGeo = new THREE.CylinderGeometry(0.012, 0.012, 0.03, 6);
+
+        [-RACK_D / 2, RACK_D / 2].forEach((z) => {
+          const foot = new THREE.Mesh(footGeo, footMat);
+          foot.position.set(0, 0.008, z);
+          frame.add(foot);
+
+          // 2 anchor bolts per footplate
+          const b1 = new THREE.Mesh(boltGeo, boltMat);
+          b1.position.set(0.05, 0.02, z);
+          const b2 = new THREE.Mesh(boltGeo, boltMat);
+          b2.position.set(-0.05, 0.02, z);
+          frame.add(b1, b2);
+        });
+
+        // Upright column corner guards (yellow/black safety crash protectors on outer corner posts)
+        if (Math.abs(xPos) > 0.1) {
+          [-RACK_D / 2, RACK_D / 2].forEach((z) => {
+            const guardGeo = new THREE.BoxGeometry(0.13, 0.38, 0.13);
+            const guard = new THREE.Mesh(guardGeo, cautionMat);
+            guard.position.set(0, 0.19, z);
+            frame.add(guard);
+          });
         }
-        g.position.x = x;
+
+        // Z-Bracing (Horizontal & Diagonal struts between posts)
+        const numBraces = 5;
+        const braceStep = RACK_H / numBraces;
+        const diagLen = Math.sqrt(braceStep * braceStep + RACK_D * RACK_D);
+        const diagAngle = Math.atan2(braceStep, RACK_D);
+        const strutGeo = new THREE.BoxGeometry(0.025, 0.025, RACK_D - 0.08);
+        const diagGeo = new THREE.BoxGeometry(0.022, 0.022, diagLen - 0.05);
+
+        for (let i = 0; i <= numBraces; i++) {
+          const y = i * braceStep;
+          // Horizontal strut
+          const hStrut = new THREE.Mesh(strutGeo, colGalvMat);
+          hStrut.position.set(0, y, 0);
+          frame.add(hStrut);
+
+          // Diagonal strut
+          if (i < numBraces) {
+            const diag = new THREE.Mesh(diagGeo, colGalvMat);
+            diag.position.set(0, y + braceStep / 2, 0);
+            diag.rotation.x = i % 2 === 0 ? diagAngle : -diagAngle;
+            frame.add(diag);
+          }
+        }
+
+        frame.position.x = xPos;
+        return frame;
+      }
+
+      // Add 3 Upright Frames (Left, Center, Right) = 2 Bays
+      rack.add(buildUprightFrame(-BAY_W));
+      rack.add(buildUprightFrame(0));
+      rack.add(buildUprightFrame(BAY_W));
+
+      // 2. Heavy-Duty Safety Orange Beams
+      const beamGeo = new THREE.BoxGeometry(BAY_W - 0.08, 0.12, 0.06);
+      const connGeo = new THREE.BoxGeometry(0.03, 0.16, 0.11);
+      const safetyPinGeo = new THREE.CylinderGeometry(0.008, 0.008, 0.04, 6);
+      const decalGeo = new THREE.PlaneGeometry(0.48, 0.07);
+      const deckGeo = new THREE.PlaneGeometry(BAY_W - 0.1, RACK_D - 0.06);
+
+      function buildBeamPair(centerX: number, y: number) {
+        const pair = new THREE.Group();
+
+        [-RACK_D / 2 + 0.03, RACK_D / 2 - 0.03].forEach((z, zIdx) => {
+          const beam = new THREE.Mesh(beamGeo, orangeBeamMat);
+          beam.position.set(0, y, z);
+          pair.add(beam);
+
+          // Capacity load rating decal on front beam
+          if (zIdx === 1) {
+            const decal = new THREE.Mesh(decalGeo, beamDecalMat);
+            decal.position.set(0, y, z + 0.031);
+            pair.add(decal);
+          }
+
+          // End connector plates with safety locking pins
+          [-BAY_W / 2 + 0.05, BAY_W / 2 - 0.05].forEach((x) => {
+            const conn = new THREE.Mesh(connGeo, orangeBeamMat);
+            conn.position.set(x, y, z);
+            pair.add(conn);
+
+            const pin = new THREE.Mesh(safetyPinGeo, pinMat);
+            pin.position.set(x, y + 0.05, z + (z > 0 ? 0.035 : -0.035));
+            pin.rotation.x = Math.PI / 2;
+            pair.add(pin);
+          });
+        });
+
+        // Wire mesh decking shelf between front & rear beams
+        const deck = new THREE.Mesh(deckGeo, wireMeshMat);
+        deck.rotation.x = -Math.PI / 2;
+        deck.position.set(0, y + 0.061, 0);
+        pair.add(deck);
+
+        // 3 Cross-support steel bars spanning between front and rear beams
+        const crossGeo = new THREE.BoxGeometry(0.04, 0.02, RACK_D - 0.04);
+        [-0.6, 0, 0.6].forEach((x) => {
+          const cross = new THREE.Mesh(crossGeo, colGalvMat);
+          cross.position.set(x, y + 0.045, 0);
+          pair.add(cross);
+        });
+
+        pair.position.x = centerX;
+        return pair;
+      }
+
+      // Add beam pairs to each bay at each tier level
+      LEVELS.forEach((y) => {
+        rack.add(buildBeamPair(-BAY_W / 2, y));
+        rack.add(buildBeamPair(BAY_W / 2, y));
+      });
+
+      // 3. Euro-Pallet Generator (Authentic EPAL wooden pallet with branded blocks)
+      function buildEuroPallet() {
+        const p = new THREE.Group();
+        const pW = 1.05;
+        const pD = 0.85;
+
+        // 3 bottom runners
+        const runnerGeo = new THREE.BoxGeometry(0.09, 0.02, pD);
+        [-pW / 2 + 0.05, 0, pW / 2 - 0.05].forEach((x) => {
+          const runner = new THREE.Mesh(runnerGeo, palletWoodMat);
+          runner.position.set(x, 0.01, 0);
+          p.add(runner);
+        });
+
+        // 9 spacer blocks (outer blocks branded with EPAL stencil)
+        const blockGeo = new THREE.BoxGeometry(0.09, 0.075, 0.1);
+        [-pW / 2 + 0.05, 0, pW / 2 - 0.05].forEach((x) => {
+          [-pD / 2 + 0.06, 0, pD / 2 - 0.06].forEach((z) => {
+            const isOuter = (x !== 0 && z !== 0);
+            const block = new THREE.Mesh(blockGeo, isOuter ? palletBrandMat : palletWoodMat);
+            block.position.set(x, 0.02 + 0.0375, z);
+            p.add(block);
+          });
+        });
+
+        // 5 top deck boards with spacing
+        const boardGeo = new THREE.BoxGeometry(pW, 0.022, 0.13);
+        const zPositions = [-pD / 2 + 0.07, -0.17, 0, 0.17, pD / 2 - 0.07];
+        zPositions.forEach((z) => {
+          const board = new THREE.Mesh(boardGeo, palletWoodMat);
+          board.position.set(0, 0.095 + 0.011, z);
+          p.add(board);
+        });
+
+        return p;
+      }
+
+      // 4. Varied Industrial Cargo Generator
+      function buildCargo(type: "crate" | "drums" | "shrinkwrap" | "boxes" | "totes") {
+        const g = new THREE.Group();
+
+        if (type === "crate") {
+          // Heavy machinery wooden export box with steel corner brackets
+          const crate = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.72, 0.75), crateWoodMat);
+          crate.position.y = 0.36;
+          g.add(crate);
+
+          // Metal corner straps
+          const strapGeo = new THREE.BoxGeometry(0.92, 0.02, 0.77);
+          const s1 = new THREE.Mesh(strapGeo, metalCornerMat);
+          s1.position.y = 0.2;
+          const s2 = new THREE.Mesh(strapGeo, metalCornerMat);
+          s2.position.y = 0.52;
+          g.add(s1, s2);
+
+          // Innotek stencil label
+          const label = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.12, 0.01), labelMat);
+          label.position.set(0, 0.36, 0.38);
+          g.add(label);
+        } else if (type === "drums") {
+          // 2 industrial steel oil/chemical drums with rolled ribs & hazard markings
+          const drumGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.7, 18);
+          [-0.23, 0.23].forEach((x, i) => {
+            const drum = new THREE.Mesh(drumGeo, i === 0 ? drumMat : drumDarkMat);
+            drum.position.set(x, 0.35, 0);
+            g.add(drum);
+
+            // Silver rolled rim rings & chime ridges
+            const rimGeo = new THREE.CylinderGeometry(0.208, 0.208, 0.025, 18);
+            const r1 = new THREE.Mesh(rimGeo, boltMat);
+            r1.position.set(x, 0.68, 0);
+            const r2 = new THREE.Mesh(rimGeo, boltMat);
+            r2.position.set(x, 0.35, 0);
+            const r3 = new THREE.Mesh(rimGeo, boltMat);
+            r3.position.set(x, 0.03, 0);
+            g.add(r1, r2, r3);
+
+            // Dual bung caps on drum top lid
+            const bungGeo = new THREE.CylinderGeometry(0.02, 0.02, 0.015, 8);
+            const b1 = new THREE.Mesh(bungGeo, boltMat);
+            b1.position.set(x + 0.09, 0.705, 0.06);
+            const b2 = new THREE.Mesh(bungGeo, boltMat);
+            b2.position.set(x - 0.09, 0.705, -0.06);
+            g.add(b1, b2);
+          });
+        } else if (type === "shrinkwrap") {
+          // Stacked cartons wrapped in translucent stretch film
+          const stack = new THREE.Group();
+          for (let row = 0; row < 2; row++) {
+            for (let col = 0; col < 2; col++) {
+              const b = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.32, 0.34), boxCardboardMat);
+              b.position.set(row === 0 ? -0.22 : 0.22, 0.16, col === 0 ? -0.18 : 0.18);
+              stack.add(b);
+            }
+          }
+          for (let row = 0; row < 2; row++) {
+            for (let col = 0; col < 2; col++) {
+              const b = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.32, 0.34), boxCardboardMat);
+              b.position.set(row === 0 ? -0.22 : 0.22, 0.48, col === 0 ? -0.18 : 0.18);
+              stack.add(b);
+            }
+          }
+          g.add(stack);
+
+          // Translucent shrinkwrap outer shell
+          const wrap = new THREE.Mesh(new THREE.BoxGeometry(0.92, 0.68, 0.76), shrinkWrapMat);
+          wrap.position.y = 0.34;
+          g.add(wrap);
+
+          // Orange handling label
+          const oLabel = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.12, 0.01), orangeLabelMat);
+          oLabel.position.set(0.15, 0.4, 0.385);
+          g.add(oLabel);
+        } else if (type === "boxes") {
+          // Neat stack of industrial cartons with strapping & barcode labels
+          const boxG = new THREE.BoxGeometry(0.88, 0.62, 0.74);
+          const box = new THREE.Mesh(boxG, boxCardboardMat);
+          box.position.y = 0.31;
+          g.add(box);
+
+          // Strapping bands
+          const strap1 = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.63, 0.75), drumDarkMat);
+          strap1.position.set(-0.2, 0.31, 0);
+          const strap2 = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.63, 0.75), drumDarkMat);
+          strap2.position.set(0.2, 0.31, 0);
+          g.add(strap1, strap2);
+        } else if (type === "totes") {
+          // Industrial modular tote boxes (Euro containers)
+          const toteGeo = new THREE.BoxGeometry(0.4, 0.24, 0.33);
+          [-0.22, 0.22].forEach((x, i) => {
+            [-0.18, 0.18].forEach((z, j) => {
+              const tote1 = new THREE.Mesh(toteGeo, (i + j) % 2 === 0 ? toteBlueMat : toteGrayMat);
+              tote1.position.set(x, 0.12, z);
+              const tote2 = new THREE.Mesh(toteGeo, (i + j) % 2 === 1 ? toteBlueMat : toteGrayMat);
+              tote2.position.set(x, 0.36, z);
+              g.add(tote1, tote2);
+            });
+          });
+        }
+
         return g;
       }
 
-      const leftFrame = makeUpright(-BAY_W / 2);
-      const rightFrame = makeUpright(BAY_W / 2);
-      rack.add(leftFrame, rightFrame);
+      // Place 2 Pallets with Cargo in each bay at each tier level
+      const cargoManifest: ("crate" | "drums" | "shrinkwrap" | "boxes" | "totes")[][] = [
+        // Level 1: Ground/heavy loads
+        ["crate", "drums", "boxes", "shrinkwrap"],
+        // Level 2: Mid-tier loads
+        ["shrinkwrap", "boxes", "crate", "drums"],
+        // Level 3: Upper-tier loads
+        ["totes", "shrinkwrap", "boxes", "totes"],
+      ];
 
-      const beams: { front: THREE.Mesh; back: THREE.Mesh; startX: number }[] = [];
-      levelYs.forEach((y) => {
-        const beamGeo = new THREE.BoxGeometry(BAY_W - FRAME_W + 0.1, 0.14, 0.1);
-        const front = new THREE.Mesh(beamGeo, accentMat);
-        front.position.set(0, y, FRAME_W / 2 - 0.02);
-        const back = new THREE.Mesh(beamGeo, accentMat);
-        back.position.set(0, y, -FRAME_W / 2 + 0.02);
-        rack.add(front, back);
-        beams.push({ front, back, startX: 3.5 });
-      });
+      LEVELS.forEach((levelY, lvlIdx) => {
+        const manifest = cargoManifest[lvlIdx];
+        const xPositions = [
+          -BAY_W / 2 - 0.52, // Left Bay, Pallet 1
+          -BAY_W / 2 + 0.52, // Left Bay, Pallet 2
+          BAY_W / 2 - 0.52, // Right Bay, Pallet 1
+          BAY_W / 2 + 0.52, // Right Bay, Pallet 2
+        ];
 
-      const pallets: THREE.Group[] = [];
-      levelYs.forEach((y) => {
-        const p = new THREE.Group();
-        const base = new THREE.Mesh(
-          new THREE.BoxGeometry(BAY_W - FRAME_W - 0.05, 0.12, FRAME_W - 0.1),
-          palletMat,
-        );
-        base.position.y = y + 0.13;
-        p.add(base);
-        const box = new THREE.Mesh(
-          new THREE.BoxGeometry(0.7, 0.55, 0.55),
-          boxMat,
-        );
-        box.position.set(0, y + 0.13 + 0.06 + 0.275, 0);
-        p.add(box);
-        rack.add(p);
-        pallets.push(p);
-      });
+        xPositions.forEach((x, i) => {
+          const palletGroup = new THREE.Group();
+          palletGroup.position.set(x, levelY + 0.06, 0);
 
-      rack.position.y = 0;
-      rack.rotation.y = -0.35;
+          const pallet = buildEuroPallet();
+          palletGroup.add(pallet);
 
-      // Initial state: frames rise from ground level into position
-      leftFrame.position.y = -FRAME_H * 0.7;
-      rightFrame.position.y = -FRAME_H * 0.7;
-      beams.forEach((b) => {
-        b.front.position.x = b.startX;
-        b.back.position.x = -b.startX;
-      });
-      pallets.forEach((p) => {
-        p.position.y = 3.5;
-        p.visible = false;
-      });
+          const cargo = buildCargo(manifest[i]);
+          cargo.position.y = 0.12;
+          palletGroup.add(cargo);
 
-      const steps = section.querySelectorAll(".assembly-step");
-      const progressFill = document.getElementById("progress-fill");
-
-      function updateOverlay(p: number) {
-        let stepIdx = 0;
-        if (p < 0.28) stepIdx = 0;
-        else if (p < 0.6) stepIdx = 1;
-        else if (p < 0.88) stepIdx = 2;
-        else stepIdx = 3;
-
-        steps.forEach((s) =>
-          s.classList.toggle("active", Number(s.getAttribute("data-step")) === stepIdx),
-        );
-
-        if (progressFill) progressFill.style.height = p * 100 + "%";
-      }
-
-      function lerp(a: number, b: number, t: number) {
-        return a + (b - a) * t;
-      }
-
-      function updateRack(p: number) {
-        // Stage 1: frames rise 0 -> 0.28
-        const frameT = Math.min(1, p / 0.28);
-        const eased = 1 - Math.pow(1 - frameT, 3);
-        leftFrame.position.y = lerp(-FRAME_H * 0.7, 0, eased);
-        rightFrame.position.y = lerp(-FRAME_H * 0.7, 0, eased);
-
-        // Stage 2: beams slide in, staggered per level, 0.24 -> 0.62
-        beams.forEach((b, i) => {
-          const start = 0.24 + i * 0.08;
-          const end = start + 0.16;
-          const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
-          const e = 1 - Math.pow(1 - t, 3);
-          b.front.position.x = lerp(b.startX, 0, e);
-          b.back.position.x = lerp(-b.startX, 0, e);
+          rack.add(palletGroup);
         });
+      });
 
-        // Stage 3: pallets drop, staggered, 0.58 -> 0.9
-        pallets.forEach((pl, i) => {
-          const start = 0.58 + i * 0.08;
-          const end = start + 0.18;
-          const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
-          if (t > 0) pl.visible = true;
-          else pl.visible = false;
-          const e = 1 - Math.pow(1 - t, 3);
-          pl.position.y = lerp(3.5, 0, e);
+      // Position rack center & base
+      rack.position.set(0, 0, 0);
+      rack.rotation.y = -0.38;
+
+      // ---------- INTERACTION & ROTATION ----------
+      let isRotating = !reducedMotion;
+      const baseRotationSpeed = 0.0035;
+      let idleTimer = 0;
+      let isDragging = false;
+      let prevMousePos = { x: 0, y: 0 };
+      let dragVelocity = { x: 0, y: 0 };
+
+      // HUD Angle buttons
+      const angleButtons = container.querySelectorAll<HTMLButtonElement>("[data-cam-angle]");
+      angleButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const type = btn.dataset.camAngle as keyof typeof angles;
+          if (angles[type]) {
+            targetCamPos.set(angles[type].x, angles[type].y, angles[type].z);
+            angleButtons.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+          }
         });
+      });
 
-        // Camera orbit across scroll progress
-        const angle = lerp(-0.35, 0.35, p);
-        rack.rotation.y = angle;
+      // Rotation play/pause button
+      const rotateBtn = document.getElementById("btn-rotate-toggle");
+      if (rotateBtn) {
+        rotateBtn.addEventListener("click", () => {
+          isRotating = !isRotating;
+          rotateBtn.classList.toggle("bg-accent", isRotating);
+          rotateBtn.classList.toggle("bg-paper", !isRotating);
+          rotateBtn.classList.toggle("text-white", isRotating);
+          rotateBtn.classList.toggle("text-ink", !isRotating);
+        });
       }
 
-      let isRunning = false;
-      function animate() {
-        if (!isRunning) return;
-        requestAnimationFrame(animate);
-        smoothProgress = reducedMotion
-          ? targetProgress
-          : lerp(smoothProgress, targetProgress, 0.09);
-        updateRack(smoothProgress);
-        updateOverlay(smoothProgress);
+      // Drag to orbit 360°
+      container.addEventListener("pointerdown", (e) => {
+        isDragging = true;
+        prevMousePos = { x: e.clientX, y: e.clientY };
+        window.clearTimeout(idleTimer);
+      });
+
+      window.addEventListener("pointermove", (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - prevMousePos.x;
+        const dy = e.clientY - prevMousePos.y;
+        prevMousePos = { x: e.clientX, y: e.clientY };
+
+        dragVelocity.x = dx * 0.006;
+        dragVelocity.y = dy * 0.004;
+
+        rack.rotation.y += dragVelocity.x;
+        targetCamPos.y = Math.min(6.5, Math.max(1.2, targetCamPos.y - dy * 0.015));
+      });
+
+      const onPointerUp = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        window.clearTimeout(idleTimer);
+        idleTimer = window.setTimeout(() => {
+          if (!reducedMotion) isRotating = true;
+        }, 2200);
+      };
+
+      window.addEventListener("pointerup", onPointerUp);
+      window.addEventListener("pointercancel", onPointerUp);
+
+      // ---------- ANIMATION LOOP ----------
+      let isVisible = false;
+
+      function renderLoop() {
+        if (!isVisible) return;
+        requestAnimationFrame(renderLoop);
+
+        // Smooth camera transition toward target angle
+        camera.position.lerp(targetCamPos, 0.07);
+        camera.lookAt(lookTarget);
+
+        // Auto-rotation or drag inertia
+        if (isRotating && !isDragging) {
+          rack.rotation.y += baseRotationSpeed;
+        } else if (!isDragging && Math.abs(dragVelocity.x) > 0.0001) {
+          rack.rotation.y += dragVelocity.x;
+          dragVelocity.x *= 0.92;
+        }
+
         renderer.render(scene, camera);
       }
 
-      const watch = new IntersectionObserver(
+      const observer = new IntersectionObserver(
         ([entry]) => {
           const visible = Boolean(entry?.isIntersecting);
-          if (visible && !isRunning) {
-            isRunning = true;
-            animate();
+          if (visible && !isVisible) {
+            isVisible = true;
+            resize();
+            renderLoop();
           } else if (!visible) {
-            isRunning = false;
+            isVisible = false;
           }
         },
-        { rootMargin: "120px 0px" },
+        { rootMargin: "100px 0px" },
       );
-      watch.observe(section);
+
+      observer.observe(container);
     }
 
     function boot() {
-      const section = document.getElementById("assembly");
-      if (!section || section.dataset.boot === "1") return;
-      const start = () => {
-        if (section.dataset.boot === "1") return;
-        section.dataset.boot = "1";
-        import("three").then((THREE) => init3DRack(THREE));
-      };
-      if (!("IntersectionObserver" in window)) {
-        start();
-        return;
-      }
-      const io = new IntersectionObserver(
-        (entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) return;
-          io.disconnect();
-          start();
-        },
-        { rootMargin: "120px 0px" },
-      );
-      io.observe(section);
+      const container = document.getElementById("rack-canvas-container");
+      if (!container || container.dataset.boot === "1") return;
+      container.dataset.boot = "1";
+      import("three").then((THREE) => init3DRack(THREE));
     }
 
     if (document.readyState === "loading") {
