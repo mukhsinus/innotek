@@ -5,7 +5,6 @@ import QuoteBand from "./QuoteBand.astro";
 import RackAssembly3D from "./RackAssembly3D.astro";
 import SectionMeta from "./SectionMeta.astro";
 import { HOME, HOME_STATS } from "../data/home";
-import { SITE } from "../data/site";
 import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
 import { photoSrc } from "../lib/image";
@@ -21,69 +20,51 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
 const catalogHref = hrefFor(lang, "/catalog/");
 const videoHref = hrefFor(lang, "/video/");
 const isUz = lang === "uz";
-const address = isUz ? SITE.address.uz : SITE.address.ru;
 const heroLines = copy.h1.split("\n");
 const SECTIONS = 6;
-const fmt = (n: number) => new Intl.NumberFormat(isUz ? "uz-UZ" : "ru-RU").format(n);
-const heroFacts = [
-  { value: fmt(HOME_STATS.years), label: isUz ? "yil" : "лет" },
-  { value: fmt(HOME_STATS.area), label: isUz ? "m² maydon" : "м² завода" },
-  { value: `${fmt(HOME_STATS.clients)}+`, label: isUz ? "mijoz" : "клиентов" },
-];
+const heroKicker = isUz
+  ? `Toshkentda ishlab chiqarish · ${HOME_STATS.years} yil`
+  : `Производство в Ташкенте · ${HOME_STATS.years} лет`;
 const img = (src: string, width = 960) => photoSrc(src, width) ?? "";
 ---
 
-<!-- 01 Hero: type on paper, photograph in a plate -->
+<!-- 01 Hero: full-bleed photograph, type set on the dark lower field -->
 <section class="hero" aria-labelledby="hero-title">
-  <div class="site-wrap hero-layout">
-    <div class="hero-copy">
-      <SectionMeta kicker={isUz ? "Toshkent" : "Ташкент"} index={1} total={SECTIONS} />
-      <h1 id="hero-title" class="hero-title t-display">
-        {
-          heroLines.map((line, i) => (
-            <span class="hero-line" style={`--i: ${i}`}>
-              <span class="hero-line-inner">{line}</span>
-            </span>
-          ))
-        }
-      </h1>
-      <p class="hero-lead t-lead">{copy.heroLead}</p>
-      <div class="hero-actions">
-        <a class="btn-accent" href={quoteHref}>{t("cta.quote")}</a>
-        <a class="text-link" href={catalogHref}>
-          {t("cta.catalog")}
-          <span class="link-arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
-      <ul class="hero-facts">
-        {
-          heroFacts.map((fact) => (
-            <li>
-              <span class="hero-fact-value">{fact.value}</span>
-              <span class="hero-fact-label">{fact.label}</span>
-            </li>
-          ))
-        }
-      </ul>
+  <img
+    src={img(copy.heroImage, 2000)}
+    alt=""
+    class="hero-photo"
+    width="2000"
+    height="1500"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="site-wrap hero-copy">
+    <p class="hero-kicker">{heroKicker}</p>
+    <h1 id="hero-title" class="hero-title">
+      {
+        heroLines.map((line, i) => (
+          <span class:list={["hero-line", i === heroLines.length - 1 && "is-accent"]} style={`--i: ${i}`}>
+            <span class="hero-line-inner">{line}</span>
+          </span>
+        ))
+      }
+    </h1>
+    <p class="hero-lead">{copy.heroLead}</p>
+    <div class="hero-actions">
+      <a class="hero-btn hero-btn-primary" href={quoteHref}>
+        {t("cta.quote")}
+        <span class="link-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="hero-btn hero-btn-ghost" href={catalogHref}>{t("cta.catalog")}</a>
     </div>
-    <figure class="hero-plate">
-      <div class="hero-plate-media">
-        <img
-          src={img(copy.heroImage, 1600)}
-          alt={t("product.pallet")}
-          class="hero-photo"
-          width="1600"
-          height="1000"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </div>
-      <figcaption class="hero-caption">
-        <span>{t("product.pallet")}</span>
-        <span>{isUz ? "Toshkent" : "Ташкент"}</span>
-      </figcaption>
-    </figure>
+    <p class="hero-index">
+      <span>01</span>
+      <span class="hero-index-rule" aria-hidden="true"></span>
+      <span>{isUz ? "Saqlash tizimlari" : "Системы хранения"}</span>
+    </p>
   </div>
 </section>
 

@@ -73,9 +73,9 @@ export const HOME: Record<Lang, HomeCopy> = {
     title: "Стеллажи в Ташкенте от производителя | Innotek",
     description:
       "Стеллажи в Ташкенте от производителя Innotek. Купить металлические стеллажи для склада, магазина и бизнеса по выгодной цене. Доставка и монтаж.",
-    h1: "Стеллажи\nс завода.",
+    h1: "Стеллажи.\nС завода.",
     heroLead: "Ташкент. Системы хранения для склада, магазина и производства.",
-    heroImage: IMG.racks,
+    heroImage: "/images/Katalog/1. Стеллажи/1.JPG",
     assemblyHeading: { before: "Инженерная ", accent: "сборка стеллажа" },
     assemblyLead: "Поэтапная интеграция: от несущей стойки до предельной нагрузки на ярус.",
     assemblySteps: [
@@ -145,9 +145,9 @@ export const HOME: Record<Lang, HomeCopy> = {
     title: "Toshkentda stelajlar ishlab chiqaruvchidan | Innotek",
     description:
       "Toshkentda Innotek kompaniyasidan stelajlar. Ombor, do'kon va biznes uchun metall stelajlarni qulay narxda xarid qiling. Yetkazib berish va o'rnatish.",
-    h1: "Zavoddan\nstelajlar.",
+    h1: "Zavoddan.\nStelajlar.",
     heroLead: "Toshkent. Ombor, do'kon va ishlab chiqarish uchun saqlash tizimlari.",
-    heroImage: IMG.racks,
+    heroImage: "/images/Katalog/1. Стеллажи/1.JPG",
     assemblyHeading: { before: "Muhandislik ", accent: "stelaj yig'ilishi" },
     assemblyLead: "Bosqichma-bosqich integratsiya: ko'taruvchi ustundan yarusning maksimal yuklamasigacha.",
     assemblySteps: [
