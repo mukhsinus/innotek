@@ -74,11 +74,13 @@ const heroFallback = photoSrcFallback(copy.heroImage, 2000) || heroWebp;
   </div>
 </section>
 
-<!-- 02 Interactive 3D Scroll Assembly Sequence -->
-<RackAssembly3D lang={lang} index={2} total={SECTIONS} />
+<!-- 02 Interactive 3D Scroll Assembly Sequence (hidden) -->
+<div style="display: none;">
+  <RackAssembly3D lang={lang} index={2} total={SECTIONS} />
+</div>
 
 <!-- 03 Catalog: Modern Engineered Bento Grid -->
-<section id="catalog" class="section-y bg-paper" data-reveal>
+<section id="catalog" class="section-y" style="background-color: #E4E4E4;" data-reveal>
   <div class="site-wrap">
     <SectionMeta kicker={t("home.kickerCatalog")} index={3} total={SECTIONS} />
     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 lg:mb-16">
