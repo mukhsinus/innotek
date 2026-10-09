@@ -13,15 +13,27 @@ const thanks = hrefFor(lang, "/contacts/thanks/");
 const isUz = lang === "uz";
 
 const PROJECT_TYPES = isUz
-  ? ["Sklad stellajlari", "Konveyer tizimlari", "Polimer bo'yash", "Muhandislik loyihasi", "Boshqa"]
-  : ["Складские стеллажи", "Конвейерные линии", "Порошковая покраска", "Проектирование CAD", "Другое"];
+  ? [
+      "Sklad stellajlari",
+      "Konveyer tizimlari",
+      "Polimer bo'yash",
+      "Muhandislik loyihasi",
+      "Boshqa",
+    ]
+  : [
+      "Складские стеллажи",
+      "Конвейерные линии",
+      "Порошковая покраска",
+      "Проектирование CAD",
+      "Другое",
+    ];
 ---
 
 <form
   class="quote-form group relative rounded-xl border border-line bg-surface/80 p-6 sm:p-8 shadow-sm transition-all hover:border-accent/40"
   name="quote"
   method="POST"
-  action="https://script.google.com/macros/s/AKfycbxQ27cnpHcbLoouBgRS3J2gTSw6vlbNaWGSU__xiCS81foOkrpGoDIT4S4cZiT2Av5D/exec"
+  action="https://script.google.com/macros/s/AKfycbwnzpQtLouR88EwG8YT4Z9Yu8r7eJ0ZRqC8yL-wEq9vS9x54cHPaekWWpNUOvoGtX00/exec"
   data-thanks={thanks}
   data-phone={SITE.phone.display}
   data-tel={SITE.phone.tel}
@@ -42,32 +54,39 @@ const PROJECT_TYPES = isUz
   <div data-fields class="space-y-6">
     <!-- Quick Subject Selector -->
     <div>
-      <span class="font-mono text-xs font-semibold text-cyan uppercase tracking-wider block mb-2.5">
+      <span
+        class="font-mono text-xs font-semibold text-cyan uppercase tracking-wider block mb-2.5"
+      >
         // {isUz ? "Loyiha yo'nalishi" : "Направление проекта"}
       </span>
       <div class="flex flex-wrap gap-2">
-        {PROJECT_TYPES.map((type, i) => (
-          <label class="cursor-pointer inline-flex m-0 p-0 border-0">
-            <input
-              type="radio"
-              name="project_type"
-              value={type}
-              checked={i === 0}
-              class="peer sr-only"
-            />
-            <span class="inline-flex items-center rounded-md border border-line bg-paper px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-all peer-checked:border-accent peer-checked:bg-accent/10 peer-checked:text-accent hover:border-accent/50 shadow-2xs select-none">
-              {type}
-            </span>
-          </label>
-        ))}
+        {
+          PROJECT_TYPES.map((type, i) => (
+            <label class="cursor-pointer inline-flex m-0 p-0 border-0">
+              <input
+                type="radio"
+                name="project_type"
+                value={type}
+                checked={i === 0}
+                class="peer sr-only"
+              />
+              <span class="inline-flex items-center rounded-md border border-line bg-paper px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-all peer-checked:border-accent peer-checked:bg-accent/10 peer-checked:text-accent hover:border-accent/50 shadow-2xs select-none">
+                {type}
+              </span>
+            </label>
+          ))
+        }
       </div>
     </div>
 
     <!-- Inputs Grid -->
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
       <div>
-        <label class="block font-mono text-xs font-semibold text-muted-on-ink uppercase tracking-wider mb-1.5">
-          {t("form.name")} <span class="text-accent">*</span>
+        <label
+          class="block font-mono text-xs font-semibold text-muted-on-ink uppercase tracking-wider mb-1.5"
+        >
+          {t("form.name")}
+          <span class="text-accent">*</span>
         </label>
         <input
           type="text"
@@ -75,14 +94,19 @@ const PROJECT_TYPES = isUz
           required
           autocomplete="name"
           maxlength="120"
-          placeholder={isUz ? "Ismingiz yoki kompaniya nomi" : "Ваше имя или компания"}
+          placeholder={isUz
+            ? "Ismingiz yoki kompaniya nomi"
+            : "Ваше имя или компания"}
           class="w-full rounded-lg border border-line bg-paper px-4 py-3 text-sm text-ink outline-none transition-all placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent shadow-xs"
         />
       </div>
 
       <div>
-        <label class="block font-mono text-xs font-semibold text-muted-on-ink uppercase tracking-wider mb-1.5">
-          {t("form.phone")} <span class="text-accent">*</span>
+        <label
+          class="block font-mono text-xs font-semibold text-muted-on-ink uppercase tracking-wider mb-1.5"
+        >
+          {t("form.phone")}
+          <span class="text-accent">*</span>
         </label>
         <input
           type="tel"
@@ -99,20 +123,26 @@ const PROJECT_TYPES = isUz
 
     <!-- Message / Spec details -->
     <div>
-      <label class="block font-mono text-xs font-semibold text-muted-on-ink uppercase tracking-wider mb-1.5">
+      <label
+        class="block font-mono text-xs font-semibold text-muted-on-ink uppercase tracking-wider mb-1.5"
+      >
         {t("form.comment")}
       </label>
       <textarea
         name="comment"
         rows="4"
         maxlength="2000"
-        placeholder={isUz ? "Ombor parametrlari, yuk hajmi yoki kerakli o'lchamlar..." : "Параметры склада, габариты грузов или технические требования..."}
+        placeholder={isUz
+          ? "Ombor parametrlari, yuk hajmi yoki kerakli o'lchamlar..."
+          : "Параметры склада, габариты грузов или технические требования..."}
         class="w-full rounded-lg border border-line bg-paper px-4 py-3 text-sm text-ink outline-none transition-all placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent shadow-xs resize-y"
       ></textarea>
     </div>
 
     <!-- Submission Footer -->
-    <div class="pt-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-line/60">
+    <div
+      class="pt-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-line/60"
+    >
       <button
         class="btn-accent justify-center shadow-md hover:shadow-accent/25 transition-all text-sm py-3.5 px-8 cursor-pointer"
         type="submit"
@@ -123,21 +153,32 @@ const PROJECT_TYPES = isUz
         <span class="link-arrow" aria-hidden="true">→</span>
       </button>
 
-      <p class="text-xs text-muted-on-ink leading-relaxed flex items-center gap-2">
+      <p
+        class="text-xs text-muted-on-ink leading-relaxed flex items-center gap-2"
+      >
         <span class="text-accent font-bold">✓</span>
-        <span>{isUz ? "24 soat ichida mutaxassis javobi va tijorat taklifi." : "Расчёт спецификации и КП инженером в течение 24ч."}</span>
+        <span
+          >{
+            isUz
+              ? "24 soat ichida mutaxassis javobi va tijorat taklifi."
+              : "Расчёт спецификации и КП инженером в течение 24ч."
+          }</span
+        >
       </p>
     </div>
   </div>
 
   <div class="quote-form-fallback py-8 text-center" data-fallback hidden>
-    <p class="text-sm text-muted-on-ink leading-relaxed">{t("form.fallback")}</p>
+    <p class="text-sm text-muted-on-ink leading-relaxed">
+      {t("form.fallback")}
+    </p>
     <a
       class="btn-primary mt-6 inline-flex justify-center"
       href={`tel:${SITE.phone.tel}`}
       data-call
     >
-      {t("form.call")} {SITE.phone.display}
+      {t("form.call")}
+      {SITE.phone.display}
     </a>
   </div>
 </form>
@@ -204,8 +245,12 @@ const PROJECT_TYPES = isUz
     });
   }
 
-  document.querySelectorAll<HTMLFormElement>("form.quote-form").forEach(initForm);
+  document
+    .querySelectorAll<HTMLFormElement>("form.quote-form")
+    .forEach(initForm);
   document.addEventListener("astro:page-load", () => {
-    document.querySelectorAll<HTMLFormElement>("form.quote-form").forEach(initForm);
+    document
+      .querySelectorAll<HTMLFormElement>("form.quote-form")
+      .forEach(initForm);
   });
 </script>
