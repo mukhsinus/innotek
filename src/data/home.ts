@@ -60,7 +60,7 @@ const IMG = {
   dockLevelers: "/images/INNOTEK/Доклевеллер/Гидравлический доклевеллер/IMG_0045.PNG",
   loadingRamps: "/images/INNOTEK/Погрузочная рампа/Мобильные погрузочные рампы/IMG_0058.PNG",
   warehouseAuto: "/images/INNOTEK/Автоматизация склада/Паллетные ASRS системы/IMG_0062.PNG",
-  retail: "/images/маг-ст.jpg",
+  retail: "/imagesWebp/torogviyeStellaji.webp",
   metal: "/images/1-8.jpg",
   office: "/images/26.jpg",
   conveyors: "/images/36-1.jpg",

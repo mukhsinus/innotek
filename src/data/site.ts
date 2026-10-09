@@ -30,12 +30,14 @@ export const SITE = {
     country: "UZ",
   },
   mapsUrl:
-    "https://www.google.com/maps/place/Innotek+Invest/@41.3300559,69.2501784,19z",
-  mapsLat: 41.3300559,
-  mapsLng: 69.2501784,
+    "https://maps.google.com/maps?cid=14800132729307474564",
+  mapsEmbedUrl:
+    "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1497.9872814196726!2d69.25151702750858!3d41.33116649016305!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b7ab210e081%3A0xcd64a24d87012a84!2zODdKMitGUFIsINCi0LDRiNC60LXQvdGCLCBUYXNoa2VudCwg0KPQt9Cx0LXQutC40YHRgtCw0L0!5e0!3m2!1sru!2str!4v1791549999891!5m2!1sru!2str",
+  mapsLat: 41.3311577,
+  mapsLng: 69.2516676,
   /** Статическая карта (не iframe) — OSM; клик ведёт на Google Maps из content/. */
   mapsImage:
-    "https://staticmap.openstreetmap.de/staticmap.php?center=41.3300559,69.2501784&zoom=16&size=1200x640&maptype=mapnik&markers=41.3300559,69.2501784,red-pushpin",
+    "https://staticmap.openstreetmap.de/staticmap.php?center=41.3311577,69.2516676&zoom=17&size=1200x640&maptype=mapnik&markers=41.3311577,69.2516676,red-pushpin",
   socials: {
     facebook: "https://m.facebook.com/innotekinvest.uz/",
     instagram: "https://www.instagram.com/innotek_invest/",

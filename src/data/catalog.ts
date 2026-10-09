@@ -310,7 +310,7 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
     description: "Купить торговые стеллажи в Ташкенте и Узбекистане. Металлические стеллажи для магазинов, складов и торговых залов от компании Innotek.",
     h1: "Торговые стеллажи",
     lead: "Для магазинов и торговых залов. Пристенные и островные системы.",
-    image: "/images/IMAGE-2023-10-31-122736.jpg",
+    image: "/imagesWebp/torogviyeStellaji.webp",
     products: [
       { path: "/catalog/torgovye-stellazhi/pristennye-stellazhi/", labelKey: "product.wall", image: "/images/2-6.jpg", excerpt: "Вдоль стен и в линиях островных стеллажей, в том числе для обхода колонн." },
       { path: "/catalog/torgovye-stellazhi/ostrovnye-stellazhi/", labelKey: "product.island", image: "/images/IMAGE-2023-10-31-122736.jpg", excerpt: "Двухсторонние стеллажи в центре зала. Высота, как правило, до 1850 мм." },

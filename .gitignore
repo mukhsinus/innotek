@@ -26,3 +26,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Raw uncompressed video files (keep only web-optimized .mp4)
+public/videos/*.MOV
+public/videos/*.mov
+scripts/convert-videos.mjs

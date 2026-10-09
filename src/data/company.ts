@@ -42,6 +42,28 @@ export const VIDEO = {
       watchUrl: "https://youtube.com/shorts/0uidz0YLtxI",
     },
   ],
+  localVideos: [
+    { id: "IMG_0077", src: "/videos/IMG_0077.mp4", poster: "/videos/IMG_0077.webp" },
+    { id: "IMG_0173", src: "/videos/IMG_0173.mp4", poster: "/videos/IMG_0173.webp" },
+    { id: "IMG_0234", src: "/videos/IMG_0234.mp4", poster: "/videos/IMG_0234.webp" },
+    { id: "IMG_0239", src: "/videos/IMG_0239.mp4", poster: "/videos/IMG_0239.webp" },
+    { id: "IMG_0244", src: "/videos/IMG_0244.mp4", poster: "/videos/IMG_0244.webp" },
+    { id: "IMG_0247", src: "/videos/IMG_0247.mp4", poster: "/videos/IMG_0247.webp" },
+    { id: "IMG_0373", src: "/videos/IMG_0373.mp4", poster: "/videos/IMG_0373.webp" },
+    { id: "IMG_0591", src: "/videos/IMG_0591.mp4", poster: "/videos/IMG_0591.webp" },
+    { id: "IMG_0614", src: "/videos/IMG_0614.mp4", poster: "/videos/IMG_0614.webp" },
+    { id: "IMG_0618", src: "/videos/IMG_0618.mp4", poster: "/videos/IMG_0618.webp" },
+    { id: "IMG_0621", src: "/videos/IMG_0621.mp4", poster: "/videos/IMG_0621.webp" },
+    { id: "IMG_8617", src: "/videos/IMG_8617.mp4", poster: "/videos/IMG_8617.webp" },
+    { id: "IMG_8924", src: "/videos/IMG_8924.mp4", poster: "/videos/IMG_8924.webp" },
+    { id: "IMG_9006", src: "/videos/IMG_9006.mp4", poster: "/videos/IMG_9006.webp" },
+    { id: "IMG_9123", src: "/videos/IMG_9123.mp4", poster: "/videos/IMG_9123.webp" },
+    { id: "IMG_9165", src: "/videos/IMG_9165.mp4", poster: "/videos/IMG_9165.webp" },
+    { id: "IMG_9244", src: "/videos/IMG_9244.mp4", poster: "/videos/IMG_9244.webp" },
+    { id: "IMG_9256", src: "/videos/IMG_9256.mp4", poster: "/videos/IMG_9256.webp" },
+    { id: "IMG_9848", src: "/videos/IMG_9848.mp4", poster: "/videos/IMG_9848.webp" },
+    { id: "IMG_9946", src: "/videos/IMG_9946.mp4", poster: "/videos/IMG_9946.webp" },
+  ],
 } as const;
 
 export const CONTACTS = {

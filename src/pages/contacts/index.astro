@@ -196,10 +196,10 @@ const address = SITE.address.ru;
               <div class="relative aspect-[16/9] overflow-hidden rounded-lg border border-line bg-paper shadow-xs sm:aspect-[16/10]">
                 <iframe
                   title="Innotek Location Map"
-                  src={`https://maps.google.com/maps?q=${SITE.mapsLat},${SITE.mapsLng}&hl=${lang}&z=17&output=embed`}
+                  src={SITE.mapsEmbedUrl}
                   class="h-full w-full border-0 filter contrast-[1.02] grayscale-[0.05]"
                   loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
+                  referrerpolicy="strict-origin-when-cross-origin"
                   allowfullscreen
                 ></iframe>
               </div>

@@ -9,11 +9,12 @@ import { useT } from "../../i18n/utils";
 
 const lang = "ru" as const;
 const t = useT(lang);
-const TOTAL = 3;
+const TOTAL = 4;
 ---
 
 <BaseLayout title={VIDEO.title} description={VIDEO.description}>
   <article>
+    <!-- 01 Header -->
     <header class="page-head bg-paper" data-reveal>
       <div class="site-wrap">
         <Breadcrumbs
@@ -23,13 +24,23 @@ const TOTAL = 3;
             { label: t("nav.video") },
           ]}
         />
-        <SectionMeta kicker={t("page.kickerCompany")} index={1} total={TOTAL} />
+        <div class="flex flex-wrap items-center justify-between gap-4 mt-2 mb-4">
+          <SectionMeta kicker={t("page.kickerCompany")} index={1} total={TOTAL} />
+          <div class="telemetry-pill" aria-label="Status">
+            <span class="relative flex h-1.5 w-1.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan"></span>
+            </span>
+            <span>PRODUCTION ARCHIVE // {VIDEO.localVideos.length} VIDEOS</span>
+          </div>
+        </div>
         <h1 class="t-display">{VIDEO.h1}</h1>
         <p class="t-lead max-w-2xl">{VIDEO.lead}</p>
       </div>
     </header>
 
-    <section class="section-y bg-paper" data-reveal>
+    <!-- 02 Flagship Project (YouTube) -->
+    <section class="section-y bg-paper border-b border-line" data-reveal>
       <div class="site-wrap">
         <div class="space-y-12">
           {
@@ -119,21 +130,63 @@ const TOTAL = 3;
             ))
           }
         </div>
+      </div>
+    </section>
+
+    <!-- 03 Videos Grid (Only Videos Themselves) -->
+    <section class="section-y bg-paper" data-reveal>
+      <div class="site-wrap">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+          <div>
+            <SectionMeta kicker="Архив видеозаписей" index={3} total={TOTAL} />
+            <h2 class="t-display text-2xl sm:text-3xl lg:text-4xl mt-2">
+              Видео с объектов и производства
+            </h2>
+          </div>
+          <div class="text-xs font-mono text-muted-on-ink">
+            {VIDEO.localVideos.length} ВИДЕО
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {
+            VIDEO.localVideos.map((vid) => (
+              <div class="group relative overflow-hidden rounded-2xl border border-line bg-ink/95 shadow-xs transition-all hover:border-accent/60 hover:shadow-lg">
+                <span class="cad-cross cad-tl opacity-40 group-hover:opacity-100 transition-opacity" aria-hidden="true">+</span>
+                <span class="cad-cross cad-tr opacity-40 group-hover:opacity-100 transition-opacity" aria-hidden="true">+</span>
+                <div class="relative aspect-[9/16] w-full overflow-hidden">
+                  <video
+                    id={`video-${vid.id}`}
+                    class="h-full w-full object-cover"
+                    controls
+                    playsinline
+                    preload="metadata"
+                    poster={vid.poster}
+                    data-video-player
+                  >
+                    <source src={vid.src} type="video/mp4" />
+                    Ваш браузер не поддерживает встроенное видео.
+                  </video>
+                </div>
+              </div>
+            ))
+          }
+        </div>
 
         <!-- YouTube Channel Hub Banner -->
-        <div class="mt-12 relative overflow-hidden rounded-2xl border border-line bg-surface/75 p-8 sm:p-12 text-center shadow-xs">
+        <div class="mt-16 relative overflow-hidden rounded-2xl border border-line bg-surface/75 p-8 sm:p-12 text-center shadow-xs">
           <span class="cad-cross cad-tl" aria-hidden="true">+</span>
           <span class="cad-cross cad-tr" aria-hidden="true">+</span>
           <span class="cad-cross cad-bl" aria-hidden="true">+</span>
           <span class="cad-cross cad-br" aria-hidden="true">+</span>
 
-          <div class="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-red-600/10 text-red-600 mb-4">
+          <div class="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-red-600/10 text-red-600 mb-4 shadow-xs">
             <svg class="h-8 w-8 fill-current" viewBox="0 0 24 24">
               <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
             </svg>
           </div>
           <h3 class="font-display text-2xl sm:text-3xl font-semibold text-ink">Больше видео на нашем YouTube канале</h3>
-          <p class="mt-2 text-sm sm:text-base text-muted-on-ink max-w-xl mx-auto">
+          <p class="mt-2 text-sm sm:text-base text-muted-on-ink max-w-xl mx-auto leading-relaxed">
             Подписывайтесь на канал @innotek_invest, чтобы следить за новыми проектами, производством и монтажом.
           </p>
           <a
@@ -142,6 +195,9 @@ const TOTAL = 3;
             rel="noopener noreferrer"
             class="btn-accent mt-6 inline-flex items-center gap-2"
           >
+            <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
             <span>Перейти на YouTube @innotek_invest</span>
             <span aria-hidden="true">↗</span>
           </a>
@@ -149,18 +205,43 @@ const TOTAL = 3;
       </div>
     </section>
 
+    <!-- 04 Related Links & Quote Band -->
     <RelatedLinks
       lang={lang}
       kicker={t("page.related")}
-      index={2}
+      index={4}
       total={TOTAL}
       items={[
         { path: "/catalog/", label: t("nav.catalog") },
         { path: "/services/", label: t("nav.services") },
         { path: "/about/", label: t("nav.about") },
+        { path: "/contacts/", label: t("nav.contacts") },
       ]}
     />
 
-    <QuoteBand lang={lang} index={3} total={TOTAL} />
+    <QuoteBand lang={lang} index={4} total={TOTAL} />
   </article>
+
+  <!-- Auto-pause others when one video plays -->
+  <script is:inline>
+    function setupVideoPlayback() {
+      var players = document.querySelectorAll("[data-video-player]");
+      players.forEach(function (player) {
+        player.addEventListener("play", function () {
+          players.forEach(function (other) {
+            if (other !== player && !other.paused) {
+              other.pause();
+            }
+          });
+        });
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", setupVideoPlayback);
+    } else {
+      setupVideoPlayback();
+    }
+    document.addEventListener("astro:page-load", setupVideoPlayback);
+  </script>
 </BaseLayout>
