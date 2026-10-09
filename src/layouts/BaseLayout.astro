@@ -105,6 +105,20 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim() || "";
         </script>
       )
     }
+    <!-- Meta Pixel Code -->
+    <script is:inline>
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '5538059033086860');
+      fbq('track', 'PageView');
+    </script>
+    <noscript>
+      <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=5538059033086860&ev=PageView&noscript=1" alt="" />
+    </noscript>
+    <!-- End Meta Pixel Code -->
   </head>
   <body class:list={[home && "is-home"]}>
     {
@@ -133,7 +147,7 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim() || "";
     <div id="header-sentinel" class="pointer-events-none h-px w-full" aria-hidden="true"></div>
     <Header lang={lang} overlay={overlayHeader} />
     {!overlayHeader && <div class="header-spacer" aria-hidden="true"></div>}
-    <main id="main">
+    <main id="main" class="overflow-x-clip">
       <slot />
     </main>
     <Footer lang={lang} />

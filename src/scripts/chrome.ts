@@ -498,6 +498,30 @@ function initCatalogAccordions() {
   });
 }
 
+let contactTrackingInit = false;
+function initContactTracking() {
+  if (contactTrackingInit) return;
+  contactTrackingInit = true;
+
+  document.addEventListener("click", (e) => {
+    const link = (e.target as HTMLElement)?.closest("a");
+    if (!link) return;
+
+    const href = link.getAttribute("href") || "";
+    const isPhone = href.startsWith("tel:");
+    const isTelegram =
+      href.includes("t.me/") ||
+      href.includes("telegram.me/") ||
+      href.startsWith("tg:");
+
+    if (isPhone || isTelegram) {
+      if (typeof (window as any).fbq === "function") {
+        (window as any).fbq("track", "Contact");
+      }
+    }
+  });
+}
+
 function initAll() {
   initHeader();
   initHeaderHide();
@@ -510,6 +534,7 @@ function initAll() {
   initSpotlight();
   initParallax();
   initAssemblySequence();
+  initContactTracking();
 }
 
 if (document.readyState === "loading") {

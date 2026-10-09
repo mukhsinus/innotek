@@ -132,6 +132,7 @@
   html {
     scroll-behavior: smooth;
     color-scheme: light;
+    overflow-x: hidden;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -145,6 +146,8 @@
     background: transparent;
     font-feature-settings: "kern" on;
     font-weight: 400;
+    overflow-x: clip;
+    min-height: 100vh;
   }
 
   :focus-visible {
@@ -171,6 +174,9 @@
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-muted);
   }
+  h1, h2, h3, h4, h5, h6, p {
+    overflow-wrap: break-word;
+  }
 }
 
 html {
@@ -194,11 +200,14 @@ html {
 
   .t-display {
     font-family: var(--font-display);
-    font-size: clamp(2.75rem, 1.4rem + 5.5vw, 6rem);
-    line-height: 1.05;
+    font-size: clamp(1.875rem, 1.15rem + 3.8vw, 6rem);
+    line-height: 1.08;
     letter-spacing: -0.03em;
     font-weight: 600;
     color: var(--color-ink);
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
   }
 
   .t-mono {
@@ -648,6 +657,7 @@ html {
   top: 100%;
   right: 0;
   left: 0;
+  overflow-x: clip;
 }
 
 .nav-flyout-sub {
@@ -1694,49 +1704,6 @@ html {
 }
 
 /* ── Quote Form ──────────────────────────────────────────────────────── */
-
-.quote-form {
-  display: grid;
-  gap: 0;
-}
-
-.quote-form label {
-  display: grid;
-  gap: 0.55rem;
-  padding-block: 1.1rem;
-  border-top: 1px solid var(--color-line);
-}
-
-.quote-form label:last-of-type {
-  border-bottom: 1px solid var(--color-line);
-}
-
-.quote-form .t-overline {
-  margin: 0;
-}
-
-.quote-form input,
-.quote-form textarea {
-  width: 100%;
-  background: transparent;
-  border: 0;
-  padding: 0;
-  font: inherit;
-  font-size: 1.0625rem;
-  line-height: 1.45;
-  color: var(--color-ink);
-  outline: none;
-  resize: vertical;
-}
-
-.quote-form input::placeholder,
-.quote-form textarea::placeholder {
-  color: var(--color-muted);
-}
-
-.quote-form textarea {
-  min-height: 7rem;
-}
 
 .quote-form-fallback {
   max-width: 28rem;
