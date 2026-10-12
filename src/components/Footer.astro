@@ -105,6 +105,21 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
             </li>
           ))
         }
+        <li class="pt-2">
+          <a
+            class="inline-flex items-center gap-1.5 rounded-md bg-accent/10 px-2.5 py-1.5 text-xs font-mono font-medium text-accent hover:bg-accent hover:text-paper transition-all border border-accent/20"
+            href={SITE.catalogPdf.url}
+            download={SITE.catalogPdf.filename}
+            target="_blank"
+            rel="noopener noreferrer"
+            id="footer-download-catalog"
+          >
+            <svg class="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span>{isUz ? "PDF Katalog" : "PDF-каталог"} (2025) · {isUz ? SITE.catalogPdf.sizeUz : SITE.catalogPdf.size}</span>
+          </a>
+        </li>
       </ul>
     </div>
 

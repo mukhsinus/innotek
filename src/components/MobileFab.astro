@@ -9,9 +9,67 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useT(lang);
+const isUz = lang === "uz";
+const here = Astro.url.pathname;
+
+// Hide on all catalog pages (hub, categories, products)
+const isCatalogPage =
+  here === "/catalog" ||
+  here === "/catalog/" ||
+  here.startsWith("/catalog/") ||
+  here === "/uz/catalog" ||
+  here === "/uz/catalog/" ||
+  here.startsWith("/uz/catalog/") ||
+  here.includes("/stellazhi") ||
+  here.includes("/metallicheskie-platformy") ||
+  here.includes("/telezhki") ||
+  here.includes("/skladskaya-tehnika") ||
+  here.includes("/lift-gruzovoj") ||
+  here.includes("/doklevellery") ||
+  here.includes("/pogruzochnye-rampy") ||
+  here.includes("/avtomatizaciya-sklada") ||
+  here.includes("/torgovye-stellazhi") ||
+  here.includes("/ofisnaya-mebel") ||
+  here.includes("/metallicheskaya-mebel") ||
+  here.includes("/konvejernye-linii") ||
+  here.includes("/oborudovanie") ||
+  here.includes("/roliki");
 ---
 
 <div class="social-dock">
+  {
+    !isCatalogPage && (
+      <a
+        class="social-dock-btn social-dock-catalog"
+        href={SITE.catalogPdf.url}
+        download={SITE.catalogPdf.filename}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${t("catalog.download")} (PDF)`}
+        id="dock-download-catalog-btn"
+      >
+        <span class="social-dock-catalog-content">
+          <svg
+            class="social-dock-catalog-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+            />
+          </svg>
+          <span class="social-dock-catalog-tag">PDF</span>
+        </span>
+        <span class="social-dock-tooltip" role="tooltip">
+          {isUz ? `PDF Katalog (${SITE.catalogPdf.sizeUz})` : `PDF-каталог (${SITE.catalogPdf.size})`}
+        </span>
+      </a>
+    )
+  }
   <a
     class="social-dock-btn social-dock-ig"
     href={SITE.socials.instagram}

@@ -47,6 +47,13 @@ export const SITE = {
     weekdays: "9:00–18:00",
     days: "Пн–Пт",
   },
+  catalogPdf: {
+    url: "/innotek 2025 D.pdf",
+    filename: "innotek-catalog-2025.pdf",
+    size: "31 МБ",
+    sizeUz: "31 MB",
+    year: "2025",
+  },
 } as const;
 
 /**

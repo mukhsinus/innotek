@@ -5,6 +5,7 @@ import QuoteBand from "./QuoteBand.astro";
 import RackAssembly3D from "./RackAssembly3D.astro";
 import SectionMeta from "./SectionMeta.astro";
 import { HOME, HOME_STATS } from "../data/home";
+import { SITE } from "../data/site";
 import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
 import { photoSrc, photoSrcWebp, photoSrcFallback } from "../lib/image";
@@ -91,10 +92,35 @@ const heroFallback = photoSrcFallback(copy.heroImage, 2000) || heroWebp;
         </h2>
         <p class="t-lead">{copy.catalogLead}</p>
       </div>
-      <a class="text-link self-start md:self-end pb-1 font-mono text-xs text-cyan hover:text-accent" href={catalogHref}>
-        <span>[ {isUz ? "BARCHA MAHSULOTLAR" : "ВЕСЬ КАТАЛОГ ПРОДУКЦИИ"} ]</span>
-        <span class="link-arrow" aria-hidden="true">→</span>
-      </a>
+      <div class="flex flex-wrap items-center gap-3 self-start md:self-end">
+        <a
+          href={SITE.catalogPdf.url}
+          download={SITE.catalogPdf.filename}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-accent inline-flex items-center gap-2 text-xs font-semibold py-2.5 px-4 shadow-sm hover:shadow-accent/25 transition-all group"
+          id="btn-home-download-catalog"
+        >
+          <svg
+            class="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:translate-y-0.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2.2"
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span>{t("catalog.download")}</span>
+          <span class="rounded bg-black/20 px-1.5 py-0.5 font-mono text-[10px] tracking-wider font-normal">
+            {isUz ? SITE.catalogPdf.sizeUz : SITE.catalogPdf.size}
+          </span>
+        </a>
+        <a class="text-link pb-1 font-mono text-xs text-cyan hover:text-accent" href={catalogHref}>
+          <span>[ {isUz ? "BARCHA MAHSULOTLAR" : "ВЕСЬ КАТАЛОГ ПРОДУКЦИИ"} ]</span>
+          <span class="link-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
     </div>
 
     <div class="catalog-grid">

@@ -1,6 +1,7 @@
 ---
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import CatalogCard from "../../components/CatalogCard.astro";
+import CatalogDownloadBanner from "../../components/CatalogDownloadBanner.astro";
 import QuoteBand from "../../components/QuoteBand.astro";
 import SectionMeta from "../../components/SectionMeta.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -28,6 +29,10 @@ const TOTAL = 3;
         <SectionMeta kicker={t("nav.catalog")} index={1} total={TOTAL} />
         <h1 class="t-display">{CATALOG_HUB.h1}</h1>
         <p class="t-lead">{copy.catalogLead}</p>
+
+        <div class="mt-8">
+          <CatalogDownloadBanner lang={lang} variant="hero" />
+        </div>
       </div>
     </header>
 
