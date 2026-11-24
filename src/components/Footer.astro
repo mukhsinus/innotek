@@ -1,5 +1,6 @@
 ---
 import Logo from "./Logo.astro";
+import { LOCATION_LINKS } from "../data/locations";
 import { catalogNav, primaryNav } from "../data/navigation";
 import { SITE } from "../data/site";
 import type { Lang } from "../i18n/ui";
@@ -193,6 +194,25 @@ const quoteHref = `${hrefFor(lang, "/contacts/")}#quote`;
           </a>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Regional Delivery Links Strip -->
+  <div class="footer-inner border-t border-line/60">
+    <div class="site-wrap flex flex-wrap items-center gap-x-4 gap-y-2 py-4 text-xs font-mono text-muted-on-ink">
+      <span class="text-cyan font-semibold uppercase tracking-wider">
+        {isUz ? "Yetkazib berish:" : "Регионы доставки:"}
+      </span>
+      {
+        LOCATION_LINKS.map((loc, i) => (
+          <>
+            {i > 0 && <span class="text-line" aria-hidden="true">·</span>}
+            <a class="hover:text-accent transition-colors" href={hrefFor(lang, loc.path)}>
+              {loc.label[lang]}
+            </a>
+          </>
+        ))
+      }
     </div>
   </div>
 

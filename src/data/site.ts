@@ -68,4 +68,11 @@ export const UZ_PATHS = new Set<string>([
   "/catalog/stellazhi/nabivnye-stellazhi/",
   "/services/",
   "/services/pokraska-metalla/",
+  "/stellazhi-tashkent/",
+  "/stellazhi-samarkand/",
+  "/stellazhi-bukhara/",
+  "/stellazhi-fergana/",
+  "/stellazhi-andijan/",
+  "/stellazhi-namangan/",
+  "/stellazhi-navoi/",
 ]);

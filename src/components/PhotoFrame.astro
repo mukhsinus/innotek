@@ -3,6 +3,7 @@ import { photoSrcWebp, photoSrcFallback } from "../lib/image";
 
 interface Props {
   src?: string;
+  alt?: string;
   class?: string;
   width?: number;
   height?: number;
@@ -12,6 +13,7 @@ interface Props {
 
 const {
   src,
+  alt = "",
   class: className,
   width = 800,
   height = 600,
@@ -32,7 +34,7 @@ const fallbackSrc = photoSrcFallback(src, targetWidth) || webpSrc;
       )}
       <img
         src={fallbackSrc}
-        alt=""
+        alt={alt}
         class:list={["photo-grade", className]}
         width={width}
         height={height}

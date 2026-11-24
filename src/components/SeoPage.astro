@@ -1,11 +1,14 @@
 ---
 import Breadcrumbs from "./Breadcrumbs.astro";
+import JsonLd from "./JsonLd.astro";
 import PhotoFrame from "./PhotoFrame.astro";
 import QuoteBand from "./QuoteBand.astro";
 import QuoteSection from "./QuoteSection.astro";
 import RelatedLinks from "./RelatedLinks.astro";
 import SectionMeta from "./SectionMeta.astro";
 import type { SeoLanding } from "../data/landings";
+import { faqPageLd, locationServiceLd } from "../data/schema";
+import { SITE } from "../data/site";
 import type { Lang } from "../i18n/ui";
 import { hrefFor, useT } from "../i18n/utils";
 
@@ -16,12 +19,14 @@ interface Props {
 
 const { lang, page } = Astro.props;
 const t = useT(lang);
+const isUz = lang === "uz";
 const pad = (n: number) => String(n).padStart(2, "0");
 const hasTypes = Boolean(page.types?.length);
 const hasPoints = Boolean(page.points?.length);
 const hasRelated = page.related.length > 0;
 const hasSeo = Boolean(page.seo);
 const hasAi = Boolean(page.aiParagraphs?.length);
+const parentCrumb = page.breadcrumbParent ?? { label: t("nav.catalog"), path: "/catalog/" };
 const TOTAL = 2 + (hasTypes ? 1 : 0) + (hasPoints ? 1 : 0) + (hasRelated ? 1 : 0) + (hasSeo ? 1 : 0);
 let n = 1;
 const introN = n++;
@@ -40,17 +45,36 @@ const seoN = hasSeo ? n++ : 0;
           lang={lang}
           items={[
             { label: t("crumb.home"), path: "/" },
-            { label: t("nav.catalog"), path: "/catalog/" },
+            parentCrumb,
             { label: page.h1 },
           ]}
         />
-        <SectionMeta kicker={t("page.kickerLanding")} index={introN} total={TOTAL} />
+        <SectionMeta kicker={page.kicker ?? t("page.kickerLanding")} index={introN} total={TOTAL} />
         <h1 class="t-display">{page.h1}</h1>
         <p class="t-lead">{page.lead}</p>
+        {
+          page.location && (
+            <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-4 font-mono text-xs text-muted-on-ink">
+              <span class="inline-flex items-center gap-2 text-ink font-semibold">
+                <span class="h-1.5 w-1.5 rounded-full bg-cyan" aria-hidden="true"></span>
+                <span>{page.location.region}</span>
+              </span>
+              <span>
+                {isUz
+                  ? `Ishlab chiqarish: ${SITE.address.locality.uz}, ${SITE.address.street.uz}`
+                  : `Завод: ${SITE.address.locality.ru}, ${SITE.address.street.ru}`}
+              </span>
+              <a class="text-cyan hover:text-accent transition-colors font-semibold" href={`tel:${SITE.phone.tel}`}>
+                {SITE.phone.display}
+              </a>
+            </div>
+          )
+        }
       </div>
       <div class="relative aspect-[4/5] overflow-hidden bg-surface lg:col-span-4 lg:col-start-9 lg:aspect-[4/5]">
         <PhotoFrame
           src={page.image}
+          alt={page.h1}
           class="absolute inset-0 h-full w-full object-cover"
           width={800}
           height={1000}
@@ -148,3 +172,18 @@ const seoN = hasSeo ? n++ : 0;
     )
   }
 </article>
+{
+  page.location && (
+    <JsonLd
+      data={locationServiceLd({
+        name: page.h1,
+        description: page.description,
+        path: Astro.url.pathname,
+        city: page.location.city,
+        region: page.location.region,
+        lang,
+      })}
+    />
+  )
+}
+{page.seo?.faqs.length ? <JsonLd data={faqPageLd(page.seo.faqs)} /> : null}

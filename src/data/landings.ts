@@ -2,7 +2,9 @@
  * SEO-посадки. Тексты только из content/, обрывки и «5% скидка» в meta не переносим.
  * /metalliceskie-stellaji/ канонически живёт в /catalog/stellazhi/ — отдельной посадки нет.
  */
+import type { Lang } from "../i18n/ui";
 import type { FaqItem } from "./catalog";
+import { locationLandingBySlug, locationLandingsForLang } from "./locations";
 
 export type SeoTypeLink = {
   path: string;
@@ -15,11 +17,18 @@ export type SeoRelated = {
   label: string;
 };
 
+export type SeoLocationMeta = {
+  city: string;
+  region: string;
+  isHeadquarters?: boolean;
+};
+
 export type SeoLanding = {
   slug: string;
   path: string;
   title: string;
   description: string;
+  kicker?: string;
   h1: string;
   lead: string;
   image?: string;
@@ -27,6 +36,8 @@ export type SeoLanding = {
   types?: SeoTypeLink[];
   points?: string[];
   related: SeoRelated[];
+  breadcrumbParent?: SeoRelated;
+  location?: SeoLocationMeta;
   seo?: {
     heading: string;
     paragraphs: string[];
@@ -45,7 +56,7 @@ const RETAIL = "/catalog/torgovye-stellazhi/";
 const OFFICE = "/catalog/ofisnaya-mebel/";
 const METAL = "/catalog/metallicheskaya-mebel/";
 
-export const SEO_LANDINGS: SeoLanding[] = [
+const BASE_SEO_LANDINGS: SeoLanding[] = [
   {
     slug: "stellazhi",
     path: "/stellazhi/",
@@ -503,6 +514,15 @@ export const SEO_LANDINGS: SeoLanding[] = [
   },
 ];
 
-export function landingBySlug(slug: string) {
+export const SEO_LANDINGS: SeoLanding[] = [
+  ...BASE_SEO_LANDINGS,
+  ...locationLandingsForLang("ru"),
+];
+
+/** Возвращает SEO-посадку по slug с учётом языка (для uz — региональные страницы). */
+export function landingBySlug(slug: string, lang: Lang = "ru") {
+  if (lang === "uz") {
+    return locationLandingBySlug(slug, "uz");
+  }
   return SEO_LANDINGS.find((page) => page.slug === slug);
 }

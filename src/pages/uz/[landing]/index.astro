@@ -1,0 +1,19 @@
+---
+import SeoPage from "../../../components/SeoPage.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { SEO_LANDINGS, landingBySlug } from "../../../data/landings";
+import { UZ_PATHS } from "../../../data/site";
+
+export function getStaticPaths() {
+  return SEO_LANDINGS.filter((page) => UZ_PATHS.has(page.path)).map((page) => ({
+    params: { landing: page.slug },
+  }));
+}
+
+const lang = "uz" as const;
+const page = landingBySlug(Astro.params.landing!, lang)!;
+---
+
+<BaseLayout title={page.title} description={page.description} image={page.image}>
+  <SeoPage lang={lang} page={page} />
+</BaseLayout>

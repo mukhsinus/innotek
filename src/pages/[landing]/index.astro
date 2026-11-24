@@ -13,6 +13,6 @@ const lang = "ru" as const;
 const page = landingBySlug(Astro.params.landing!)!;
 ---
 
-<BaseLayout title={page.title} description={page.description}>
+<BaseLayout title={page.title} description={page.description} image={page.image}>
   <SeoPage lang={lang} page={page} />
 </BaseLayout>

@@ -89,7 +89,7 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID?.trim() || "";
       )
     }
     <title>{title}</title>
-    {home && <JsonLd data={organizationLd()} />}
+    {home && <JsonLd data={organizationLd(lang)} />}
     {
       gtmId && (
         <script is:inline define:vars={{ gtmId }}>

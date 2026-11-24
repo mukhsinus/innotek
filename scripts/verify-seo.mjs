@@ -99,6 +99,16 @@ for (const file of htmlFiles) {
       if (geo?.["@type"] !== "GeoCoordinates" || typeof geo.latitude !== "number")
         errors.push(`${label}: LocalBusiness без корректного geo`);
     }
+    if (type === "Service") {
+      if (!data.name || !data.areaServed?.name || !data.provider?.name) {
+        errors.push(`${label}: Service без name/areaServed/provider`);
+      }
+    }
+    if (type === "FAQPage") {
+      if (!Array.isArray(data.mainEntity) || !data.mainEntity.length) {
+        errors.push(`${label}: FAQPage без mainEntity`);
+      }
+    }
   }
 
   if (/mc\.yandex\.ru|googletagmanager\.com/.test(html)) {
@@ -107,7 +117,7 @@ for (const file of htmlFiles) {
 }
 
 console.log(`Страниц проверено: ${htmlFiles.length - 1} (без 410.html)`);
-console.log(`Страниц с hreflang: ${hreflangPages} (ожидается 14: 7 ru + 7 uz)`);
+console.log(`Страниц с hreflang: ${hreflangPages} (ожидается 28: 14 ru + 14 uz)`);
 console.log(`JSON-LD по типам: ${JSON.stringify(typeCount)}`);
 if (notes.length) console.log("Заметки:\n  " + notes.join("\n  "));
 if (errors.length) {
